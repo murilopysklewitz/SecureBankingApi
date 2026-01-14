@@ -1,0 +1,53 @@
+package com.SecureBankingApi.infrastructure.persistence;
+
+import com.SecureBankingApi.domain.User;
+import com.SecureBankingApi.domain.valueObjects.CPF;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class UserMapper {
+
+    public User toDomain(UserJpaEntity entity){
+        User user = User.create(
+                entity.getEmail(),
+                entity.getFullName(),
+                new CPF(entity.getCpf()),
+                entity.getPasswordHash(),
+                entity.getRole()
+        );
+        return user;
+    }
+
+    public UserJpaEntity toEntity(User domain){
+        UserJpaEntity entity = new UserJpaEntity(
+                domain.getId(),
+                domain.getUpdatedAt(),
+                domain.getCreatedAt(),
+                domain.getStatus(),
+                domain.getRole(),
+                domain.getPasswordHash(),
+                domain.getCpf().toString(),
+                domain.getEmail(),
+                domain.getFullName()
+        );
+        return entity;
+    }
+
+    public List<User> toDomainList(List<UserJpaEntity> entities){
+        List<User> domains = new ArrayList<>();
+        for(UserJpaEntity entity : entities){
+            User domain = toDomain(entity);
+            domains.add(domain);
+        }
+        return domains;
+    }
+    public List<UserJpaEntity> toEntityList(List<User> domains){
+        List<UserJpaEntity> entities = new ArrayList<>();
+        for(User domain : domains){
+            UserJpaEntity entity = toEntity(domain);
+            entities.add(entity);
+        }
+        return entities;
+    }
+}

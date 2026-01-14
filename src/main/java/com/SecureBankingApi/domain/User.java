@@ -90,6 +90,84 @@ public class User {
         return user;
     }
 
+    public boolean isActivate() {
+        return this.status == UserStatus.ACTIVE;
+    }
+    public boolean isBlocked(){
+        return this.status == UserStatus.BLOCKED;
+    }
+
+    public void block(){
+        if(this.status == UserStatus.BLOCKED) return;
+
+        this.status = UserStatus.BLOCKED;
+    }
+
+    public void changeEmail(String newEmail){
+
+        ensureNotBlocked();
+        if(newEmail == null || newEmail.isBlank()) throw new IllegalArgumentException("new email cannot be null");
+        if(newEmail.length() < 3 || newEmail.length() > 100) throw new IllegalArgumentException("Invalid size of new email");
+        if (!newEmail.matches("^\\S+@\\S+\\.\\S+$")) throw new IllegalArgumentException("Invalid format of new email");
+
+        this.email = newEmail;
+        touch();
+    }
+
+    public void changeStatus(UserStatus newStatus){
+        ensureNotBlocked();
+
+        this.status = newStatus;
+        touch();
+    }
+
+    private void touch() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    private void ensureNotBlocked(){
+        if(status == UserStatus.BLOCKED){
+            throw new IllegalStateException("User is blocked");
+        }
+    }
+
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public CPF getCpf() {
+        return cpf;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "User{" +
