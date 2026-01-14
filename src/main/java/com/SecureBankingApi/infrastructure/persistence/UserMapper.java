@@ -9,12 +9,16 @@ import java.util.List;
 public class UserMapper {
 
     public User toDomain(UserJpaEntity entity){
-        User user = User.create(
-                entity.getEmail(),
+        User user = User.restore(
+                entity.getId(),
                 entity.getFullName(),
                 new CPF(entity.getCpf()),
+                entity.getEmail(),
                 entity.getPasswordHash(),
-                entity.getRole()
+                entity.getRole(),
+                entity.getStatus(),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt()
         );
         return user;
     }
@@ -27,7 +31,7 @@ public class UserMapper {
                 domain.getStatus(),
                 domain.getRole(),
                 domain.getPasswordHash(),
-                domain.getCpf().toString(),
+                domain.getCpf().getValue(),
                 domain.getEmail(),
                 domain.getFullName()
         );
