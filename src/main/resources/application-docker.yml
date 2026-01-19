@@ -3,9 +3,10 @@ spring:
     url: jdbc:postgresql://postgres:5432/secure_api_bank
     username: postgres
     password: postgres
-    driver-class-name: org.postgres.driver
+    driver-class-name: org.postgresql.Driver
 
 jpa:
+  database-platform: org.hibernate.dialect.PostgreSQLDialect
   hibernate:
     ddl-auto: validate
   show-sql: true

@@ -2,7 +2,9 @@ package com.SecureBankingApi.infrastructure.security;
 
 import com.SecureBankingApi.domain.user.ports.PasswordHasher;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BCryptPasswordHasher implements PasswordHasher {
     @Override
     public String hash(String password) {

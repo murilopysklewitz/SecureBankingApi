@@ -5,11 +5,14 @@ import com.SecureBankingApi.domain.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+
+@Repository
 public class RefreshTokenRepositoryAdapter implements RefreshTokenRepository {
     private static final Logger log = LoggerFactory.getLogger(RefreshTokenRepositoryAdapter.class);
     private final SpringDataRefreshTokenRepository springData;

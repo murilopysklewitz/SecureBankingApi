@@ -2,10 +2,12 @@ package com.SecureBankingApi.infrastructure.persistence;
 
 import com.SecureBankingApi.domain.user.User;
 import com.SecureBankingApi.domain.user.valueObjects.CPF;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class UserMapper {
 
     public User toDomain(UserJpaEntity entity){

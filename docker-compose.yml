@@ -1,7 +1,7 @@
 services:
   api:
     build: ./
-    container_name: api
+    container_name: secure_api
     ports:
       - "3000:8080"
     environment:

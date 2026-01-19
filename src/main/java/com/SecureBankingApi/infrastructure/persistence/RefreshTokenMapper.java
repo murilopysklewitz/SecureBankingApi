@@ -1,7 +1,9 @@
 package com.SecureBankingApi.infrastructure.persistence;
 
 import com.SecureBankingApi.domain.RefreshToken;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RefreshTokenMapper {
     public RefreshToken toDomain(RefreshTokenJpaEntity entity){
         RefreshToken domain = RefreshToken.restore(

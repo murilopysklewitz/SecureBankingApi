@@ -8,7 +8,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = {
+        @Index(name = "idx_user_role", columnList = "role")
+})
 public class UserJpaEntity {
 
     @Id
@@ -21,7 +23,7 @@ public class UserJpaEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true, scale = 11)
+    @Column(nullable = false, unique = true, length = 11)
     private String cpf;
 
     @Column(nullable = false)
@@ -33,7 +35,9 @@ public class UserJpaEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     protected UserJpaEntity() {}
@@ -60,10 +64,6 @@ public class UserJpaEntity {
 
     public UUID getId() {
         return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getFullName() {
