@@ -1,9 +1,9 @@
 package com.SecureBankingApi.infrastructure.persistence;
 
-import com.SecureBankingApi.domain.User;
-import com.SecureBankingApi.domain.UserRole;
-import com.SecureBankingApi.domain.UserStatus;
-import com.SecureBankingApi.domain.valueObjects.CPF;
+import com.SecureBankingApi.domain.user.User;
+import com.SecureBankingApi.domain.user.enums.UserRole;
+import com.SecureBankingApi.domain.user.enums.UserStatus;
+import com.SecureBankingApi.domain.user.valueObjects.CPF;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
