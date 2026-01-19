@@ -1,14 +1,16 @@
 package com.SecureBankingApi.infrastructure.persistence;
 
-import com.SecureBankingApi.domain.User;
-import com.SecureBankingApi.domain.UserRepository;
-import com.SecureBankingApi.domain.UserStatus;
-import com.SecureBankingApi.domain.valueObjects.CPF;
+import com.SecureBankingApi.domain.user.User;
+import com.SecureBankingApi.domain.user.ports.UserRepository;
+import com.SecureBankingApi.domain.user.enums.UserStatus;
+import com.SecureBankingApi.domain.user.valueObjects.CPF;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Repository
 public class UserRepositoryAdapter  implements UserRepository {
 
     private final SpringDataUserRepository userRepository;

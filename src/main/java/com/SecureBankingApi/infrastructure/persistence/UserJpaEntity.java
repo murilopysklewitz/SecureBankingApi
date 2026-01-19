@@ -1,7 +1,7 @@
 package com.SecureBankingApi.infrastructure.persistence;
 
-import com.SecureBankingApi.domain.UserRole;
-import com.SecureBankingApi.domain.UserStatus;
+import com.SecureBankingApi.domain.user.enums.UserRole;
+import com.SecureBankingApi.domain.user.enums.UserStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ import java.util.UUID;
 public class UserJpaEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "full_name", nullable = false)

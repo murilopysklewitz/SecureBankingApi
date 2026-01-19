@@ -1,7 +1,6 @@
 package com.SecureBankingApi.infrastructure.persistence;
 
-import com.SecureBankingApi.domain.UserStatus;
-import com.SecureBankingApi.domain.valueObjects.CPF;
+import com.SecureBankingApi.domain.user.enums.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

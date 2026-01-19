@@ -1,6 +1,9 @@
 package com.SecureBankingApi.domain;
 
-import com.SecureBankingApi.domain.valueObjects.CPF;
+import com.SecureBankingApi.domain.user.User;
+import com.SecureBankingApi.domain.user.enums.UserRole;
+import com.SecureBankingApi.domain.user.enums.UserStatus;
+import com.SecureBankingApi.domain.user.valueObjects.CPF;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

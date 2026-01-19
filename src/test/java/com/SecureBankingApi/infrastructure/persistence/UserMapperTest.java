@@ -1,8 +1,9 @@
 package com.SecureBankingApi.infrastructure.persistence;
 
-import com.SecureBankingApi.domain.User;
-import com.SecureBankingApi.domain.UserRole;
-import com.SecureBankingApi.domain.UserStatus;
+import com.SecureBankingApi.domain.user.User;
+import com.SecureBankingApi.domain.user.enums.UserRole;
+import com.SecureBankingApi.domain.user.enums.UserStatus;
+import com.SecureBankingApi.domain.user.valueObjects.CPF;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -50,5 +51,27 @@ public class UserMapperTest {
         assertEquals(UserStatus.ACTIVE, domain.getStatus());
         assertEquals(now, domain.getCreatedAt());
         assertEquals(now, domain.getUpdatedAt());
+    }
+
+    @Test
+    void shouldConvertADomainToAnEntity() {
+        User domain = User.create(
+                "murilo@gmail.com",
+                "Murilo Rilo",
+                new CPF("12345678901"),
+                "hashedPassword",
+                UserRole.USER
+        );
+
+
+        UserJpaEntity entity = mapper.toEntity(domain);
+
+        assertEquals("Murilo Rilo", entity.getFullName());
+        assertEquals("murilo@gmail.com", entity.getEmail());
+        assertEquals("12345678901", entity.getCpf());
+        assertEquals("hashedPassword", entity.getPasswordHash());
+        assertEquals(UserRole.USER, entity.getRole());
+        assertEquals(UserStatus.ACTIVE, entity.getStatus());
+
     }
 }

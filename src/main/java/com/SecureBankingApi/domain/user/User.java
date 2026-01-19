@@ -1,8 +1,9 @@
-package com.SecureBankingApi.domain;
+package com.SecureBankingApi.domain.user;
 
-import com.SecureBankingApi.domain.valueObjects.CPF;
+import com.SecureBankingApi.domain.user.enums.UserRole;
+import com.SecureBankingApi.domain.user.enums.UserStatus;
+import com.SecureBankingApi.domain.user.valueObjects.CPF;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

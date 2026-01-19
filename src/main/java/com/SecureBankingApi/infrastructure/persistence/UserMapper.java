@@ -1,7 +1,7 @@
 package com.SecureBankingApi.infrastructure.persistence;
 
-import com.SecureBankingApi.domain.User;
-import com.SecureBankingApi.domain.valueObjects.CPF;
+import com.SecureBankingApi.domain.user.User;
+import com.SecureBankingApi.domain.user.valueObjects.CPF;
 
 import java.util.ArrayList;
 import java.util.List;

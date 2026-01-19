@@ -1,4 +1,4 @@
-package com.SecureBankingApi.domain.valueObjects;
+package com.SecureBankingApi.domain.user.valueObjects;
 
 
 public class CPF {

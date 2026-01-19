@@ -1,4 +1,4 @@
-package com.SecureBankingApi.domain.valueObjects;
+package com.SecureBankingApi.domain.user.valueObjects;
 
 import java.math.BigDecimal;
 

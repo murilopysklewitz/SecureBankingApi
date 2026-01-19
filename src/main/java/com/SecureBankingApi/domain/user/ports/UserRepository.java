@@ -1,6 +1,8 @@
-package com.SecureBankingApi.domain;
+package com.SecureBankingApi.domain.user.ports;
 
-import com.SecureBankingApi.domain.valueObjects.CPF;
+import com.SecureBankingApi.domain.user.User;
+import com.SecureBankingApi.domain.user.enums.UserStatus;
+import com.SecureBankingApi.domain.user.valueObjects.CPF;
 
 import java.util.List;
 import java.util.Optional;
