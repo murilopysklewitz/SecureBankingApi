@@ -1,4 +1,4 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.registerUser;
 
 import com.SecureBankingApi.domain.user.enums.UserRole;
 import com.SecureBankingApi.domain.user.enums.UserStatus;

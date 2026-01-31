@@ -1,4 +1,4 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.registerUser;
 
 public class RegisterUserRequest {
     private final String fullName;

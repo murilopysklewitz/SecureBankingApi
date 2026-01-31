@@ -62,7 +62,7 @@ public class UserRepositoryAdapterTest {
     }
 
     @Test
-    @DisplayName("Deve salvar usuário corretamente")
+    @DisplayName("Should save an user correctly")
     void shouldSaveUserSuccessfully() {
         // Arrange
         when(mapper.toEntity(domainUser)).thenReturn(entityUser);

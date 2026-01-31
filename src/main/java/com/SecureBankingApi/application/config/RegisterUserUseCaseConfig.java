@@ -1,6 +1,6 @@
 package com.SecureBankingApi.application.config;
 
-import com.SecureBankingApi.application.usecases.RegisterUserUseCase;
+import com.SecureBankingApi.application.usecases.registerUser.RegisterUserUseCase;
 import com.SecureBankingApi.domain.user.ports.PasswordHasher;
 import com.SecureBankingApi.domain.user.ports.UserRepository;
 import org.springframework.context.annotation.Bean;

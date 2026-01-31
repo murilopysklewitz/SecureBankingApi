@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public class RegisterRequest {
+public class RegisterWebRequest {
     @NotBlank(message = "Email is required")
     @Email(message = "Email must be valid")
     private String email;
@@ -20,7 +20,7 @@ public class RegisterRequest {
     @Size(min = 8)
     private String password;
 
-    public RegisterRequest() {}
+    public RegisterWebRequest() {}
 
     public String getEmail() {
         return email;

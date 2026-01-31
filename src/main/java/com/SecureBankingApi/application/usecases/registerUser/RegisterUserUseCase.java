@@ -1,4 +1,4 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.registerUser;
 
 import com.SecureBankingApi.application.exceptions.CpfAlreadyExistsException;
 import com.SecureBankingApi.application.exceptions.EmailAlreadyExistsException;
