@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class RefreshToken {
+
     private UUID id;
     private String token;
     private UUID userId;
@@ -42,7 +43,7 @@ public class RefreshToken {
     }
 
     public boolean isValid() {
-        return !revoked&& LocalDateTime.now() .isBefore(expiresAt);
+        return !revoked&& LocalDateTime.now().isBefore(expiresAt);
     }
 
     public  void revoke(){
