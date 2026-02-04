@@ -1,4 +1,4 @@
-package com.SecureBankingApi.infrastructure.persistence;
+package com.SecureBankingApi.infrastructure.persistence.refreshToken;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

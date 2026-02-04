@@ -1,4 +1,4 @@
-package com.SecureBankingApi.infrastructure.persistence;
+package com.SecureBankingApi.infrastructure.persistence.refreshToken;
 
 import com.SecureBankingApi.domain.RefreshToken;
 import org.springframework.stereotype.Component;

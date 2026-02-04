@@ -2,7 +2,7 @@ package com.SecureBankingApi.application.config;
 
 import com.SecureBankingApi.application.services.JwtService;
 import com.SecureBankingApi.application.services.RefreshTokenService;
-import com.SecureBankingApi.application.usecases.LoginUserUseCase;
+import com.SecureBankingApi.application.usecases.loginUser.LoginUserUseCase;
 import com.SecureBankingApi.domain.user.ports.PasswordHasher;
 import com.SecureBankingApi.domain.user.ports.UserRepository;
 import org.springframework.context.annotation.Bean;

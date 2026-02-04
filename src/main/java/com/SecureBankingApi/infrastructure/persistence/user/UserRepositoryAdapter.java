@@ -1,4 +1,4 @@
-package com.SecureBankingApi.infrastructure.persistence;
+package com.SecureBankingApi.infrastructure.persistence.user;
 
 import com.SecureBankingApi.domain.user.User;
 import com.SecureBankingApi.domain.user.ports.UserRepository;

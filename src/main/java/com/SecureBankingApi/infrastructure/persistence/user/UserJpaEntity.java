@@ -1,4 +1,4 @@
-package com.SecureBankingApi.infrastructure.persistence;
+package com.SecureBankingApi.infrastructure.persistence.user;
 
 import com.SecureBankingApi.domain.user.enums.UserRole;
 import com.SecureBankingApi.domain.user.enums.UserStatus;

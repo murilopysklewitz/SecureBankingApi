@@ -1,4 +1,4 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.loginUser;
 
 public class LoginUserResponse {
 private final String accessToken;

@@ -42,7 +42,7 @@ public class RefreshTokenService {
 
     public void revokeRefreshToken(String tokenString){
         RefreshToken refreshToken = repository.findByToken(tokenString)
-                .orElseThrow(() -> new InvalidRefreshToken("Regresh Token not found"));
+                .orElseThrow(() -> new InvalidRefreshToken("Refresh Token not found"));
 
         refreshToken.revoke();
         repository.save(refreshToken);

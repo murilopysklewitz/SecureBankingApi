@@ -1,9 +1,8 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.loginUser;
 
 import com.SecureBankingApi.application.services.JwtService;
 import com.SecureBankingApi.application.services.RefreshTokenService;
 import com.SecureBankingApi.domain.RefreshToken;
-import com.SecureBankingApi.domain.RefreshTokenRepository;
 import com.SecureBankingApi.domain.user.User;
 import com.SecureBankingApi.domain.user.ports.PasswordHasher;
 import com.SecureBankingApi.domain.user.ports.UserRepository;

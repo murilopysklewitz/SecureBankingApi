@@ -1,8 +1,8 @@
 package com.SecureBankingApi.infrastructure.api;
 
-import com.SecureBankingApi.application.usecases.LoginUserRequest;
-import com.SecureBankingApi.application.usecases.LoginUserResponse;
-import com.SecureBankingApi.application.usecases.LoginUserUseCase;
+import com.SecureBankingApi.application.usecases.loginUser.LoginUserRequest;
+import com.SecureBankingApi.application.usecases.loginUser.LoginUserResponse;
+import com.SecureBankingApi.application.usecases.loginUser.LoginUserUseCase;
 import com.SecureBankingApi.application.usecases.registerUser.RegisterUserRequest;
 import com.SecureBankingApi.application.usecases.registerUser.RegisterUserResponse;
 import com.SecureBankingApi.application.usecases.registerUser.RegisterUserUseCase;

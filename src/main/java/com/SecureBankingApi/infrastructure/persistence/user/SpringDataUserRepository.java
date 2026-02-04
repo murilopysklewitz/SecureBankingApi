@@ -1,4 +1,4 @@
-package com.SecureBankingApi.infrastructure.persistence;
+package com.SecureBankingApi.infrastructure.persistence.user;
 
 import com.SecureBankingApi.domain.user.enums.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;

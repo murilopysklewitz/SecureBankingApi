@@ -1,9 +1,4 @@
-package com.SecureBankingApi.application.usecases;
-
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+package com.SecureBankingApi.application.usecases.loginUser;
 
 public class LoginUserRequest {
 
