@@ -1,11 +1,16 @@
 package com.SecureBankingApi.infrastructure.api;
 
+import com.SecureBankingApi.application.usecases.*;
 import com.SecureBankingApi.application.usecases.loginUser.LoginUserRequest;
 import com.SecureBankingApi.application.usecases.loginUser.LoginUserResponse;
 import com.SecureBankingApi.application.usecases.loginUser.LoginUserUseCase;
 import com.SecureBankingApi.application.usecases.registerUser.RegisterUserRequest;
 import com.SecureBankingApi.application.usecases.registerUser.RegisterUserResponse;
 import com.SecureBankingApi.application.usecases.registerUser.RegisterUserUseCase;
+import com.SecureBankingApi.infrastructure.api.webDtos.LoginWebRequest;
+import com.SecureBankingApi.infrastructure.api.webDtos.LogoutWebRequest;
+import com.SecureBankingApi.infrastructure.api.webDtos.RefreshTokenWebRequest;
+import com.SecureBankingApi.infrastructure.api.webDtos.RegisterWebRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +24,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final RegisterUserUseCase registerUseCase;
     private final LoginUserUseCase loginUserUseCase;
+    private final RefreshTokenUserUseCase refreshTokenUserUseCase;
+    private final LogoutUserUseCase logoutUserUseCase;
 
-    public AuthController(RegisterUserUseCase registerUseCase, LoginUserUseCase loginUserUseCase) {
+    public AuthController(RegisterUserUseCase registerUseCase,
+                          LoginUserUseCase loginUserUseCase,
+                          RefreshTokenUserUseCase refreshTokenUserUseCase,
+                          LogoutUserUseCase logoutUserUseCase) {
         this.registerUseCase = registerUseCase;
         this.loginUserUseCase = loginUserUseCase;
+        this.refreshTokenUserUseCase = refreshTokenUserUseCase;
+        this.logoutUserUseCase = logoutUserUseCase;
     }
 
     @PostMapping("/register")
@@ -46,5 +58,22 @@ public class AuthController {
         LoginUserResponse useCaseResponse = loginUserUseCase.execute(useCaseRequest);
 
         return ResponseEntity.status(HttpStatus.OK).body(useCaseResponse);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<RefreshTokenUserResponse> refreshToken(@Valid @RequestBody RefreshTokenWebRequest request){
+        RefreshTokenUserRequest useCaseRequest = new RefreshTokenUserRequest(request.getRefreshToken());
+
+        RefreshTokenUserResponse response = refreshTokenUserUseCase.execute(useCaseRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/revoke")
+    public ResponseEntity<Void> logout(@Valid @RequestBody LogoutWebRequest request){
+        LogoutUserRequest useCaseRequest = new LogoutUserRequest(request.getRefreshToken());
+
+        logoutUserUseCase.execute(useCaseRequest);
+
+        return ResponseEntity.noContent().build();
     }
 }

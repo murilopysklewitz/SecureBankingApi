@@ -1,8 +1,6 @@
 package com.SecureBankingApi.infrastructure.api;
 
-import com.SecureBankingApi.application.exceptions.CpfAlreadyExistsException;
-import com.SecureBankingApi.application.exceptions.EmailAlreadyExistsException;
-import com.SecureBankingApi.application.exceptions.WeakPasswordException;
+import com.SecureBankingApi.application.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +53,48 @@ public class GlobalExceptionHandler {
                 request.getRequestURI()
         );
         return  ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFound(
+            UserNotFoundException ex,
+            HttpServletRequest request
+    ){
+        ErrorResponse error = ErrorResponse.of(
+            HttpStatus.NOT_FOUND.value(),
+                "User not found",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleUserInactive(
+            UserInactiveException ex,
+            HttpServletRequest request
+    ){
+        ErrorResponse error = ErrorResponse.of(
+                400,
+                "Inactive user",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleUserInactive(
+            UserBlockedException ex,
+            HttpServletRequest request
+    ){
+        ErrorResponse error = ErrorResponse.of(
+                400,
+                "Blocked ser",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
     @ExceptionHandler(Exception.class)

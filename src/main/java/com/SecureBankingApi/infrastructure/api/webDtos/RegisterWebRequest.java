@@ -1,4 +1,4 @@
-package com.SecureBankingApi.infrastructure.api;
+package com.SecureBankingApi.infrastructure.api.webDtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
