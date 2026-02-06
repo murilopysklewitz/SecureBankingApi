@@ -16,6 +16,10 @@ public class Money {
         return new Money(BigDecimal.ZERO);
     }
 
+    public static Money of(BigDecimal value){
+        return new Money(value);
+    }
+
     public Money add(Money other){
         return new Money(this.value.add(other.value));
     }
@@ -30,5 +34,10 @@ public class Money {
 
     public BigDecimal getValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return "R$ " + value;
     }
 }

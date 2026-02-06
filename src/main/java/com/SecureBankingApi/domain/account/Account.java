@@ -16,7 +16,12 @@ public class Account {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    private Account(String accountNumber, String agency, UUID userId, Money balance, AccountType type, AccountStatus status) {
+    private Account(String accountNumber,
+                    String agency,
+                    UUID userId,
+                    Money balance,
+                    AccountType type,
+                    AccountStatus status) {
         this.id = null;
         this.accountNumber = accountNumber;
         this.agency = agency;
@@ -28,7 +33,10 @@ public class Account {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public static Account create(String accountNumber, String agency, UUID userId, AccountType type){
+    public static Account create(String accountNumber,
+                                 String agency,
+                                 UUID userId,
+                                 AccountType type){
         if(accountNumber == null || accountNumber.isBlank()){
             throw new IllegalArgumentException("account number cannot be null");
         }
@@ -43,11 +51,31 @@ public class Account {
         }
         Money balance = Money.zero();
 
-        return new Account(accountNumber, agency, userId, balance, type, AccountStatus.ACTIVE);
+        return new Account(
+                accountNumber,
+                agency,
+                userId, balance,
+                type,
+                AccountStatus.ACTIVE);
     }
 
-    public static Account restore(UUID id, UUID userId, LocalDateTime createdAt, LocalDateTime updatedAt, AccountStatus status, AccountType type, Money balance, String agency, String accountNumber) {
-        Account account = new Account(accountNumber, agency, userId, balance, type, status);
+    public static Account restore(UUID id,
+                                  UUID userId,
+                                  LocalDateTime createdAt,
+                                  LocalDateTime updatedAt,
+                                  AccountStatus status,
+                                  AccountType type,
+                                  Money balance,
+                                  String agency,
+                                  String accountNumber) {
+
+        Account account = new Account(
+                accountNumber,
+                agency,
+                userId,
+                balance,
+                type,
+                status);
         account.id = id;
         account.createdAt =createdAt;
         account.updatedAt = updatedAt;
@@ -97,7 +125,7 @@ public class Account {
         if(this.status == AccountStatus.BLOCKED){
             throw new IllegalArgumentException("Account is blocked");
         }
-        if(this.status == AccountStatus.INACTIVE){
+        if(this.status == AccountStatus.CLOSED){
             throw new IllegalArgumentException("Account is inative");
         }
 

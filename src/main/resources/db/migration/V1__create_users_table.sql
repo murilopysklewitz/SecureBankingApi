@@ -14,4 +14,5 @@ CREATE TABLE users (
     updated_at TIMESTAMP NOT NULL
 );
 
+CREATE INDEX idx_status on users(status);
 CREATE INDEX idx_user_role ON users(role);
