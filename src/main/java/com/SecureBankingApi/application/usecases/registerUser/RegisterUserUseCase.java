@@ -2,6 +2,9 @@ package com.SecureBankingApi.application.usecases.registerUser;
 
 import com.SecureBankingApi.application.exceptions.CpfAlreadyExistsException;
 import com.SecureBankingApi.application.exceptions.EmailAlreadyExistsException;
+import com.SecureBankingApi.application.usecases.createAccount.CreateAccountRequest;
+import com.SecureBankingApi.application.usecases.createAccount.CreateAccountUseCase;
+import com.SecureBankingApi.domain.account.AccountType;
 import com.SecureBankingApi.domain.user.ports.PasswordHasher;
 import com.SecureBankingApi.domain.user.User;
 import com.SecureBankingApi.domain.user.ports.UserRepository;
@@ -11,10 +14,12 @@ import com.SecureBankingApi.domain.user.valueObjects.CPF;
 public class RegisterUserUseCase {
     private final PasswordHasher hasher;
     private final UserRepository repository;
+    private final CreateAccountUseCase createAccountUseCase;
 
-    public RegisterUserUseCase(PasswordHasher hasher, UserRepository repository) {
+    public RegisterUserUseCase(PasswordHasher hasher, UserRepository repository, CreateAccountUseCase createAccountUseCase) {
         this.hasher = hasher;
         this.repository = repository;
+        this.createAccountUseCase = createAccountUseCase;
     }
 
     public RegisterUserResponse execute(RegisterUserRequest request){
@@ -34,6 +39,13 @@ public class RegisterUserUseCase {
                 passwordHashed,
                 UserRole.USER
                 );
+
+        CreateAccountRequest accountRequest = new CreateAccountRequest(
+                user.getId(),
+                AccountType.CHECKING
+        );
+        createAccountUseCase.execute(accountRequest);
+
         try {
             repository.save(user);
         } catch (Exception e) {
