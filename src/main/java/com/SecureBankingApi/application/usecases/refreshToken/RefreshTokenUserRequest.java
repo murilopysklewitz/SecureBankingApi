@@ -1,6 +1,4 @@
-package com.SecureBankingApi.application.usecases;
-
-import java.util.UUID;
+package com.SecureBankingApi.application.usecases.refreshToken;
 
 public class RefreshTokenUserRequest {
     private final String refreshToken;

@@ -61,13 +61,13 @@ public class Account {
 
     public static Account restore(UUID id,
                                   UUID userId,
-                                  LocalDateTime createdAt,
-                                  LocalDateTime updatedAt,
+                                  String accountNumber,
+                                  String agency,
+                                  Money balance,
                                   AccountStatus status,
                                   AccountType type,
-                                  Money balance,
-                                  String agency,
-                                  String accountNumber) {
+                                  LocalDateTime createdAt,
+                                  LocalDateTime updatedAt) {
 
         Account account = new Account(
                 accountNumber,

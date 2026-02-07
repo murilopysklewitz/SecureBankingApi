@@ -1,7 +1,6 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.logoutUser;
 
 import com.SecureBankingApi.application.services.RefreshTokenService;
-import com.SecureBankingApi.domain.user.ports.UserRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

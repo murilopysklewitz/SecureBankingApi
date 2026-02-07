@@ -1,4 +1,4 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.logoutUser;
 
 public class LogoutUserRequest {
     private final String refreshToken;

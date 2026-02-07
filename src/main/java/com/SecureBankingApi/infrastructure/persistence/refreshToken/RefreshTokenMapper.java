@@ -1,6 +1,6 @@
 package com.SecureBankingApi.infrastructure.persistence.refreshToken;
 
-import com.SecureBankingApi.domain.RefreshToken;
+import com.SecureBankingApi.domain.refreshToken.RefreshToken;
 import org.springframework.stereotype.Component;
 
 @Component

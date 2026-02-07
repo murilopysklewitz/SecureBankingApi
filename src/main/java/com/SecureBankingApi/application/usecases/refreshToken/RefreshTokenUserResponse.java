@@ -1,4 +1,4 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.refreshToken;
 
 public class RefreshTokenUserResponse {
     private final String newAccessToken;

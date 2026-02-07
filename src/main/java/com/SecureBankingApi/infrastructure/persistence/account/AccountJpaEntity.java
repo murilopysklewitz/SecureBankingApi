@@ -1,8 +1,7 @@
-package com.SecureBankingApi.infrastructure.persistence;
+package com.SecureBankingApi.infrastructure.persistence.account;
 
 import com.SecureBankingApi.domain.account.AccountStatus;
 import com.SecureBankingApi.domain.account.AccountType;
-import com.SecureBankingApi.domain.account.Money;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

@@ -1,4 +1,4 @@
-package com.SecureBankingApi.infrastructure.persistence;
+package com.SecureBankingApi.infrastructure.persistence.account;
 
 import com.SecureBankingApi.domain.account.AccountStatus;
 import com.SecureBankingApi.domain.account.AccountType;

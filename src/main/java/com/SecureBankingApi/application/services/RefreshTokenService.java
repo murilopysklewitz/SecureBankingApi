@@ -1,8 +1,8 @@
 package com.SecureBankingApi.application.services;
 
 import com.SecureBankingApi.application.exceptions.InvalidRefreshToken;
-import com.SecureBankingApi.domain.RefreshToken;
-import com.SecureBankingApi.domain.RefreshTokenRepository;
+import com.SecureBankingApi.domain.refreshToken.RefreshToken;
+import com.SecureBankingApi.domain.refreshToken.RefreshTokenRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

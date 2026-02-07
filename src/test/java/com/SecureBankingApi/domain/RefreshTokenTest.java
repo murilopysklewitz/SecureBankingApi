@@ -1,5 +1,6 @@
 package com.SecureBankingApi.domain;
 
+import com.SecureBankingApi.domain.refreshToken.RefreshToken;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;

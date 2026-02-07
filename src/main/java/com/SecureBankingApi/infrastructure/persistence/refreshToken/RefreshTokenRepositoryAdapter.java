@@ -1,7 +1,7 @@
 package com.SecureBankingApi.infrastructure.persistence.refreshToken;
 
-import com.SecureBankingApi.domain.RefreshToken;
-import com.SecureBankingApi.domain.RefreshTokenRepository;
+import com.SecureBankingApi.domain.refreshToken.RefreshToken;
+import com.SecureBankingApi.domain.refreshToken.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

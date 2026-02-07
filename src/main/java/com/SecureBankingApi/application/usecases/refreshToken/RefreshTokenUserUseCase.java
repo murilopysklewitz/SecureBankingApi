@@ -1,12 +1,11 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.refreshToken;
 
 import com.SecureBankingApi.application.exceptions.UserBlockedException;
-import com.SecureBankingApi.application.exceptions.UserInactiveException;
 import com.SecureBankingApi.application.exceptions.UserInactiveException;
 import com.SecureBankingApi.application.exceptions.UserNotFoundException;
 import com.SecureBankingApi.application.services.JwtService;
 import com.SecureBankingApi.application.services.RefreshTokenService;
-import com.SecureBankingApi.domain.RefreshToken;
+import com.SecureBankingApi.domain.refreshToken.RefreshToken;
 import com.SecureBankingApi.domain.user.User;
 import com.SecureBankingApi.domain.user.ports.UserRepository;
 import jakarta.transaction.Transactional;

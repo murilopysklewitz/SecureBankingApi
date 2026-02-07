@@ -1,4 +1,4 @@
-package com.SecureBankingApi.domain;
+package com.SecureBankingApi.domain.refreshToken;
 
 import java.util.Optional;
 import java.util.UUID;

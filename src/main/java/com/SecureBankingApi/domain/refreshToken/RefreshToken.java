@@ -1,4 +1,4 @@
-package com.SecureBankingApi.domain;
+package com.SecureBankingApi.domain.refreshToken;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
