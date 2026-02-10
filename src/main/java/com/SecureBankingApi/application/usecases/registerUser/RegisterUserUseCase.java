@@ -16,7 +16,9 @@ public class RegisterUserUseCase {
     private final UserRepository repository;
     private final CreateAccountUseCase createAccountUseCase;
 
-    public RegisterUserUseCase(PasswordHasher hasher, UserRepository repository, CreateAccountUseCase createAccountUseCase) {
+    public RegisterUserUseCase(PasswordHasher hasher,
+                               UserRepository repository,
+                               CreateAccountUseCase createAccountUseCase) {
         this.hasher = hasher;
         this.repository = repository;
         this.createAccountUseCase = createAccountUseCase;

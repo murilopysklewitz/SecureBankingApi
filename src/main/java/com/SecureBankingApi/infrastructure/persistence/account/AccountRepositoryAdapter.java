@@ -44,8 +44,8 @@ public class AccountRepositoryAdapter implements AccountRepository {
     }
 
     @Override
-    public Optional<Account> findByUserId(UUID userId) {
-        return repository.findByUserId(userId).map((e) -> mapper.toDomain(e));
+    public List<Account> findByUserId(UUID userId) {
+        return repository.findByUserId(userId).stream().map((e) -> mapper.toDomain(e)).toList();
     }
 
     @Override

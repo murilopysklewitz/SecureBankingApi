@@ -1,5 +1,6 @@
 package com.SecureBankingApi.application.usecases.createAccount;
 
+import com.SecureBankingApi.domain.account.Account;
 import com.SecureBankingApi.domain.account.AccountStatus;
 import com.SecureBankingApi.domain.account.AccountType;
 import com.SecureBankingApi.domain.account.Money;
@@ -33,6 +34,16 @@ public class AccountResponse {
         this.type = type;
         this.status = status;
         this.createdAt = createdAt;
+    }
+    public static AccountResponse fromDomain(Account account){
+        return new AccountResponse(account.getId(),
+                account.getAccountNumber(),
+                account.getAgency(),
+                account.getUserId(),
+                account.getBalance(),
+                account.getType(),
+                account.getStatus(),
+                account.getCreatedAt());
     }
 
     public UUID getId() {

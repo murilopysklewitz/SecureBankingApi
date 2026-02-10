@@ -110,6 +110,18 @@ public class Account {
 
     public void block(){
         this.status = AccountStatus.BLOCKED;
+        touch();
+    }
+
+    public void unblock() {
+        if(this.status == AccountStatus.ACTIVE){
+            throw new IllegalArgumentException("Already activate");
+        }
+        if(this.status == AccountStatus.CLOSED){
+            throw new IllegalArgumentException("cannot block a closed account");
+        }
+        this.status = AccountStatus.ACTIVE;
+        touch();
     }
 
     public void close(){
