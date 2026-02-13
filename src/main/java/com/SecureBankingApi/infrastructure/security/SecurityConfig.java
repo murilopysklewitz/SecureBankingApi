@@ -35,6 +35,12 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/accounts/").authenticated()
+                                .requestMatchers(HttpMethod.GET, "api/accounts/{id}").authenticated()
+                                .requestMatchers(HttpMethod.GET, "api/accounts/{id}/balance").authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/api/accounts/{id}/block").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/api/accounts/{id}/unblock").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "api/accounts/{id}").hasRole("ADMIN")
                         .anyRequest().authenticated()
                         );
 
