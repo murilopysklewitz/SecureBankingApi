@@ -24,7 +24,13 @@ public class UserTest {
     }
     @Test
     void shouldCreateAValidUser() {
-        User user = createValidUser();
+        User user = User.create(
+                "test@gmail.com",
+                "tests test",
+                new CPF("111111111111"),
+                "testPassword",
+                UserRole.USER
+        );
 
         assertNotNull(user);
         assertEquals(UserStatus.ACTIVE, user.getStatus());

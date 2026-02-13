@@ -109,6 +109,12 @@ public class Account {
 
 
     public void block(){
+        if(this.status == AccountStatus.BLOCKED){
+            throw new IllegalArgumentException("Already blocked");
+        }
+        if(this.status == AccountStatus.CLOSED){
+            throw new IllegalArgumentException("cannot block a closed account");
+        }
         this.status = AccountStatus.BLOCKED;
         touch();
     }
@@ -118,7 +124,7 @@ public class Account {
             throw new IllegalArgumentException("Already activate");
         }
         if(this.status == AccountStatus.CLOSED){
-            throw new IllegalArgumentException("cannot block a closed account");
+            throw new IllegalArgumentException("cannot unblock a closed account");
         }
         this.status = AccountStatus.ACTIVE;
         touch();
@@ -130,6 +136,8 @@ public class Account {
         if(!this.balance.isZero()){
             throw new IllegalArgumentException("Cannot close account with balance");
         }
+        this.status = AccountStatus.CLOSED;
+        touch();
     }
 
 
@@ -149,7 +157,7 @@ public class Account {
 
 
     public boolean isClosed() {
-        return this.status == AccountStatus.BLOCKED;
+        return this.status == AccountStatus.CLOSED;
     }
 
     public boolean isActive(){

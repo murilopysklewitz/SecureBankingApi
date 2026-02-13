@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RestController("/api/accounts")
+@RestController
+@RequestMapping("/api/accounts")
 public class AccountController {
     private final CreateAccountUseCase createAccountUseCase;
     private final ListMyAccountsUseCase listMyAccountsUseCase;

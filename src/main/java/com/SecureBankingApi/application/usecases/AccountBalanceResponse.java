@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.UUID;
-@Service
+
+
 public class AccountBalanceResponse {
 
     private final UUID accountId;
