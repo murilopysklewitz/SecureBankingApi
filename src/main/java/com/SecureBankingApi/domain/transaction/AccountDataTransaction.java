@@ -2,18 +2,18 @@ package com.SecureBankingApi.domain.transaction;
 
 import java.util.UUID;
 
-public class UserDataTransaction {
-    private final UUID userId;
-    private final String accountNumber;
-    private final String agency;
+public class AccountDataTransaction {
+    private UUID userId;
+    private String accountNumber;
+    private String agency;
 
-    private UserDataTransaction(UUID userId, String accountNumber, String agency) {
+    private AccountDataTransaction(UUID userId, String accountNumber, String agency) {
         this.userId = userId;
         this.accountNumber = accountNumber;
         this.agency = agency;
     }
 
-    public static UserDataTransaction of(UUID userId, String accountNumber, String agency){
+    public static AccountDataTransaction of(UUID userId, String accountNumber, String agency){
         if(userId == null ){
             throw new RuntimeException("user id cannot be null");
         }
@@ -24,7 +24,7 @@ public class UserDataTransaction {
             throw new RuntimeException("agency cannot be null");
         }
 
-        return new UserDataTransaction(userId, accountNumber, agency);
+        return new AccountDataTransaction(userId, accountNumber, agency);
     }
 
     public UUID getUserId() {
