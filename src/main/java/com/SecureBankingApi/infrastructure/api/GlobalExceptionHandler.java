@@ -1,6 +1,7 @@
 package com.SecureBankingApi.infrastructure.api;
 
 import com.SecureBankingApi.application.exceptions.*;
+import com.SecureBankingApi.domain.transaction.InvalidTransactionException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    // HANDLER OF USERS
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleEmailAlreadyExists(
@@ -91,6 +94,22 @@ public class GlobalExceptionHandler {
         ErrorResponse error = ErrorResponse.of(
                 400,
                 "Blocked ser",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    //  HANDLE ERROR TRANSACTIONS
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleInvalidTransactionException(
+            InvalidTransactionException ex,
+            HttpServletRequest request
+    ){
+        ErrorResponse error = ErrorResponse.of(
+                400,
+                "Invalid Transaction",
                 ex.getMessage(),
                 request.getRequestURI()
         );
