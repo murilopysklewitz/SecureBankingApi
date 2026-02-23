@@ -20,12 +20,14 @@ public class Money {
         return new Money(value);
     }
 
-    public Money add(Money other){
+    public Money add(Money other) {
         return new Money(this.value.add(other.value));
     }
     public Money subtract(Money other) {
-        BigDecimal result = this.value.subtract(other.value);
-        return new Money(result);
+        if (this.value.compareTo(other.value) < 0) {
+            throw new IllegalArgumentException("Insufficient balance");
+        }
+        return new Money(this.value.subtract(other.value));
     }
 
 
