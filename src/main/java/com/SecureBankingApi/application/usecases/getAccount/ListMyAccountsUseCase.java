@@ -1,4 +1,4 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.getAccount;
 
 import com.SecureBankingApi.application.usecases.createAccount.AccountResponse;
 import com.SecureBankingApi.domain.account.Account;
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class ListMyAccountsUseCase {

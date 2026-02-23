@@ -1,7 +1,6 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.getAccount;
 
 import com.SecureBankingApi.domain.account.AccountStatus;
-import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.UUID;

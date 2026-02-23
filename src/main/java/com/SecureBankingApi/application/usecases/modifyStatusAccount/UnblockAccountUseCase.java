@@ -1,4 +1,4 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.modifyStatusAccount;
 
 import com.SecureBankingApi.domain.account.Account;
 import com.SecureBankingApi.domain.account.AccountRepository;
@@ -8,28 +8,22 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class CloseAccountUseCase {
+public class UnblockAccountUseCase {
 
     private final AccountRepository accountRepository;
 
-    public CloseAccountUseCase(AccountRepository accountRepository) {
+    public UnblockAccountUseCase(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
-
     @Transactional
-    public void execute(UUID accountId, UUID userId, boolean isAdmin) {
+    public void execute(UUID accountId) {
 
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
 
-        if (!isAdmin && !account.getUserId().equals(userId)) {
-            throw new RuntimeException(
-                    "You don't have permission to close this account"
-            );
-        }
+        account.unblock();
 
-        account.close();
-
+        accountRepository.save(account);
 
     }
 }

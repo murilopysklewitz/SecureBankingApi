@@ -1,28 +1,28 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.modifyStatusAccount;
 
 import com.SecureBankingApi.domain.account.Account;
 import com.SecureBankingApi.domain.account.AccountRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.UUID;
-
 @Service
-public class UnblockAccountUseCase {
+public class BlockAccountUseCase {
 
     private final AccountRepository accountRepository;
 
-    public UnblockAccountUseCase(AccountRepository accountRepository) {
+    public BlockAccountUseCase(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
+
+
     @Transactional
     public void execute(UUID accountId) {
 
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
 
-        account.unblock();
+        account.block();
 
         accountRepository.save(account);
 

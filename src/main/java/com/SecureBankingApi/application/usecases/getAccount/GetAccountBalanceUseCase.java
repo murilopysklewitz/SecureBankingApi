@@ -1,11 +1,9 @@
-package com.SecureBankingApi.application.usecases;
+package com.SecureBankingApi.application.usecases.getAccount;
 
-import com.SecureBankingApi.application.usecases.createAccount.AccountResponse;
 import com.SecureBankingApi.domain.account.Account;
 import com.SecureBankingApi.domain.account.AccountRepository;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 @Service
 public class GetAccountBalanceUseCase {
