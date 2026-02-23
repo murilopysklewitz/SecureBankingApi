@@ -9,7 +9,7 @@ public interface TransactionRepository {
     void save(Transaction transaction);
     Optional<Transaction> findById(UUID id);
     List<Transaction> findBySourceUserId(UUID userId);
-    List<Transaction> findByDestinationUserId(UUID userId);
+    List<Transaction> findByAccountId(UUID accountId);
 
     List<Transaction> findByStatus(TransactionStatus status);
 

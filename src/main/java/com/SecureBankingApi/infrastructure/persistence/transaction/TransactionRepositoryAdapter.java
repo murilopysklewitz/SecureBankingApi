@@ -36,8 +36,8 @@ public class TransactionRepositoryAdapter implements TransactionRepository {
     }
 
     @Override
-    public List<Transaction> findByDestinationUserId(UUID userId) {
-        List<TransactionJpaEntity> entities = repository.findByDestinationUserId(userId);
+    public List<Transaction> findByAccountId(UUID userId) {
+        List<TransactionJpaEntity> entities = repository.findByAccountId(userId);
         return mapper.toDomainList(entities);
     }
 
