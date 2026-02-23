@@ -53,7 +53,8 @@ public class CreateTransactionUseCase {
                 sourceInfo,
                 destinationInfo,
                 TransactionType.TRANSFER,
-                request.getAmount()
+                request.getAmount(),
+                null
         );
         source.debit(request.getAmount());
         destination.credit(request.getAmount());

@@ -40,7 +40,8 @@ public class Transaction {
     public static Transaction create(AccountDataTransaction receiver,
                                      AccountDataTransaction source,
                                      TransactionType type,
-                                     Money amount) {
+                                     Money amount,
+                                     String description) {
 
         if (receiver == null) {
             throw new RuntimeException("receiver cannot be null");
@@ -54,7 +55,7 @@ public class Transaction {
         if (amount == null) {
             throw new RuntimeException("amount cannot be null");
         }
-        return new Transaction(receiver, source, type, amount, null);
+        return new Transaction(receiver, source, type, amount, description);
     }
 
     public static Transaction restore(UUID id,
