@@ -22,7 +22,7 @@ public class GetAccountBalanceUseCase {
                 .findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account no found"));
 
-        if(!isAdmin && account.getUserId() != userId){
+        if(!isAdmin && !account.getUserId().equals(userId)){
             throw new RuntimeException("unauthorized access");
         };
 

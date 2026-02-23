@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
         return  ResponseEntity.badRequest().body(error);
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleUserNotFound(
             UserNotFoundException ex,
             HttpServletRequest request
@@ -72,7 +72,7 @@ public class GlobalExceptionHandler {
         return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(UserInactiveException.class)
     public ResponseEntity<ErrorResponse> handleUserInactive(
             UserInactiveException ex,
             HttpServletRequest request
@@ -86,8 +86,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleUserInactive(
+    @ExceptionHandler(UserBlockedException.class)
+    public ResponseEntity<ErrorResponse> handleUserBlocked(
             UserBlockedException ex,
             HttpServletRequest request
     ){

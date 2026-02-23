@@ -22,7 +22,7 @@ public class CloseAccountUseCase {
         Account account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
 
-        if (!isAdmin && account.getUserId() != userId) {
+        if (!isAdmin && !account.getUserId().equals(userId)) {
             throw new RuntimeException(
                     "You don't have permission to close this account"
             );

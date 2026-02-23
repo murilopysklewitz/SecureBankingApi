@@ -4,8 +4,10 @@ package com.SecureBankingApi.domain;
 import com.SecureBankingApi.domain.account.Account;
 import com.SecureBankingApi.domain.account.AccountStatus;
 import com.SecureBankingApi.domain.account.AccountType;
+import com.SecureBankingApi.domain.account.Money;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -76,4 +78,58 @@ public class AccountTest {
         assertEquals(account.getStatus(), AccountStatus.BLOCKED);
     }
 
+    @Test
+    void ShouldUnblockAccount() {
+        Account account = Account.create(
+                "0001-00000123",
+                "001",
+                UUID.randomUUID(),
+                AccountType.CHECKING
+        );
+        account.block();
+        account.unblock();
+
+        assertEquals(AccountStatus.ACTIVE, account.getStatus() );
+    }
+
+    @Test
+    void ShouldCloseAccount(){
+        Account account = Account.create(
+                "0001-00000123",
+                "001",
+                UUID.randomUUID(),
+                AccountType.CHECKING
+        );
+        account.close();
+        assertEquals(AccountStatus.CLOSED, account.getStatus() );
+    }
+
+    @Test
+    void ShouldCreditAnAccount() {
+        Account account = Account.create(
+                "0001-00000123",
+                "001",
+                UUID.randomUUID(),
+                AccountType.CHECKING
+        );
+        Money money = Money.of(BigDecimal.valueOf(10));
+        account.credit(money);
+
+        assertEquals(BigDecimal.valueOf(10), account.getBalance().getValue());
+    }
+
+    @Test
+    void ShouldDebitFromAccount() {
+        Account account = Account.create(
+                "0001-00000123",
+                "001",
+                UUID.randomUUID(),
+                AccountType.CHECKING
+        );
+        Money add = Money.of(BigDecimal.valueOf(10));
+        account.credit(add);
+        account.debit(Money.of(BigDecimal.valueOf(5)));
+
+        assertEquals(BigDecimal.valueOf(5), account.getBalance().getValue());
+    }
 }

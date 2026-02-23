@@ -23,8 +23,9 @@ public class Money {
     public Money add(Money other){
         return new Money(this.value.add(other.value));
     }
-    public Money subtract(Money other){
-        return new Money(this.value.subtract(other.value));
+    public Money subtract(Money other) {
+        BigDecimal result = this.value.subtract(other.value);
+        return new Money(result);
     }
 
 

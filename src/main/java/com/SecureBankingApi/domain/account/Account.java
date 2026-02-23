@@ -89,7 +89,7 @@ public class Account {
         if(amount == null){
             throw new IllegalArgumentException("amount cannot be null");
         }
-        this.balance.add(amount);
+        this.balance = this.balance.add(amount);
         touch();
     }
 
@@ -99,7 +99,7 @@ public class Account {
         if(amount == null){
             throw new IllegalArgumentException("amount cannot be null");
         }
-        this.balance.subtract(amount);
+        this.balance = this.balance.subtract(amount);
         touch();
     }
 
