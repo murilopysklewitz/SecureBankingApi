@@ -5,8 +5,11 @@ import com.SecureBankingApi.application.usecases.createTransaction.TransactionRe
 import com.SecureBankingApi.application.usecases.createTransaction.TransactionResponse;
 import com.SecureBankingApi.application.usecases.depositMoney.DepositMoneyRequest;
 import com.SecureBankingApi.application.usecases.depositMoney.DepositMoneyUseCase;
+import com.SecureBankingApi.application.usecases.withdrawMoney.WithdrawMoneyRequest;
+import com.SecureBankingApi.application.usecases.withdrawMoney.WithdrawMoneyUseCase;
 import com.SecureBankingApi.infrastructure.api.webDtos.CreateTransactionWebRequest;
 import com.SecureBankingApi.infrastructure.api.webDtos.DepositMoneyWebRequest;
+import com.SecureBankingApi.infrastructure.api.webDtos.WithdrawMoneyWebRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +26,14 @@ import java.util.UUID;
 public class TransactionController {
     private final CreateTransactionUseCase createTransactionUseCase;
     private final DepositMoneyUseCase depositMoneyUseCase;
+    private final WithdrawMoneyUseCase withdrawMoneyUseCase;
 
     public TransactionController(CreateTransactionUseCase createTransactionUseCase,
-                                 DepositMoneyUseCase depositMoneyUseCase) {
+                                 DepositMoneyUseCase depositMoneyUseCase,
+                                 WithdrawMoneyUseCase withdrawMoneyUseCase) {
         this.createTransactionUseCase = createTransactionUseCase;
         this.depositMoneyUseCase = depositMoneyUseCase;
+        this.withdrawMoneyUseCase = withdrawMoneyUseCase;
     }
 
     @PostMapping("/transfer")
@@ -58,8 +64,20 @@ public class TransactionController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
+    }
 
+    @PostMapping("withdrawal")
+    public ResponseEntity<TransactionResponse> withdraw(@Valid @RequestBody WithdrawMoneyWebRequest webRequest,
+                                                        @AuthenticationPrincipal UUID userId){
+        WithdrawMoneyRequest request = new WithdrawMoneyRequest(
+                webRequest.getAccountId(),
+                webRequest.getAmount(),
+                webRequest.getDescription()
+        );
 
+        TransactionResponse response = withdrawMoneyUseCase.execute(request, userId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 }
