@@ -102,7 +102,7 @@ public class GlobalExceptionHandler {
 
     //  HANDLE ERROR TRANSACTIONS
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(InvalidTransactionException.class)
     public ResponseEntity<ErrorResponse> handleInvalidTransactionException(
             InvalidTransactionException ex,
             HttpServletRequest request
