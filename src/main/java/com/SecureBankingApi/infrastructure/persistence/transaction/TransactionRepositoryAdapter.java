@@ -3,12 +3,14 @@ package com.SecureBankingApi.infrastructure.persistence.transaction;
 import com.SecureBankingApi.domain.transaction.Transaction;
 import com.SecureBankingApi.domain.transaction.TransactionRepository;
 import com.SecureBankingApi.domain.transaction.TransactionStatus;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Repository
 public class TransactionRepositoryAdapter implements TransactionRepository {
     private SpringDataTransactionRepository repository;
     private TransactionMapper mapper;
@@ -21,6 +23,7 @@ public class TransactionRepositoryAdapter implements TransactionRepository {
     @Override
     public void save(Transaction transaction) {
         TransactionJpaEntity entity = mapper.toEntity(transaction);
+        repository.save(entity);
     }
 
     @Override

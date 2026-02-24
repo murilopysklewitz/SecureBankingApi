@@ -2,7 +2,6 @@ package com.SecureBankingApi.application.usecases.createTransaction;
 
 import com.SecureBankingApi.domain.account.Account;
 import com.SecureBankingApi.domain.account.AccountRepository;
-import com.SecureBankingApi.domain.account.exceptions.AccountNotFoundException;
 import com.SecureBankingApi.domain.transaction.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

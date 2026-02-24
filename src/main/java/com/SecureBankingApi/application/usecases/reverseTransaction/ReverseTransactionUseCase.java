@@ -4,7 +4,6 @@ import com.SecureBankingApi.application.usecases.createTransaction.TransactionRe
 import com.SecureBankingApi.domain.account.Account;
 import com.SecureBankingApi.domain.account.AccountRepository;
 import com.SecureBankingApi.domain.account.Money;
-import com.SecureBankingApi.domain.account.exceptions.AccountNotFoundException;
 import com.SecureBankingApi.domain.transaction.*;
 import org.springframework.stereotype.Service;
 

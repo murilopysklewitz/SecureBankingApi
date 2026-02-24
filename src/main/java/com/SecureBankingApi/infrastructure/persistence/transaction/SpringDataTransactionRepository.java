@@ -11,6 +11,8 @@ import java.util.UUID;
 
 public interface SpringDataTransactionRepository extends JpaRepository<TransactionJpaEntity, UUID> {
     List<TransactionJpaEntity> findBySourceUserId(UUID userId);
+    @Query("SELECT t FROM TransactionJpaEntity t WHERE " +
+            "t.sourceUserId = :accountId OR t.destinationUserId = :accountId")
     List<TransactionJpaEntity> findByAccountId(UUID accountId);
 
     List<TransactionJpaEntity> findByStatus(TransactionStatus status);
