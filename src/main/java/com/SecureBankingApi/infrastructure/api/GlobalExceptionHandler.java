@@ -1,7 +1,8 @@
 package com.SecureBankingApi.infrastructure.api;
 
 import com.SecureBankingApi.application.exceptions.*;
-import com.SecureBankingApi.domain.transaction.InvalidTransactionException;
+import com.SecureBankingApi.domain.transaction.exceptions.InvalidAccountData;
+import com.SecureBankingApi.domain.transaction.exceptions.InvalidTransactionException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,6 +99,20 @@ public class GlobalExceptionHandler {
                 request.getRequestURI()
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(InvalidAccountData.class)
+    public ResponseEntity<ErrorResponse> handleInvalidAccountData(
+            InvalidAccountData ex,
+            HttpServletRequest request
+    ){
+        ErrorResponse error = ErrorResponse.of(
+                400,
+                "Invalid account data",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
     //  HANDLE ERROR TRANSACTIONS

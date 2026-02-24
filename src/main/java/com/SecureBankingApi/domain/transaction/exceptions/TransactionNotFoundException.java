@@ -1,4 +1,4 @@
-package com.SecureBankingApi.domain.transaction;
+package com.SecureBankingApi.domain.transaction.exceptions;
 
 import java.util.UUID;
 

@@ -3,6 +3,7 @@ package com.SecureBankingApi.application.usecases.createTransaction;
 import com.SecureBankingApi.domain.account.Account;
 import com.SecureBankingApi.domain.account.AccountRepository;
 import com.SecureBankingApi.domain.transaction.*;
+import com.SecureBankingApi.domain.transaction.exceptions.InvalidTransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,12 +31,14 @@ public class TransferMoneyUseCase {
 
         Account destination = accountRepository.findById(request.getDestinationAccountId()).orElseThrow(() -> new RuntimeException("destination account not found"));
         destination.ensureActive();
+
         if(destination.getUserId().equals(source.getUserId())){
             throw new InvalidTransactionException("cannot make transactions to yourself");
         }
         if(!source.hasSufficientBalance(request.getAmount())){
             throw new InvalidTransactionException("source has no sufficient balance to debit");
         }
+
         AccountDataTransaction sourceInfo = AccountDataTransaction.of(
                 source.getUserId(),
                 source.getAccountNumber(),

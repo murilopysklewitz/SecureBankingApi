@@ -2,7 +2,7 @@ package com.SecureBankingApi.application.usecases.getTransactionUseCase;
 
 import com.SecureBankingApi.application.usecases.createTransaction.TransactionResponse;
 import com.SecureBankingApi.domain.transaction.Transaction;
-import com.SecureBankingApi.domain.transaction.TransactionNotFoundException;
+import com.SecureBankingApi.domain.transaction.exceptions.TransactionNotFoundException;
 import com.SecureBankingApi.domain.transaction.TransactionRepository;
 import org.springframework.stereotype.Service;
 

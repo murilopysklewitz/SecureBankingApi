@@ -1,5 +1,7 @@
 package com.SecureBankingApi.domain.transaction;
 
+import com.SecureBankingApi.domain.transaction.exceptions.InvalidAccountData;
+
 import java.util.UUID;
 
 public class AccountDataTransaction {
@@ -15,13 +17,13 @@ public class AccountDataTransaction {
 
     public static AccountDataTransaction of(UUID userId, String accountNumber, String agency){
         if(userId == null ){
-            throw new RuntimeException("user id cannot be null");
+            throw new InvalidAccountData("user id cannot be null");
         }
         if(accountNumber == null || accountNumber.isBlank()){
-            throw new RuntimeException("account number cannot be null");
+            throw new InvalidAccountData("account number cannot be null");
         }
         if(agency == null || agency.isBlank() ){
-            throw new RuntimeException("agency cannot be null");
+            throw new InvalidAccountData("agency cannot be null");
         }
 
         return new AccountDataTransaction(userId, accountNumber, agency);
