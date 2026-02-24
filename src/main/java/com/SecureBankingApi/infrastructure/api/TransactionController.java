@@ -6,6 +6,9 @@ import com.SecureBankingApi.application.usecases.createTransaction.TransactionRe
 import com.SecureBankingApi.application.usecases.depositMoney.DepositMoneyRequest;
 import com.SecureBankingApi.application.usecases.depositMoney.DepositMoneyUseCase;
 import com.SecureBankingApi.application.usecases.getTransactionHistory.GetTransactionHistoryUseCase;
+import com.SecureBankingApi.application.usecases.getTransactionUseCase.GetTransactionUseCase;
+import com.SecureBankingApi.application.usecases.reverseTransaction.ReverseTransactionRequest;
+import com.SecureBankingApi.application.usecases.reverseTransaction.ReverseTransactionUseCase;
 import com.SecureBankingApi.application.usecases.withdrawMoney.WithdrawMoneyRequest;
 import com.SecureBankingApi.application.usecases.withdrawMoney.WithdrawMoneyUseCase;
 import com.SecureBankingApi.infrastructure.api.webDtos.CreateTransactionWebRequest;
@@ -14,6 +17,7 @@ import com.SecureBankingApi.infrastructure.api.webDtos.WithdrawMoneyWebRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,15 +33,21 @@ public class TransactionController {
     private final DepositMoneyUseCase depositMoneyUseCase;
     private final WithdrawMoneyUseCase withdrawMoneyUseCase;
     private final GetTransactionHistoryUseCase getTransactionHistoryUseCase;
+    private final GetTransactionUseCase getTransactionUseCase;
+    private final ReverseTransactionUseCase reverseTransactionUseCase;
 
     public TransactionController(CreateTransactionUseCase createTransactionUseCase,
                                  DepositMoneyUseCase depositMoneyUseCase,
                                  WithdrawMoneyUseCase withdrawMoneyUseCase,
-                                 GetTransactionHistoryUseCase getTransactionHistoryUseCase) {
+                                 GetTransactionHistoryUseCase getTransactionHistoryUseCase,
+                                 GetTransactionUseCase getTransactionUseCase,
+                                 ReverseTransactionUseCase reverseTransactionUseCase) {
         this.createTransactionUseCase = createTransactionUseCase;
         this.depositMoneyUseCase = depositMoneyUseCase;
         this.withdrawMoneyUseCase = withdrawMoneyUseCase;
         this.getTransactionHistoryUseCase = getTransactionHistoryUseCase;
+        this.getTransactionUseCase = getTransactionUseCase;
+        this.reverseTransactionUseCase = reverseTransactionUseCase;
     }
 
     @PostMapping("/transfer")
@@ -83,6 +93,16 @@ public class TransactionController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PostMapping("/reverse/{transactionId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<TransactionResponse> reverse(@PathVariable UUID transactionId,
+                                                       @RequestBody String reason){
+        ReverseTransactionRequest request = new ReverseTransactionRequest(transactionId, reason != null ? reason : "reversed by admin");
+        TransactionResponse response = reverseTransactionUseCase.execute(request);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/account/{accountId}")
     public ResponseEntity<List<TransactionResponse>> getAccountHistory(
             @PathVariable UUID accountId,
@@ -99,6 +119,16 @@ public class TransactionController {
         );
 
         return ResponseEntity.ok(transactions);
+    }
+
+    @GetMapping("/{transactionId}")
+    public ResponseEntity<TransactionResponse> getTransaction(@PathVariable UUID transactionId,
+                                                              @AuthenticationPrincipal UUID requestingUserId,
+                                                              Authentication authentication){
+        boolean isAdmin = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        TransactionResponse response = getTransactionUseCase.execute(transactionId, requestingUserId, isAdmin);
+
+        return ResponseEntity.ok(response);
     }
 
 }

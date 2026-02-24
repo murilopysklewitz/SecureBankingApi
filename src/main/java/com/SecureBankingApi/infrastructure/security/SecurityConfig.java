@@ -55,7 +55,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/api/transactions/deposit").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/api/transactions/withdraw").authenticated()
                                 .requestMatchers(HttpMethod.POST, "/api/transactions/accounts/{accountId}").hasRole("ADMIN")
-
+                                .requestMatchers(HttpMethod.POST, "/api/transactions/reverse/{transactionId}").hasRole("ADMIN")
                         .anyRequest().authenticated()
                         );
 
