@@ -2,9 +2,11 @@ package com.SecureBankingApi.application.usecases.createAccount;
 
 import com.SecureBankingApi.domain.account.Account;
 import com.SecureBankingApi.domain.account.AccountRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 public class CreateAccountUseCase {
     private final AccountRepository repository;
 

@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class CreateTransactionUseCase {
+public class TransferMoneyUseCase {
 
-    private static final Logger log = LoggerFactory.getLogger(CreateTransactionUseCase.class);
+    private static final Logger log = LoggerFactory.getLogger(TransferMoneyUseCase.class);
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
 
-    public CreateTransactionUseCase(TransactionRepository transactionRepository, AccountRepository accountRepository) {
+    public TransferMoneyUseCase(TransactionRepository transactionRepository, AccountRepository accountRepository) {
         this.transactionRepository = transactionRepository;
         this.accountRepository = accountRepository;
     }

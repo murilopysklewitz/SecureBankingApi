@@ -12,8 +12,11 @@ import java.util.UUID;
 @Table(
         name = "transactions",
         indexes = {
-                @Index(name = "idx_status", columnList = "status"),
-                @Index(name = "idx_type", columnList = "type")
+                @Index(name = "idx_transactions_source_user_id", columnList = "source_user_id"),
+                @Index(name = "idx_transactions_destination_user_id", columnList = "destination_user_id"),
+                @Index(name = "idx_transactions_status", columnList = "status"),
+                @Index(name = "idx_transactions_type", columnList = "type"),
+                @Index(name = "idx_transactions_created_at", columnList = "created_at"),
         }
 )
 public class TransactionJpaEntity {
@@ -44,9 +47,9 @@ public class TransactionJpaEntity {
     @Column(name = "status", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private TransactionStatus status;
+
     @Column(name = "type", nullable = false)
     @Enumerated(value = EnumType.STRING)
-
     private  TransactionType type;
 
     @Column(name = "description")

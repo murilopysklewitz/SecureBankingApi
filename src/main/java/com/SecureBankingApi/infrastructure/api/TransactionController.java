@@ -1,8 +1,8 @@
 package com.SecureBankingApi.infrastructure.api;
 
-import com.SecureBankingApi.application.usecases.createTransaction.CreateTransactionUseCase;
 import com.SecureBankingApi.application.usecases.createTransaction.TransactionRequest;
 import com.SecureBankingApi.application.usecases.createTransaction.TransactionResponse;
+import com.SecureBankingApi.application.usecases.createTransaction.TransferMoneyUseCase;
 import com.SecureBankingApi.application.usecases.depositMoney.DepositMoneyRequest;
 import com.SecureBankingApi.application.usecases.depositMoney.DepositMoneyUseCase;
 import com.SecureBankingApi.application.usecases.getTransactionHistory.GetTransactionHistoryUseCase;
@@ -29,20 +29,20 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/transaction")
 public class TransactionController {
-    private final CreateTransactionUseCase createTransactionUseCase;
+    private final TransferMoneyUseCase transferMoneyUseCase;
     private final DepositMoneyUseCase depositMoneyUseCase;
     private final WithdrawMoneyUseCase withdrawMoneyUseCase;
     private final GetTransactionHistoryUseCase getTransactionHistoryUseCase;
     private final GetTransactionUseCase getTransactionUseCase;
     private final ReverseTransactionUseCase reverseTransactionUseCase;
 
-    public TransactionController(CreateTransactionUseCase createTransactionUseCase,
+    public TransactionController(TransferMoneyUseCase transferMoneyUseCase,
                                  DepositMoneyUseCase depositMoneyUseCase,
                                  WithdrawMoneyUseCase withdrawMoneyUseCase,
                                  GetTransactionHistoryUseCase getTransactionHistoryUseCase,
                                  GetTransactionUseCase getTransactionUseCase,
                                  ReverseTransactionUseCase reverseTransactionUseCase) {
-        this.createTransactionUseCase = createTransactionUseCase;
+        this.transferMoneyUseCase = transferMoneyUseCase;
         this.depositMoneyUseCase = depositMoneyUseCase;
         this.withdrawMoneyUseCase = withdrawMoneyUseCase;
         this.getTransactionHistoryUseCase = getTransactionHistoryUseCase;
@@ -60,7 +60,7 @@ public class TransactionController {
                 request.getAmount()
         );
 
-        TransactionResponse response = createTransactionUseCase.execute(transactionRequest, userId);
+        TransactionResponse response = transferMoneyUseCase.execute(transactionRequest, userId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

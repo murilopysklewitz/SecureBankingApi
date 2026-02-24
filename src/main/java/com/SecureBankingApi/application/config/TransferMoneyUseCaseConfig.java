@@ -1,0 +1,17 @@
+package com.SecureBankingApi.application.config;
+
+import com.SecureBankingApi.application.usecases.createTransaction.TransferMoneyUseCase;
+import com.SecureBankingApi.domain.account.AccountRepository;
+import com.SecureBankingApi.domain.transaction.TransactionRepository;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class TransferMoneyUseCaseConfig {
+
+    @Bean
+    public TransferMoneyUseCase transferMoneyUseCase(AccountRepository accountRepository,
+                                TransactionRepository transactionRepository){
+        return new TransferMoneyUseCase(transactionRepository, accountRepository);
+    }
+}

@@ -6,7 +6,9 @@ import com.SecureBankingApi.domain.account.AccountRepository;
 import com.SecureBankingApi.domain.account.Money;
 import com.SecureBankingApi.domain.account.exceptions.AccountNotFoundException;
 import com.SecureBankingApi.domain.transaction.*;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ReverseTransactionUseCase {
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
