@@ -1,10 +1,6 @@
-package com.SecureBankingApi.domain;
+package com.SecureBankingApi.domain.account;
 
 
-import com.SecureBankingApi.domain.account.Account;
-import com.SecureBankingApi.domain.account.AccountStatus;
-import com.SecureBankingApi.domain.account.AccountType;
-import com.SecureBankingApi.domain.account.Money;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;

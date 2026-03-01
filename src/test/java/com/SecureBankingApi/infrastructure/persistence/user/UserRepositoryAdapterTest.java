@@ -13,9 +13,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -75,4 +77,92 @@ public class UserRepositoryAdapterTest {
         verify(mapper, times(1)).toEntity(domainUser);
         verify(springRepository, times(1)).save(entityUser);
     }
+
+    @Test
+    void ShouldFindByIdUserSuccessfully(){
+        UUID id = UUID.randomUUID();
+        when(springRepository.findById(id)).thenReturn(Optional.of(entityUser));
+        when(mapper.toDomain(entityUser)).thenReturn(domainUser);
+
+        Optional<User> result = adapter.findById(id);
+
+        assertTrue(result.isPresent());
+        assertEquals(domainUser, result.get());
+        verify(springRepository, times(1)).findById(userId);
+        verify(mapper, times(1)).toDomain(entityUser);
+
+    }
+
+    @Test
+    void ShouldReturnEmptyWhenUserNotFound() {
+            when(springRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+            Optional<User> result = adapter.findById(userId);
+
+            assertTrue(result.isEmpty());
+            verify(springRepository, times(1)).findById(userId);
+            verify(mapper, never()).toDomain(any());
+
+    }
+
+    @Test
+    void ShouldFindByEmailUserSuccessfully() {
+        String email = "user@gmail.com";
+        when(springRepository.findByEmail(email))
+                .thenReturn(Optional.of(entityUser));
+
+        when(mapper.toDomain(entityUser))
+                .thenReturn(domainUser);
+
+        Optional<User> result = adapter.findByEmail(email);
+
+        assertTrue(result.isPresent());
+        assertEquals(domainUser, result.get());
+
+        verify(springRepository, times(1))
+                .findByEmail(email);
+
+        verify(mapper, times(1))
+                .toDomain(entityUser);
+
+    }
+
+    @Test
+    void ShouldFindByCpfSuccessfully(){
+        CPF cpf = new CPF("123-456-789-12");
+        when(springRepository.findByCpf("123456789-12"))
+                .thenReturn(Optional.of(entityUser));
+
+        when(mapper.toDomain(entityUser)).thenReturn(domainUser);
+
+        Optional<User> result = adapter.findByCpf(cpf);
+
+        assertTrue(result.isPresent());
+        assertEquals(domainUser, result.get());
+
+        verify(springRepository, times(1))
+                .findByCpf(cpf.getValue());
+    }
+
+    @Test
+    void ShouldFindByStatusSuccessfully() {
+        UserStatus status = UserStatus.ACTIVE;
+        when(springRepository.findByStatus(status)).thenReturn(List.of(entityUser));
+        when(mapper.toDomainList(List.of(entityUser))).thenReturn(List.of(domainUser));
+
+        List<User> result = adapter.findByStatus(status);
+
+
+        verify(springRepository, times(1)).findByStatus(status);
+        verify(mapper, times(1)).toDomainList(List.of(entityUser));
+    }
+
+    @Test
+    void ShouldVReturnTrueWhenExistsByCpf(){
+        when(springRepository.existsByCpf(entityUser.getCpf())).thenReturn(true);
+        boolean result = adapter.existsByCpf(new CPF(entityUser.getCpf()));
+        assertTrue(result);
+
+    }
+
 }

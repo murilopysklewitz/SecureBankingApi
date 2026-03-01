@@ -8,6 +8,7 @@ import com.SecureBankingApi.domain.transaction.AccountDataTransaction;
 import com.SecureBankingApi.domain.transaction.TransactionRepository;
 import com.SecureBankingApi.domain.transaction.TransactionStatus;
 import com.SecureBankingApi.domain.transaction.TransactionType;
+import com.SecureBankingApi.domain.transaction.exceptions.InvalidAccountData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,8 +19,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -98,5 +98,19 @@ public class TransferMoneyUseCaseTest {
 
         assertEquals(BigDecimal.valueOf(50.00), sourceAccount.getBalance().getValue());
         assertEquals(BigDecimal.valueOf(100.00), destinationAccount.getBalance().getValue());
+    }
+
+    @Test
+    void ShouldThrowExceptionWhenSourceAccountNotFound() {
+        TransactionRequest request = new TransactionRequest(
+                sourceAccountId,
+                destinationAccountId,
+                TransactionType.TRANSFER,
+                Money.of(BigDecimal.valueOf(10))
+        );
+
+        when(accountRepository.findById(sourceAccountId)). thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class, () -> useCase.execute(request, userId));
     }
 }

@@ -1,6 +1,5 @@
-package com.SecureBankingApi.domain;
+package com.SecureBankingApi.domain.account;
 
-import com.SecureBankingApi.domain.account.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
