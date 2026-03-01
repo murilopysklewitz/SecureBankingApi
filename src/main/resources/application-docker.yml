@@ -1,8 +1,8 @@
-spring:
+ spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/secure_api_bank
-    username: postgres
-    password: postgres
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
 jpa:
@@ -15,6 +15,6 @@ jpa:
       format_sql: true
 
 jwt:
-  secret: iabhgvçajvkmboslieilrhkjgbjiauwifçioawlhqiuvngo38q9p90nhgvoawlwoçvnoyhow9qpopvtnialçupvnhuyoapvijnlkhtnvsebkh
-  access-token-expiration: 9000
-  refresh-token-expiration: 604800000
+  secret: ${JWT_SECRET}
+  access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION}
+  refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION}

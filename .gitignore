@@ -6,6 +6,8 @@ target/
 
 ./src/main/resources/application-docker.yml
 
+.env
+
 ### STS ###
 .apt_generated
 .classpath

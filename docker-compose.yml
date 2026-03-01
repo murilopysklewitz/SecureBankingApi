@@ -6,28 +6,11 @@ services:
       - "3000:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
-    depends_on:
-      - postgres
+    env_file:
+      - .env
     networks:
       - secure_api_bank
 
-  postgres:
-    image: postgres:16
-    container_name: postgres_secure_api_bank
-    restart: always
-    ports:
-      - "2000:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: secure_api_bank
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - secure_api_bank
-
-volumes:
-  postgres_data:
 
 networks:
   secure_api_bank:
