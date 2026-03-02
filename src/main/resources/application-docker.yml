@@ -1,20 +1,20 @@
- spring:
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+spring:
+ datasource:
+  url: ${DB_URL}
+  username: ${DB_USERNAME}
+  password: ${DB_PASSWORD}
+  driver-class-name: org.postgresql.Driver
 
-jpa:
+ jpa:
   database-platform: org.hibernate.dialect.PostgreSQLDialect
   hibernate:
-    ddl-auto: validate
+   ddl-auto: validate
   show-sql: true
   properties:
-    hibernate:
-      format_sql: true
+   hibernate:
+    format_sql: true
 
-jwt:
+ jwt:
   secret: ${JWT_SECRET}
   access-token-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION}
   refresh-token-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION}
