@@ -14,6 +14,29 @@ spring:
       hibernate:
         format_sql: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          health,info,metrics
+      base-path: /actuator
+
+    endpoint:
+      health:
+        show-details: when-authorized
+        show-components: when-authorized
+
+    health:
+      db:
+        enabled: true
+      diskspace: true
+info:
+  app:
+    name: Secure Banking Api
+    description: Banking Api
+    version: 1.0.0
+    environment: ${SPRING_PROFILES_ACTIVE:docker}
 
 jwt:
   secret: ${JWT_SECRET}

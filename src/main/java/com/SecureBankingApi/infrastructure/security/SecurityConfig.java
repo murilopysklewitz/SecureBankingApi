@@ -41,8 +41,14 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/actuator/info").permitAll()
+                                .requestMatchers("/actuator/**").hasRole("ADMIN")
+
                         .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+
 
                                 .requestMatchers(HttpMethod.GET, "/api/accounts/").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/api/accounts/{id}").authenticated()
