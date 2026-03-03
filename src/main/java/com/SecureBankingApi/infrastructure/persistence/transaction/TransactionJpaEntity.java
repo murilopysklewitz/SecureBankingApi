@@ -30,6 +30,9 @@ public class TransactionJpaEntity {
     private UUID sourceUserId;
 
     @Column(name = "source_account_number")
+    private UUID sourceAccountId;
+
+    @Column(name = "source_account_number")
     private String sourceAccountNumber;
 
     @Column(name = "source_agency")
@@ -37,6 +40,10 @@ public class TransactionJpaEntity {
 
     @Column(name = "destination_user_id")
     private UUID destinationUserId;
+
+    @Column(name = "destination_account_id")
+    private UUID destinationAccountId;
+
 
     @Column(name = "destination_account_number")
     private String destinationAccountNumber;
@@ -64,9 +71,11 @@ public class TransactionJpaEntity {
 
     public TransactionJpaEntity(UUID id,
                                 UUID sourceUserId,
+                                UUID sourceAccountId,
                                 String sourceAccountNumber,
                                 String sourceAgency,
                                 UUID destinationUserId,
+                                UUID destinationAccountId,
                                 String destinationAccountNumber,
                                 String destinationAgency,
                                 TransactionStatus status,
@@ -77,9 +86,11 @@ public class TransactionJpaEntity {
                                 LocalDateTime completedAt) {
         this.id = id;
         this.sourceUserId = sourceUserId;
+        this.sourceAccountId = sourceAccountId;
         this.sourceAccountNumber = sourceAccountNumber;
         this.sourceAgency = sourceAgency;
         this.destinationUserId = destinationUserId;
+        this.destinationAccountId = destinationAccountId;
         this.destinationAccountNumber = destinationAccountNumber;
         this.destinationAgency = destinationAgency;
         this.status = status;
@@ -91,6 +102,22 @@ public class TransactionJpaEntity {
     }
 
     public TransactionJpaEntity() {
+    }
+
+    public UUID getDestinationAccountId() {
+        return destinationAccountId;
+    }
+
+    public void setDestinationAccountId(UUID destinationAccountId) {
+        this.destinationAccountId = destinationAccountId;
+    }
+
+    public UUID getSourceAccountId() {
+        return sourceAccountId;
+    }
+
+    public void setSourceAccountId(UUID sourceAccountId) {
+        this.sourceAccountId = sourceAccountId;
     }
 
     public UUID getId() {

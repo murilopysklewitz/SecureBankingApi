@@ -12,12 +12,24 @@ public class TransactionMapper {
     public Transaction toDomain(TransactionJpaEntity entity){
         return Transaction.restore(
                 entity.getId(),
-                AccountDataTransaction.of(entity.getDestinationUserId(), entity.getDestinationAccountNumber(), entity.getDestinationAgency()),
-                AccountDataTransaction.of(entity.getSourceUserId(), entity.getSourceAccountNumber(), entity.getDestinationAgency()),
+
+                AccountDataTransaction.of(
+                        entity.getDestinationUserId(),
+                        entity.getDestinationAccountId(),
+                        entity.getDestinationAccountNumber(),
+                        entity.getDestinationAgency()),
+                AccountDataTransaction.of(
+                        entity.getSourceUserId(),
+                        entity.getSourceAccountId(),
+                        entity.getSourceAccountNumber(),
+                        entity.getDestinationAgency()),
+
                 entity.getStatus(),
                 entity.getType(),
                 entity.getDescription(),
+
                 Money.of(entity.getAmount()),
+
                 entity.getCreatedAt(),
                 entity.getCompletedAt()
         );
@@ -27,9 +39,11 @@ public class TransactionMapper {
          TransactionJpaEntity entity = new TransactionJpaEntity(
                  domain.getId(),
                  domain.getSource().getUserId(),
+                 domain.getSource().getAccountId(),
                  domain.getSource().getAccountNumber(),
                  domain.getSource().getAgency(),
                  domain.getReceiver().getUserId(),
+                 domain.getReceiver().getAccountId(),
                  domain.getReceiver().getAccountNumber(),
                  domain.getReceiver().getAgency(),
                  domain.getStatus(),

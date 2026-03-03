@@ -27,22 +27,26 @@ public class TransactionMapperTest {
     void ShouldConvertEntityToDomain() {
 
         UUID sourceUserId = UUID.randomUUID();
-        String sourceAccountId = "12345-6";
+        UUID sourceAccountId = UUID.randomUUID();
+        String sourceAccountNumber = "12345-6";
         String sourceAgency = "001";
 
         AccountDataTransaction sourceData = AccountDataTransaction.of(
                 sourceUserId,
                 sourceAccountId,
+                sourceAccountNumber,
                 sourceAgency
         );
 
         UUID destinationUserId = UUID.randomUUID();
-        String destinationAccountId = "12345-7";
+        UUID destinationAccountId = UUID.randomUUID();
+        String destinationAccountNumber = "12345-6";
         String destinationAgency = "001";
 
         AccountDataTransaction destinationData = AccountDataTransaction.of(
                 destinationUserId,
                 destinationAccountId,
+                destinationAccountNumber,
                 destinationAgency
         );
 
@@ -54,9 +58,11 @@ public class TransactionMapperTest {
         TransactionJpaEntity entity = new TransactionJpaEntity(
             id,
                 sourceData.getUserId(),
+                sourceAccountId,
                 sourceData.getAccountNumber(),
                 sourceData.getAgency(),
                 destinationData.getUserId(),
+                destinationData.getAccountId(),
                 destinationData.getAccountNumber(),
                 destinationData.getAgency(),
                 TransactionStatus.PENDING,
@@ -89,10 +95,12 @@ public class TransactionMapperTest {
 
         AccountDataTransaction source = AccountDataTransaction.of(
                 UUID.randomUUID(),
+                UUID.randomUUID(),
                 "12345-6",
                 "001"
         );
         AccountDataTransaction destination = AccountDataTransaction.of(
+                UUID.randomUUID(),
                 UUID.randomUUID(),
                 "12345-7",
                 "002"

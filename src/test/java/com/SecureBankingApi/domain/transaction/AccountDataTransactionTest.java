@@ -24,6 +24,7 @@ public class AccountDataTransactionTest {
     void ShouldCreateAnAccountDataTransaction() {
         AccountDataTransaction dataTransaction = AccountDataTransaction.of(
                 userId,
+                UUID.randomUUID(),
                 accountNumber,
                 agency
         );
@@ -38,6 +39,7 @@ public class AccountDataTransactionTest {
         assertThrows(InvalidAccountData.class, () ->{
             AccountDataTransaction.of(
                     null,
+                    UUID.randomUUID(),
                     accountNumber,
                     agency
             );
@@ -49,6 +51,7 @@ public class AccountDataTransactionTest {
         assertThrows(InvalidAccountData.class, () ->{
             AccountDataTransaction.of(
                     userId,
+                    UUID.randomUUID(),
                     null,
                     agency
             );
@@ -60,6 +63,7 @@ public class AccountDataTransactionTest {
         assertThrows(InvalidAccountData.class, () ->{
             AccountDataTransaction.of(
                     userId,
+                    UUID.randomUUID(),
                     accountNumber,
                     null
             );

@@ -18,10 +18,12 @@ public class TransactionTest {
     void setUp() {
         source = AccountDataTransaction.of(
                 UUID.randomUUID(),
+                UUID.randomUUID(),
                 "12345-6",
                 "001"
         );
         destination = AccountDataTransaction.of(
+                UUID.randomUUID(),
                 UUID.randomUUID(),
                 "65432-1",
                 "001"
