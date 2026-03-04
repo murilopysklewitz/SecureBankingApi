@@ -29,6 +29,12 @@ public class RegisterUserUseCaseTest {
 
     @BeforeEach
     void SetUp() {
-        request =
+        request = new RegisterUserRequest(
+                "Joao Bobao",
+                "12345678901",
+                "joaotestador@gmail.com",
+                "securePassword"
+        );
+
     }
 }
