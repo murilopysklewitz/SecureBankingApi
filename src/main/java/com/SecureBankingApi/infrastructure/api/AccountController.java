@@ -11,6 +11,14 @@ import com.SecureBankingApi.application.usecases.modifyStatusAccount.BlockAccoun
 import com.SecureBankingApi.application.usecases.modifyStatusAccount.CloseAccountUseCase;
 import com.SecureBankingApi.application.usecases.modifyStatusAccount.UnblockAccountUseCase;
 import com.SecureBankingApi.infrastructure.api.webDtos.CreateAccountWebRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +33,8 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/accounts")
+@Tag(name = "Accounts", description = "Management of Banking accounts")
+@SecurityRequirement(name = "bearerAuth")
 public class AccountController {
     private final CreateAccountUseCase createAccountUseCase;
     private final ListMyAccountsUseCase listMyAccountsUseCase;
@@ -51,7 +61,63 @@ public class AccountController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<AccountResponse> createAccount(@Valid @RequestBody CreateAccountWebRequest request,
+
+    @Operation(
+            summary = "Create new account",
+            description = "Create account to an auth user"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "account created successfully",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = AccountResponse.class),
+                            examples = @ExampleObject(
+                                    value = """
+                                            {
+                                              "id": "550e8400-e29b-41d4-a716-446655440000",
+                                              "accountNumber": "12345-6",
+                                              "agency": "0001",
+                                              "accountType": "CHECKING",
+                                              "balance": 0.00,
+                                              "status": "ACTIVE",
+                                              "createdAt": "2024-03-02T10:30:00"
+                                            }
+                                            """
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid data"
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized"
+            )
+    })
+
+
+    public ResponseEntity<AccountResponse> createAccount(
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "create account data",
+                    required = true,
+                    content = @Content(
+                            schema = @Schema(implementation = CreateAccountRequest.class),
+                            examples = @ExampleObject(
+                                    value = """
+                                            {
+                                              "accountType": "CHECKING",
+                                              "agency": "0001"
+                                            }
+                                            """
+                            )
+                    )
+            )
+
+            @Valid @RequestBody CreateAccountWebRequest request,
                                                          @AuthenticationPrincipal UUID userId){
         CreateAccountRequest useCaseRequest = new CreateAccountRequest(request.getUserId(), request.getType());
 
@@ -70,6 +136,28 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
+    @Operation(
+            summary = "Find account details",
+            description = "Return account details"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Account founded",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = AccountResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "cannot access this account"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Account not found"
+            )
+    })
     public ResponseEntity<AccountResponse> getAccountDetails(
             @PathVariable UUID id,
             @AuthenticationPrincipal UUID userId,

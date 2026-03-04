@@ -14,6 +14,15 @@ import com.SecureBankingApi.application.usecases.withdrawMoney.WithdrawMoneyUseC
 import com.SecureBankingApi.infrastructure.api.webDtos.CreateTransactionWebRequest;
 import com.SecureBankingApi.infrastructure.api.webDtos.DepositMoneyWebRequest;
 import com.SecureBankingApi.infrastructure.api.webDtos.WithdrawMoneyWebRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +37,8 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/transaction")
+@Tag(name = "Transações", description = "Operações de transferência, depósito e saque")
+@SecurityRequirement(name = "bearerAuth")
 public class TransactionController {
     private final TransferMoneyUseCase transferMoneyUseCase;
     private final DepositMoneyUseCase depositMoneyUseCase;
@@ -51,7 +62,54 @@ public class TransactionController {
     }
 
     @PostMapping("/transfer")
-    public ResponseEntity<TransactionResponse> createTransaction(@Valid @RequestBody CreateTransactionWebRequest request,
+    @Operation(
+            summary = "Make transaction",
+            description = "transfer money between accounts"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "transfer completed",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = TransactionResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "not enough balance"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "No permission to this operation"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Account not found"
+            )
+    })
+    public ResponseEntity<TransactionResponse> createTransaction(
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados da transferência",
+                    required = true,
+                    content = @Content(
+                            schema = @Schema(implementation = TransactionResponse.class),
+                            examples = @ExampleObject(
+                                    value = """
+                                            {
+                                              "sourceAccountId": "550e8400-e29b-41d4-a716-446655440000",
+                                              "destinationAccountNumber": "67890-1",
+                                              "destinationAgency": "0001",
+                                              "amount": 100.50,
+                                              "description": "Payment"
+                                            }
+                                            """
+                            )
+                    )
+            )
+
+            @Valid @RequestBody CreateTransactionWebRequest request,
                                                                  @AuthenticationPrincipal UUID userId){
         TransactionRequest transactionRequest = new TransactionRequest(
                 request.getSourceAccountId(),
@@ -66,7 +124,48 @@ public class TransactionController {
     }
 
     @PostMapping("/deposit")
-    public ResponseEntity<TransactionResponse> deposit(@Valid @RequestBody DepositMoneyWebRequest webRequest,
+    @Operation(
+            summary = "Make deposit",
+            description = "deposit money in account"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "deposit successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "invalid data"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "no permission in this account"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "account not found"
+            )
+    })
+    public ResponseEntity<TransactionResponse> deposit(
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados do depósito",
+                    required = true,
+                    content = @Content(
+                            schema = @Schema(implementation = TransactionResponse.class),
+                            examples = @ExampleObject(
+                                    value = """
+                                            {
+                                              "accountId": "550e8400-e29b-41d4-a716-446655440000",
+                                              "amount": 500.00,
+                                              "description": "Depósito inicial"
+                                            }
+                                            """
+                            )
+                    )
+            )
+
+            @Valid @RequestBody DepositMoneyWebRequest webRequest,
                                                        @AuthenticationPrincipal UUID userId){
         DepositMoneyRequest request = new DepositMoneyRequest(
                 webRequest.getAccountId(),
@@ -81,7 +180,36 @@ public class TransactionController {
     }
 
     @PostMapping("withdraw")
-    public ResponseEntity<TransactionResponse> withdraw(@Valid @RequestBody WithdrawMoneyWebRequest webRequest,
+    @Operation(
+            summary = "make withdraw",
+            description = "withdraw money of account"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "withdraw maded"),
+            @ApiResponse(responseCode = "400", description = "invalid balance"),
+            @ApiResponse(responseCode = "403", description = "No permission in this account"),
+            @ApiResponse(responseCode = "404", description = "account not found")
+    })
+    public ResponseEntity<TransactionResponse> withdraw(
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "withdraw data",
+                    required = true,
+                    content = @Content(
+                            schema = @Schema(implementation = TransactionResponse.class),
+                            examples = @ExampleObject(
+                                    value = """
+                                            {
+                                              "accountId": "550e8400-e29b-41d4-a716-446655440000",
+                                              "amount": 200.00,
+                                              "description": "emergency withdraw"
+                                            }
+                                            """
+                            )
+                    )
+            )
+
+            @Valid @RequestBody WithdrawMoneyWebRequest webRequest,
                                                         @AuthenticationPrincipal UUID userId){
         WithdrawMoneyRequest request = new WithdrawMoneyRequest(
                 webRequest.getAccountId(),
@@ -104,7 +232,26 @@ public class TransactionController {
     }
 
     @GetMapping("/account/{accountId}")
+    @Operation(
+            summary = "historic of transactions",
+            description = "return all the transactions of account"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "historic successfully returned"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "No permission to this account"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Account not found"
+            )
+    })
     public ResponseEntity<List<TransactionResponse>> getAccountHistory(
+            @Parameter(description = "account Id", required = true)
             @PathVariable UUID accountId,
             @AuthenticationPrincipal UUID userId,
             Authentication authentication) {
@@ -122,7 +269,18 @@ public class TransactionController {
     }
 
     @GetMapping("/{transactionId}")
-    public ResponseEntity<TransactionResponse> getTransaction(@PathVariable UUID transactionId,
+    @Operation(
+            summary = "transaction details",
+            description = "return all data of transaction"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "transaction founded"),
+            @ApiResponse(responseCode = "403", description = "No permission to access this transaction"),
+            @ApiResponse(responseCode = "404", description = "transaction not found")
+    })
+    public ResponseEntity<TransactionResponse> getTransaction(
+            @Parameter(description = "transaction Id", required = true)
+            @PathVariable UUID transactionId,
                                                               @AuthenticationPrincipal UUID requestingUserId,
                                                               Authentication authentication){
         boolean isAdmin = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
