@@ -42,6 +42,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
 
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers("/swagger-ui.html").permitAll()
+                                .requestMatchers("/api-docs/**").permitAll()
+
                         .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/actuator/info").permitAll()
                                 .requestMatchers("/actuator/**").hasRole("ADMIN")
