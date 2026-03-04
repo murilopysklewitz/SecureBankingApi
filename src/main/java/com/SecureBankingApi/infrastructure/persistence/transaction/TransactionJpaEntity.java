@@ -29,7 +29,7 @@ public class TransactionJpaEntity {
     @Column(name = "source_user_id")
     private UUID sourceUserId;
 
-    @Column(name = "source_account_number")
+    @Column(name = "source_account_id")
     private UUID sourceAccountId;
 
     @Column(name = "source_account_number")
