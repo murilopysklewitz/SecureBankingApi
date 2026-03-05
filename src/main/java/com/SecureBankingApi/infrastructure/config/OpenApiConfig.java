@@ -15,12 +15,12 @@ import java.util.List;
 
 @Configuration
 public class OpenApiConfig {
-    @Value("${spring.application.version:1.0.0")
+    @Value("${spring.application.version:1.0.0}")
     private String version;
 
     @Bean
     public OpenAPI customOpenAPI() {
-        final String securitySchemaName = "bearer Token";
+        final String securitySchemaName = "bearerAuth";
 
         return new OpenAPI()
                 .info(new Info()
