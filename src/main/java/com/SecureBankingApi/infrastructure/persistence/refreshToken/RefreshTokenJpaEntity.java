@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "refresh-tokens")
+@Table(name = "refresh_tokens")
 public class RefreshTokenJpaEntity {
 
     @Id

@@ -10,7 +10,7 @@ CREATE TABLE transactions(
 
     amount NUMERIC(19, 2) NOT NULL ,
 
-    status VARCHAR NOT NULL DEFAULT "PENDING",
+    status VARCHAR NOT NULL DEFAULT 'PENDING',
     type VARCHAR NOT NULL ,
 
     description VARCHAR,
