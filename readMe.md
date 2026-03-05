@@ -1,7 +1,7 @@
 # 🏦 SecureBankingApi
 
 API RESTful de sistema bancário seguro, desenvolvida com **Java 21 + Spring Boot**, seguindo os princípios de **Clean Architecture** e **Domain-Driven Design (DDD)**. Implantada em container Docker na **AWS EC2** com banco de dados **PostgreSQL no AWS RDS**.
-
+e documentado com Swagger Open API
 ---
 
 ## 🏗️ Arquitetura
@@ -28,18 +28,19 @@ src/
 ## 🚀 Tecnologias
 
 | Tecnologia | Versão | Uso |
-|---|---|---|
-| Java | 21 | Linguagem principal |
-| Spring Boot | 3.x | Framework web |
-| Spring Security | 3.x | Autenticação e autorização |
-| JWT (jjwt) | — | Tokens de acesso e refresh |
-| BCrypt | — | Hash de senhas |
-| PostgreSQL | — | Banco de dados (AWS RDS) |
-| Flyway | — | Migrações de banco de dados |
-| Hibernate / JPA | — | ORM |
-| Docker | — | Containerização |
-| JUnit 5 + Mockito | — | Testes unitários |
-| Maven | 3.9.6 | Build e dependências |
+|---|--------|---|
+| Java | 21     | Linguagem principal |
+| Spring Boot | 3.x    | Framework web |
+| Spring Security | 3.x    | Autenticação e autorização |
+| JWT (jjwt) | —      | Tokens de acesso e refresh |
+| BCrypt | —      | Hash de senhas |
+| PostgreSQL | —      | Banco de dados (AWS RDS) |
+| Flyway | —      | Migrações de banco de dados |
+| Hibernate / JPA | —      | ORM |
+| Docker | —      | Containerização |
+| Swagger | 2.8.5  | Documentacao |
+| JUnit 5 + Mockito | —      | Testes unitários |
+| Maven | 3.9.6  | Build e dependências |
 
 ---
 
@@ -182,6 +183,10 @@ As migrations são gerenciadas pelo **Flyway** e executadas automaticamente na i
 | POST | `/api/transaction/reverse/{transactionId}` | Estorna transação | ✅ ADMIN |
 
 ---
+
+Para Documentacao Swagger acesse
+
+http://3.141.250.199:3000/swagger-ui/index.html
 
 ## 🧪 Testes
 ```bash
