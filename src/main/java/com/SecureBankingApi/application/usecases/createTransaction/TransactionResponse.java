@@ -53,23 +53,26 @@ public class TransactionResponse {
         this.createdAt = createdAt;
         this.completedAt = completedAt;
     }
+        public static TransactionResponse fromDomain(Transaction transaction) {
+            AccountDataTransaction source = transaction.getSource();
+            AccountDataTransaction receiver = transaction.getReceiver();
 
-    public static TransactionResponse fromDomain(Transaction transaction) {
-        return new TransactionResponse(
-                transaction.getId(),
-                transaction.getSource().getUserId(),
-                transaction.getSource().getAccountNumber(),
-                transaction.getSource().getAgency(),
-                transaction.getReceiver().getUserId(),
-                transaction.getReceiver().getAccountNumber(),
-                transaction.getReceiver().getAgency(),
-                transaction.getAmount().getValue(),
-                transaction.getType(),
-                transaction.getStatus(),
-                transaction.getDescription(),
-                transaction.getCreatedAt(),
-                transaction.getCompletedAt()
-        );
+            return new TransactionResponse(
+                    transaction.getId(),
+                    source != null ? source.getUserId() : null,
+                    source != null ? source.getAccountNumber() : null,
+                    source != null ? source.getAgency() : null,
+                    receiver != null ? receiver.getUserId() : null,
+                    receiver != null ? receiver.getAccountNumber() : null,
+                    receiver != null ? receiver.getAgency() : null,
+                    transaction.getAmount().getValue(),
+                    transaction.getType(),
+                    transaction.getStatus(),
+                    transaction.getDescription(),
+                    transaction.getCreatedAt(),
+                    transaction.getCompletedAt()
+            );
+
     }
 
     public UUID getId() { return id; }

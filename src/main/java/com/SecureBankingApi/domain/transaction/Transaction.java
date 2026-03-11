@@ -58,6 +58,42 @@ public class Transaction {
         return new Transaction(receiver, source, type, amount, description);
     }
 
+    public static Transaction DepositTransaction(AccountDataTransaction receiver,
+                                                 TransactionType type,
+                                                 Money amount,
+                                                 String description) {
+
+        if (receiver == null) {
+            throw new RuntimeException("receiver cannot be null");
+        }
+
+        if (type == null) {
+            throw new RuntimeException("type cannot be null");
+        }
+        if (amount == null) {
+            throw new RuntimeException("amount cannot be null");
+        }
+        return new Transaction(receiver, null, type, amount, description);
+    }
+
+    public static Transaction Withdraw(AccountDataTransaction receiver,
+                                                 TransactionType type,
+                                                 Money amount,
+                                                 String description) {
+
+        if (receiver == null) {
+            throw new RuntimeException("receiver cannot be null");
+        }
+
+        if (type == null) {
+            throw new RuntimeException("type cannot be null");
+        }
+        if (amount == null) {
+            throw new RuntimeException("amount cannot be null");
+        }
+        return new Transaction(receiver, null, type, amount, description);
+    }
+
     public static Transaction restore(UUID id,
                                       AccountDataTransaction receiver,
                                       AccountDataTransaction source,

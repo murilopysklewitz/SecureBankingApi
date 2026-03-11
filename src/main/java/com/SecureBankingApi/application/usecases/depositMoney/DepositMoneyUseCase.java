@@ -45,9 +45,8 @@ public class DepositMoneyUseCase{
                 account.getAgency()
         );
 
-        Transaction transaction = Transaction.create(
+        Transaction transaction = Transaction.DepositTransaction(
                 destinationInfo,
-                null,
                 TransactionType.DEPOSIT,
                 amount,
                 request.getDescription()

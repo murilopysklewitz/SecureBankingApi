@@ -40,16 +40,15 @@ public class WithdrawMoneyUseCase {
             throw new InvalidTransactionException("insufficient balance");
         }
 
-        AccountDataTransaction sourceInfo = AccountDataTransaction.of(
+        AccountDataTransaction receiverInfo = AccountDataTransaction.of(
                 account.getUserId(),
                 account.getId(),
                 account.getAccountNumber(),
                 account.getAgency()
         );
 
-        Transaction transaction = Transaction.create(
-                sourceInfo,
-                null,
+        Transaction transaction = Transaction.Withdraw(
+                receiverInfo,
                 TransactionType.WITHDRAWAL,
                 amount,
                 request.getDescription()
