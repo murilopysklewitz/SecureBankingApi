@@ -90,12 +90,12 @@ public class TransactionRepositoryAdapterTest {
 
                 sourceUserId,
                 sourceAccountId,
-                "12345-7",
+                AccountNumber.generate().getValue(),
                 "001",
 
                 receiverUserId,
                 receiverAccountId,
-                "12345-6",
+                AccountNumber.generate().getValue(),
                 "001",
 
                 TransactionStatus.PENDING,
@@ -263,11 +263,11 @@ public class TransactionRepositoryAdapterTest {
                 UUID.randomUUID(),
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                "12345-8",
+                AccountNumber.generate().getValue(),
                 "001",
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                "12345-9",
+                AccountNumber.generate().getValue(),
                 "001",
                 TransactionStatus.PENDING,
                 TransactionType.TRANSFER,

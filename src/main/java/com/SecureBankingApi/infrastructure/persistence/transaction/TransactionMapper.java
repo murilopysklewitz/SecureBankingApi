@@ -41,7 +41,7 @@ public class TransactionMapper {
         UUID sourceUserId = domain.getSource() != null ? domain.getSource().getUserId() : null;
          TransactionJpaEntity entity = new TransactionJpaEntity(
                  domain.getId(),
-                 domain.getSource().getUserId(),
+                 sourceUserId,
                  domain.getSource().getAccountId(),
                  domain.getSource().getAccountNumber().getValue(),
                  domain.getSource().getAgency(),

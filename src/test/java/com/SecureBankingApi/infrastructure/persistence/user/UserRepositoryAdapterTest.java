@@ -88,7 +88,7 @@ public class UserRepositoryAdapterTest {
 
         assertTrue(result.isPresent());
         assertEquals(domainUser, result.get());
-        verify(springRepository, times(1)).findById(userId);
+        verify(springRepository, times(1)).findById(id);
         verify(mapper, times(1)).toDomain(entityUser);
 
     }
@@ -129,8 +129,8 @@ public class UserRepositoryAdapterTest {
 
     @Test
     void ShouldFindByCpfSuccessfully(){
-        CPF cpf = new CPF("123-456-789-12");
-        when(springRepository.findByCpf("123456789-12"))
+        CPF cpf = new CPF("12345678912");
+        when(springRepository.findByCpf("12345678912"))
                 .thenReturn(Optional.of(entityUser));
 
         when(mapper.toDomain(entityUser)).thenReturn(domainUser);

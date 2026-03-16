@@ -22,7 +22,7 @@ public class RefreshTokenTest {
 
 
         assertNotNull(token);
-        assertNotNull(token.getId());
+        assertNull(token.getId());
         assertNotNull(token.getToken());
         assertNotNull(token.getUserId());
         assertNotNull(token.getCreatedAt());

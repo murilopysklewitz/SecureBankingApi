@@ -122,10 +122,10 @@ public class TransactionMapperTest {
         assertNotNull(entity);
         assertEquals(domain.getId(), entity.getId());
         assertEquals(source.getUserId(), entity.getSourceUserId());
-        assertEquals(source.getAccountNumber(), entity.getSourceAccountNumber());
+        assertEquals(source.getAccountNumber().getValue(), entity.getSourceAccountNumber());
         assertEquals(source.getAgency(), entity.getSourceAgency());
         assertEquals(destination.getUserId(), entity.getDestinationUserId());
-        assertEquals(destination.getAccountNumber(), entity.getDestinationAccountNumber());
+        assertEquals(destination.getAccountNumber().getValue(), entity.getDestinationAccountNumber());
         assertEquals(destination.getAgency(), entity.getDestinationAgency());
         assertEquals(TransactionStatus.COMPLETED, entity.getStatus());
         assertEquals(TransactionType.TRANSFER, entity.getType());

@@ -120,7 +120,7 @@ public class AccountRepositoryAdapterTest {
     @Test
     void shouldReturnEmptyWhenAccountNotFoundByAccountNumber() {
 
-        String accountNumber = "99999-9";
+        String accountNumber = AccountNumber.generate().getValue();
         when(springDataRepository.findByAccountNumber(accountNumber))
                 .thenReturn(Optional.empty());
 
@@ -135,7 +135,7 @@ public class AccountRepositoryAdapterTest {
     void shouldFindAccountsByUserIdSuccessfully() {
         AccountJpaEntity entity2 = new AccountJpaEntity(
                 UUID.randomUUID(),
-                "65432-1",
+                AccountNumber.generate().getValue(),
                 "001",
                 userId,
                 BigDecimal.valueOf(500.00),
@@ -148,7 +148,7 @@ public class AccountRepositoryAdapterTest {
         Account domainAccount2 = Account.restore(
                 entity2.getId(),
                 userId,
-                "65432-1",
+                AccountNumber.generate().getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(500.00)),
                 AccountStatus.ACTIVE,
@@ -253,7 +253,7 @@ public class AccountRepositoryAdapterTest {
 
     @Test
     void shouldReturnFalseWhenAccountDoesNotExistByAccountNumber() {
-        String accountNumber = "99999-9";
+        String accountNumber = AccountNumber.generate().getValue();
         when(springDataRepository.existsByAccountNumber(accountNumber))
                 .thenReturn(false);
 
@@ -344,7 +344,7 @@ public class AccountRepositoryAdapterTest {
     void shouldHandleMultipleAccountsForSameUser() {
         AccountJpaEntity checkingEntity = new AccountJpaEntity(
                 UUID.randomUUID(),
-                "11111-1",
+                AccountNumber.generate().getValue(),
                 "001",
                 userId,
                 BigDecimal.valueOf(1000.00),
@@ -356,7 +356,7 @@ public class AccountRepositoryAdapterTest {
 
         AccountJpaEntity savingsEntity = new AccountJpaEntity(
                 UUID.randomUUID(),
-                "22222-2",
+                AccountNumber.generate().getValue(),
                 "001",
                 userId,
                 BigDecimal.valueOf(5000.00),

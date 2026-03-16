@@ -53,7 +53,7 @@ class WithdrawMoneyUseCaseTest {
         account = Account.restore(
                 accountId,
                 userId,
-                "12345-6",
+                AccountNumber.generate().getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(500.00)),
                 AccountStatus.ACTIVE,
@@ -205,7 +205,7 @@ class WithdrawMoneyUseCaseTest {
         Account lowBalanceAccount = Account.restore(
                 accountId,
                 userId,
-                "12345-6",
+                AccountNumber.generate().getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(50.00)),
                 AccountStatus.ACTIVE,

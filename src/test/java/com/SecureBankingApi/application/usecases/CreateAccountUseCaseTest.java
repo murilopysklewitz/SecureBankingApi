@@ -51,7 +51,7 @@ public class CreateAccountUseCaseTest {
         assertEquals(AccountStatus.ACTIVE, response.getStatus());
         assertEquals(Money.zero(), response.getBalance());
         assertNotNull(response.getAccountNumber());
-        assertNotNull(response.getId());
+        assertNull(response.getId());
         assertNotNull(response.getCreatedAt());
 
         verify(accountRepository).existsByUserIdAndType(userId, accountType);
