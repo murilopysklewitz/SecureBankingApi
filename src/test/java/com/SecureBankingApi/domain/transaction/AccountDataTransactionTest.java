@@ -1,5 +1,6 @@
 package com.SecureBankingApi.domain.transaction;
 
+import com.SecureBankingApi.domain.account.AccountNumber;
 import com.SecureBankingApi.domain.transaction.exceptions.InvalidAccountData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AccountDataTransactionTest {
     private UUID userId;
-    private String accountNumber;
+    private AccountNumber accountNumber;
     private String agency;
 
     @BeforeEach
     void setup() {
         userId = UUID.randomUUID();
-        accountNumber = "12345-6";
+        accountNumber = AccountNumber.generate();
         agency ="001";
     }
 
@@ -30,7 +31,7 @@ public class AccountDataTransactionTest {
         );
 
         assertNotNull(dataTransaction.getUserId());
-        assertEquals("12345-6", dataTransaction.getAccountNumber());
+        assertEquals(accountNumber, dataTransaction.getAccountNumber());
         assertEquals("001", dataTransaction.getAgency());
     }
 

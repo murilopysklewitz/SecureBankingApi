@@ -1,16 +1,13 @@
 package com.SecureBankingApi.application.usecases.createAccount;
 
-import com.SecureBankingApi.domain.account.Account;
-import com.SecureBankingApi.domain.account.AccountStatus;
-import com.SecureBankingApi.domain.account.AccountType;
-import com.SecureBankingApi.domain.account.Money;
+import com.SecureBankingApi.domain.account.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class AccountResponse {
     private UUID id;
-    private String accountNumber;
+    private AccountNumber accountNumber;
     private String agency;
     private UUID userId;
     private Money balance;
@@ -19,7 +16,7 @@ public class AccountResponse {
     private LocalDateTime createdAt;
 
     public AccountResponse(UUID id,
-                           String accountNumber,
+                           AccountNumber accountNumber,
                            String agency,
                            UUID userId,
                            Money balance,
@@ -50,7 +47,7 @@ public class AccountResponse {
         return id;
     }
 
-    public String getAccountNumber() {
+    public AccountNumber getAccountNumber() {
         return accountNumber;
     }
 

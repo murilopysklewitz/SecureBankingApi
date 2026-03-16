@@ -33,9 +33,14 @@ public class TransferMoneyUseCaseTest {
 
     private UUID sourceAccountId;
     private UUID destinationAccountId;
+
     private UUID userId;
+
     private Account sourceAccount;
     private Account destinationAccount;
+
+    private AccountNumber accountNumber;
+    private AccountNumber accountNumber2;
 
     @BeforeEach
     void SetUp() {
@@ -49,10 +54,13 @@ public class TransferMoneyUseCaseTest {
 
         userId = UUID.randomUUID();
 
+        accountNumber = AccountNumber.generate();
+        accountNumber2 = AccountNumber.generate();
+
         sourceAccount = Account.restore(
                 sourceAccountId,
                 userId,
-                "12345-6",
+                accountNumber.getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(100)),
                 AccountStatus.ACTIVE,
@@ -63,7 +71,7 @@ public class TransferMoneyUseCaseTest {
         destinationAccount = Account.restore(
                 destinationAccountId,
                 UUID.randomUUID(),
-                "12345-7",
+                accountNumber2.getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(50.0)),
                 AccountStatus.ACTIVE,

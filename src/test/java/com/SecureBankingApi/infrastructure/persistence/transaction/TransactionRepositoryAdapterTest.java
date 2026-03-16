@@ -1,5 +1,6 @@
 package com.SecureBankingApi.infrastructure.persistence.transaction;
 
+import com.SecureBankingApi.domain.account.AccountNumber;
 import com.SecureBankingApi.domain.account.Money;
 import com.SecureBankingApi.domain.transaction.AccountDataTransaction;
 import com.SecureBankingApi.domain.transaction.Transaction;
@@ -36,11 +37,13 @@ public class TransactionRepositoryAdapterTest {
 
     private UUID receiverUserId;
     private UUID receiverAccountId;
+    private AccountNumber receiverAccountNumber;
     private UUID accountId;
 
     private UUID sourceId;
     private UUID sourceUserId;
     private UUID sourceAccountId;
+    private AccountNumber sourceAccountNumber;
 
     @InjectMocks
     private TransactionRepositoryAdapter adapter;
@@ -53,23 +56,25 @@ public class TransactionRepositoryAdapterTest {
         receiverUserId = UUID.randomUUID();
         accountId = UUID.randomUUID();
         receiverAccountId = UUID.randomUUID();
+        receiverAccountNumber = AccountNumber.generate();
 
         sourceId = UUID.randomUUID();
         sourceUserId = UUID.randomUUID();
         sourceAccountId = UUID.randomUUID();
+        sourceAccountNumber = AccountNumber.generate();
 
         domain = Transaction.restore(
                 id,
                 AccountDataTransaction.of(
                         receiverUserId,
                         receiverAccountId,
-                        "12345-6",
+                        receiverAccountNumber,
                         "001"
                 ),
                 AccountDataTransaction.of(
                         sourceUserId,
                         sourceAccountId,
-                        "12345-7",
+                        sourceAccountNumber,
                         "001"
                 ),
                 TransactionStatus.PENDING,
@@ -142,12 +147,12 @@ public class TransactionRepositoryAdapterTest {
 
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                "12345-8",
+                sourceAccountNumber.getValue(),
                 "001",
 
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                "12345-9",
+                receiverAccountNumber.getValue(),
                 "001",
 
                 TransactionStatus.PENDING,
@@ -166,13 +171,13 @@ public class TransactionRepositoryAdapterTest {
                 AccountDataTransaction.of(
                         entity2.getDestinationUserId(),
                         entity2.getDestinationAccountId(),
-                        entity2.getDestinationAccountNumber(),
+                        AccountNumber.restore(entity2.getDestinationAccountNumber()),
                         entity2.getDestinationAgency()
                 ),
                 AccountDataTransaction.of(
                         entity2.getSourceUserId(),
                         entity2.getSourceAccountId(),
-                        entity2.getSourceAccountNumber(),
+                        AccountNumber.restore(entity2.getSourceAccountNumber()),
                         entity2.getDestinationAgency()
                 ),
 
@@ -204,11 +209,11 @@ public class TransactionRepositoryAdapterTest {
                 UUID.randomUUID(),
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                "12345-8",
+                sourceAccountNumber.getValue(),
                 "001",
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                "12345-9",
+                receiverAccountNumber.getValue(),
                 "001",
                 TransactionStatus.PENDING,
                 TransactionType.TRANSFER,
@@ -223,13 +228,13 @@ public class TransactionRepositoryAdapterTest {
                 AccountDataTransaction.of(
                         entity2.getDestinationUserId(),
                         entity2.getDestinationAccountId(),
-                        entity2.getDestinationAccountNumber(),
+                        AccountNumber.restore(entity2.getDestinationAccountNumber()),
                         entity2.getDestinationAgency()
                 ),
                 AccountDataTransaction.of(
                         entity2.getSourceUserId(),
                         entity2.getSourceAccountId(),
-                        entity2.getSourceAccountNumber(),
+                       AccountNumber.restore(entity2.getSourceAccountNumber()),
                         entity2.getSourceAgency()
                 ),
 
@@ -277,13 +282,13 @@ public class TransactionRepositoryAdapterTest {
                 AccountDataTransaction.of(
                         entity2.getDestinationUserId(),
                         entity2.getDestinationAccountId(),
-                        entity2.getDestinationAccountNumber(),
+                        AccountNumber.restore(entity2.getDestinationAccountNumber()),
                         entity2.getDestinationAgency()
                 ),
                 AccountDataTransaction.of(
                         entity2.getSourceUserId(),
                         entity2.getSourceAccountId(),
-                        entity2.getSourceAccountNumber(),
+                        AccountNumber.restore(entity2.getSourceAccountNumber()),
                         entity2.getSourceAgency()
                 ),
 
@@ -315,11 +320,11 @@ public class TransactionRepositoryAdapterTest {
                 UUID.randomUUID(),
                 UUID.randomUUID(),
                 sourceAccountId,
-                "12345-8",
+                sourceAccountNumber.getValue(),
                 "001",
                 UUID.randomUUID(),
                 receiverAccountId,
-                "12345-9",
+                receiverAccountNumber.getValue(),
                 "001",
                 TransactionStatus.PENDING,
                 TransactionType.TRANSFER,
@@ -334,13 +339,13 @@ public class TransactionRepositoryAdapterTest {
                 AccountDataTransaction.of(
                         entity2.getDestinationUserId(),
                         entity2.getDestinationAccountId(),
-                        entity2.getDestinationAccountNumber(),
+                        AccountNumber.restore(entity2.getDestinationAccountNumber()),
                         entity2.getDestinationAgency()
                 ),
                 AccountDataTransaction.of(
                         entity2.getSourceUserId(),
                         entity2.getSourceAccountId(),
-                        entity2.getSourceAccountNumber(),
+                        AccountNumber.restore(entity2.getSourceAccountNumber()),
                         entity2.getSourceAgency()
                 ),
 

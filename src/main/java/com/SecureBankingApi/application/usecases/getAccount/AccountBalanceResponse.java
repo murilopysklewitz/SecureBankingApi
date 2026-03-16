@@ -1,5 +1,6 @@
 package com.SecureBankingApi.application.usecases.getAccount;
 
+import com.SecureBankingApi.domain.account.AccountNumber;
 import com.SecureBankingApi.domain.account.AccountStatus;
 
 import java.math.BigDecimal;
@@ -9,12 +10,12 @@ import java.util.UUID;
 public class AccountBalanceResponse {
 
     private final UUID accountId;
-    private final String accountNumber;
+    private final AccountNumber accountNumber;
     private final BigDecimal balance;
     private final AccountStatus status;
 
     public AccountBalanceResponse(UUID accountId,
-                                  String accountNumber,
+                                  AccountNumber accountNumber,
                                   BigDecimal balance,
                                   AccountStatus status) {
         this.accountId = accountId;
@@ -27,7 +28,7 @@ public class AccountBalanceResponse {
         return accountId;
     }
 
-    public String getAccountNumber() {
+    public AccountNumber getAccountNumber() {
         return accountNumber;
     }
 

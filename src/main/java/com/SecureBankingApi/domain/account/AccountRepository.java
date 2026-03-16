@@ -8,9 +8,12 @@ public interface AccountRepository {
     void save(Account account);
     List<Account> findAll();
     Optional<Account> findById(UUID id);
-    Optional<Account> findByAccountNumber(String accountNumber);
+    Optional<Account> findByAccountNumber(AccountNumber accountNumber);
     List<Account> findByUserId(UUID userId);
-    boolean existsByAccountNumber(String accountNumber);
+    List<Account> findByStatus(AccountStatus status);
+    List<Account> findByType(AccountType type);
+    boolean existsByAccountNumber(AccountNumber accountNumber);
+    boolean existsByUserIdAndType(UUID userId, AccountType type);
     void delete(Account account);
 
 }

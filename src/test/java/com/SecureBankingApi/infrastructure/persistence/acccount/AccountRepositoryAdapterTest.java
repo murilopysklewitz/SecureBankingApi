@@ -1,9 +1,6 @@
 package com.SecureBankingApi.infrastructure.persistence.acccount;
 
-import com.SecureBankingApi.domain.account.Account;
-import com.SecureBankingApi.domain.account.AccountStatus;
-import com.SecureBankingApi.domain.account.AccountType;
-import com.SecureBankingApi.domain.account.Money;
+import com.SecureBankingApi.domain.account.*;
 import com.SecureBankingApi.infrastructure.persistence.account.AccountJpaEntity;
 import com.SecureBankingApi.infrastructure.persistence.account.AccountMapper;
 import com.SecureBankingApi.infrastructure.persistence.account.AccountRepositoryAdapter;
@@ -34,6 +31,7 @@ public class AccountRepositoryAdapterTest {
     @InjectMocks
     private AccountRepositoryAdapter adapter;
     private UUID accountId;
+    private AccountNumber accountNumber;
     private UUID userId;
     private Account domainAccount;
     private AccountJpaEntity entityAccount;
@@ -41,11 +39,12 @@ public class AccountRepositoryAdapterTest {
     @BeforeEach
     void SetUp() {
         accountId = UUID.randomUUID();
+        accountNumber = AccountNumber.generate();
         userId = UUID.randomUUID();
         domainAccount = Account.restore(
                 accountId,
                 userId,
-                "12345-6",
+                accountNumber.getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(10)),
                 AccountStatus.ACTIVE,
@@ -56,7 +55,7 @@ public class AccountRepositoryAdapterTest {
 
         entityAccount = new AccountJpaEntity(
                 accountId,
-                "12345-6",
+                accountNumber.getValue(),
                 "001",
                 userId,
                 BigDecimal.valueOf(10),
@@ -103,13 +102,13 @@ public class AccountRepositoryAdapterTest {
     @Test
     void shouldFindAccountByAccountNumberSuccessfully() {
         // Arrange
-        String accountNumber = "12345-6";
+        String accountNumber = AccountRepositoryAdapterTest.this.accountNumber.getValue();
         when(springDataRepository.findByAccountNumber(accountNumber))
                 .thenReturn(Optional.of(entityAccount));
         when(accountMapper.toDomain(entityAccount)).thenReturn(domainAccount);
 
         // Act
-        Optional<Account> result = adapter.findByAccountNumber(accountNumber);
+        Optional<Account> result = adapter.findByAccountNumber(AccountNumber.restore(accountNumber));
 
         // Assert
         assertTrue(result.isPresent());
@@ -125,7 +124,7 @@ public class AccountRepositoryAdapterTest {
         when(springDataRepository.findByAccountNumber(accountNumber))
                 .thenReturn(Optional.empty());
 
-        Optional<Account> result = adapter.findByAccountNumber(accountNumber);
+        Optional<Account> result = adapter.findByAccountNumber(AccountNumber.restore(accountNumber));
 
         assertFalse(result.isPresent());
         verify(springDataRepository, times(1)).findByAccountNumber(accountNumber);
@@ -242,14 +241,14 @@ public class AccountRepositoryAdapterTest {
     @Test
     void shouldCheckIfAccountExistsByAccountNumber() {
 
-        String accountNumber = "12345-6";
-        when(springDataRepository.existsByAccountNumber(accountNumber))
+        String accountNumberStr = AccountRepositoryAdapterTest.this.accountNumber.getValue();
+        when(springDataRepository.existsByAccountNumber(accountNumberStr))
                 .thenReturn(true);
 
-        boolean exists = adapter.existsByAccountNumber(accountNumber);
+        boolean exists = adapter.existsByAccountNumber(AccountNumber.restore(accountNumberStr));
 
         assertTrue(exists);
-        verify(springDataRepository, times(1)).existsByAccountNumber(accountNumber);
+        verify(springDataRepository, times(1)).existsByAccountNumber(accountNumberStr);
     }
 
     @Test
@@ -258,7 +257,7 @@ public class AccountRepositoryAdapterTest {
         when(springDataRepository.existsByAccountNumber(accountNumber))
                 .thenReturn(false);
 
-        boolean exists = adapter.existsByAccountNumber(accountNumber);
+        boolean exists = adapter.existsByAccountNumber(AccountNumber.restore(accountNumber));
 
 
         assertFalse(exists);
@@ -288,7 +287,7 @@ public class AccountRepositoryAdapterTest {
 
         AccountJpaEntity updatedEntity = new AccountJpaEntity(
                 accountId,
-                "12345-6",
+                accountNumber.getValue(),
                 "001",
                 userId,
                 BigDecimal.valueOf(2000.00),

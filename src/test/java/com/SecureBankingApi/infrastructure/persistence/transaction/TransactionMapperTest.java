@@ -1,5 +1,6 @@
 package com.SecureBankingApi.infrastructure.persistence.transaction;
 
+import com.SecureBankingApi.domain.account.AccountNumber;
 import com.SecureBankingApi.domain.account.Money;
 import com.SecureBankingApi.domain.transaction.AccountDataTransaction;
 import com.SecureBankingApi.domain.transaction.Transaction;
@@ -28,7 +29,7 @@ public class TransactionMapperTest {
 
         UUID sourceUserId = UUID.randomUUID();
         UUID sourceAccountId = UUID.randomUUID();
-        String sourceAccountNumber = "12345-6";
+        AccountNumber sourceAccountNumber = AccountNumber.generate();
         String sourceAgency = "001";
 
         AccountDataTransaction sourceData = AccountDataTransaction.of(
@@ -40,7 +41,7 @@ public class TransactionMapperTest {
 
         UUID destinationUserId = UUID.randomUUID();
         UUID destinationAccountId = UUID.randomUUID();
-        String destinationAccountNumber = "12345-6";
+        AccountNumber destinationAccountNumber = AccountNumber.generate();
         String destinationAgency = "001";
 
         AccountDataTransaction destinationData = AccountDataTransaction.of(
@@ -59,11 +60,11 @@ public class TransactionMapperTest {
             id,
                 sourceData.getUserId(),
                 sourceAccountId,
-                sourceData.getAccountNumber(),
+                sourceData.getAccountNumber().getValue(),
                 sourceData.getAgency(),
                 destinationData.getUserId(),
                 destinationData.getAccountId(),
-                destinationData.getAccountNumber(),
+                destinationData.getAccountNumber().getValue(),
                 destinationData.getAgency(),
                 TransactionStatus.PENDING,
                 TransactionType.TRANSFER,
@@ -79,9 +80,9 @@ public class TransactionMapperTest {
         assertNotNull(domain);
         assertEquals(id, domain.getId());
         assertEquals(sourceUserId, domain.getSource().getUserId());
-        assertEquals("12345-6", domain.getSource().getAccountNumber());
+        assertEquals(sourceAccountNumber, domain.getSource().getAccountNumber());
         assertEquals(destinationUserId, domain.getReceiver().getUserId());
-        assertEquals("12345-7", domain.getReceiver().getAccountNumber());
+        assertEquals(destinationAccountNumber, domain.getReceiver().getAccountNumber());
         assertEquals(TransactionStatus.PENDING, domain.getStatus());
         assertEquals(TransactionType.TRANSFER, domain.getType());
         assertEquals(BigDecimal.valueOf(100.00), domain.getAmount().getValue());
@@ -96,13 +97,13 @@ public class TransactionMapperTest {
         AccountDataTransaction source = AccountDataTransaction.of(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                "12345-6",
+                AccountNumber.generate(),
                 "001"
         );
         AccountDataTransaction destination = AccountDataTransaction.of(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                "12345-7",
+                AccountNumber.generate(),
                 "002"
         );
         Money amount = Money.of(BigDecimal.valueOf(100.00));

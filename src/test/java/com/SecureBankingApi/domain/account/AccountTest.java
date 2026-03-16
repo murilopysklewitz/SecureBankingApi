@@ -1,6 +1,7 @@
 package com.SecureBankingApi.domain.account;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -9,10 +10,17 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AccountTest {
+
+    AccountNumber accountNumber;
+
+    @BeforeEach
+    void SetUp() {
+        accountNumber = AccountNumber.generate();
+    }
+
     @Test
     void ShouldCreateAnAccountSuccessfully(){
         UUID userId = UUID.randomUUID();
-        String accountNumber = "0001-00000123";
         String agency = "0001";
         AccountType type = AccountType.CHECKING;
 
@@ -40,7 +48,7 @@ public class AccountTest {
     @Test
     void ShouldCreateCheckingAccount() {
         Account account = Account.create(
-                "0001-00000123",
+                accountNumber,
                 "001",
                 UUID.randomUUID(),
                 AccountType.CHECKING
@@ -51,7 +59,7 @@ public class AccountTest {
     @Test
     void ShouldCreateSavingsAccount() {
         Account account = Account.create(
-                "001-00000123",
+                accountNumber,
                 "001",
                 UUID.randomUUID(),
                 AccountType.SAVINGS
@@ -63,7 +71,7 @@ public class AccountTest {
     @Test
     void ShouldBlockAccount() {
         Account account = Account.create(
-                "0001-00000123",
+                accountNumber,
                 "001",
                 UUID.randomUUID(),
                 AccountType.CHECKING
@@ -77,7 +85,7 @@ public class AccountTest {
     @Test
     void ShouldUnblockAccount() {
         Account account = Account.create(
-                "0001-00000123",
+                accountNumber,
                 "001",
                 UUID.randomUUID(),
                 AccountType.CHECKING
@@ -91,7 +99,7 @@ public class AccountTest {
     @Test
     void ShouldCloseAccount(){
         Account account = Account.create(
-                "0001-00000123",
+                accountNumber,
                 "001",
                 UUID.randomUUID(),
                 AccountType.CHECKING
@@ -103,7 +111,7 @@ public class AccountTest {
     @Test
     void ShouldCreditAnAccount() {
         Account account = Account.create(
-                "0001-00000123",
+                accountNumber,
                 "001",
                 UUID.randomUUID(),
                 AccountType.CHECKING
@@ -117,7 +125,7 @@ public class AccountTest {
     @Test
     void ShouldDebitFromAccount() {
         Account account = Account.create(
-                "0001-00000123",
+                accountNumber,
                 "001",
                 UUID.randomUUID(),
                 AccountType.CHECKING

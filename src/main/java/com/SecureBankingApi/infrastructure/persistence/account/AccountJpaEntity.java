@@ -3,6 +3,8 @@ package com.SecureBankingApi.infrastructure.persistence.account;
 import com.SecureBankingApi.domain.account.AccountStatus;
 import com.SecureBankingApi.domain.account.AccountType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,7 +13,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "accounts", indexes = {
         @Index(name = "idx_account_number", columnList = "account_number"),
-        @Index(name = "idx_user_id", columnList = "user_id")
+        @Index(name = "idx_user_id", columnList = "user_id"),
+        @Index(name = "idx_user_id_account_type", columnList = "user_id,account_type")
 })
 public class AccountJpaEntity {
     @Id
@@ -24,7 +27,7 @@ public class AccountJpaEntity {
     @Column(name = "agency", nullable = false, length = 20)
     private String agency;
 
-    @Column(name = "user_id", nullable = false, unique = true, length = 20)
+    @Column(name = "user_id", nullable = false, length = 20)
     private UUID userId;
 
     @Column(name = "balance", nullable = false, precision = 19, scale = 2)
@@ -39,9 +42,12 @@ public class AccountJpaEntity {
     @Enumerated(EnumType.STRING)
     private AccountStatus status;
 
+
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime created_at;
 
+    @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updated_at;
 

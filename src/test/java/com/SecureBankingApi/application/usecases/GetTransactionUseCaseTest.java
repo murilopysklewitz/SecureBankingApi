@@ -2,6 +2,7 @@ package com.SecureBankingApi.application.usecases;
 
 import com.SecureBankingApi.application.usecases.createTransaction.TransactionResponse;
 import com.SecureBankingApi.application.usecases.getTransactionUseCase.GetTransactionUseCase;
+import com.SecureBankingApi.domain.account.AccountNumber;
 import com.SecureBankingApi.domain.account.Money;
 import com.SecureBankingApi.domain.transaction.*;
 import com.SecureBankingApi.domain.transaction.exceptions.TransactionNotFoundException;
@@ -43,14 +44,14 @@ class GetTransactionUseCaseTest {
         AccountDataTransaction source = AccountDataTransaction.of(
                 sourceUserId,
                 UUID.randomUUID(),
-                "12345-6",
+                AccountNumber.generate(),
                 "001"
         );
 
         AccountDataTransaction destination = AccountDataTransaction.of(
                 destinationUserId,
                 UUID.randomUUID(),
-                "65432-1",
+                AccountNumber.generate(),
                 "001"
         );
 
@@ -129,7 +130,7 @@ class GetTransactionUseCaseTest {
         Transaction depositTransaction = Transaction.restore(
                 transactionId,
                 null,
-                AccountDataTransaction.of(destinationUserId, UUID.randomUUID(), "12345-6", "001"),
+                AccountDataTransaction.of(destinationUserId, UUID.randomUUID(), AccountNumber.generate(), "001"),
                 TransactionStatus.COMPLETED,
                 TransactionType.DEPOSIT,
                 "Deposit",

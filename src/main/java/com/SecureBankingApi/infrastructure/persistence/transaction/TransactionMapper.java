@@ -1,5 +1,6 @@
 package com.SecureBankingApi.infrastructure.persistence.transaction;
 
+import com.SecureBankingApi.domain.account.AccountNumber;
 import com.SecureBankingApi.domain.account.Money;
 import com.SecureBankingApi.domain.transaction.AccountDataTransaction;
 import com.SecureBankingApi.domain.transaction.Transaction;
@@ -16,12 +17,12 @@ public class TransactionMapper {
                 AccountDataTransaction.of(
                         entity.getDestinationUserId(),
                         entity.getDestinationAccountId(),
-                        entity.getDestinationAccountNumber(),
+                        AccountNumber.restore(entity.getDestinationAccountNumber()),
                         entity.getDestinationAgency()),
                 AccountDataTransaction.of(
                         entity.getSourceUserId(),
                         entity.getSourceAccountId(),
-                        entity.getSourceAccountNumber(),
+                        AccountNumber.restore(entity.getSourceAccountNumber()),
                         entity.getDestinationAgency()),
 
                 entity.getStatus(),
@@ -40,11 +41,11 @@ public class TransactionMapper {
                  domain.getId(),
                  domain.getSource().getUserId(),
                  domain.getSource().getAccountId(),
-                 domain.getSource().getAccountNumber(),
+                 domain.getSource().getAccountNumber().getValue(),
                  domain.getSource().getAgency(),
                  domain.getReceiver().getUserId(),
                  domain.getReceiver().getAccountId(),
-                 domain.getReceiver().getAccountNumber(),
+                 domain.getReceiver().getAccountNumber().getValue(),
                  domain.getReceiver().getAgency(),
                  domain.getStatus(),
                  domain.getType(),

@@ -1,6 +1,7 @@
 package com.SecureBankingApi.infrastructure.persistence.account;
 
 import com.SecureBankingApi.domain.account.Account;
+import com.SecureBankingApi.domain.account.AccountNumber;
 import com.SecureBankingApi.domain.account.Money;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ public class AccountMapper {
     public Account toDomain(AccountJpaEntity entity){
         return Account.restore(entity.getId(),
                 entity.getUserId(),
-                entity.getAccountNumber(),
+                AccountNumber.restore(entity.getAccountNumber()).getValue(),
                 entity.getAgency(),
                 Money.of(entity.getBalance()),
                 entity.getStatus(),
@@ -23,7 +24,7 @@ public class AccountMapper {
     }
     public AccountJpaEntity toEntity(Account account){
         return new AccountJpaEntity(account.getId(),
-                account.getAccountNumber(),
+                account.getAccountNumber().getValue(),
                 account.getAgency(),
                 account.getUserId(),
                 account.getBalance().getValue(),

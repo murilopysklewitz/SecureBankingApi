@@ -35,9 +35,11 @@ class GetTransactionHistoryUseCaseTest {
     private UUID accountId;
     private UUID userId;
     private Account account;
+    private AccountNumber accountNumber;
 
     private UUID accountId2;
     private UUID userId2;
+    private AccountNumber accountNumber2;
     private Account account2;
 
     @BeforeEach
@@ -46,11 +48,13 @@ class GetTransactionHistoryUseCaseTest {
 
         accountId = UUID.randomUUID();
         userId = UUID.randomUUID();
+        accountNumber = AccountNumber.generate();
+        accountNumber2 = AccountNumber.generate();
 
         account = Account.restore(
                 accountId,
                 userId,
-                "12345-6",
+                accountNumber.getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(1000.00)),
                 AccountStatus.ACTIVE,
@@ -64,7 +68,7 @@ class GetTransactionHistoryUseCaseTest {
         account2 = Account.restore(
                 accountId2,
                 userId2,
-                "12345-7",
+                accountNumber2.getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(50)),
                 AccountStatus.ACTIVE,
@@ -145,13 +149,13 @@ class GetTransactionHistoryUseCaseTest {
         AccountDataTransaction sourceData = AccountDataTransaction.of(
                 userId,
                 accountId,
-                "12345-6",
+                accountNumber,
                 "001"
         );
         AccountDataTransaction receiverData = AccountDataTransaction.of(
                 userId,
                 accountId,
-                "12345-7",
+                accountNumber2,
                 "001"
         );
 

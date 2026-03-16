@@ -1,7 +1,6 @@
 package com.SecureBankingApi.infrastructure.persistence.account;
 
-import com.SecureBankingApi.domain.account.Account;
-import com.SecureBankingApi.domain.account.AccountRepository;
+import com.SecureBankingApi.domain.account.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -39,8 +38,8 @@ public class AccountRepositoryAdapter implements AccountRepository {
     }
 
     @Override
-    public Optional<Account> findByAccountNumber(String accountNumber) {
-        return repository.findByAccountNumber(accountNumber).map((e) -> mapper.toDomain(e));
+    public Optional<Account> findByAccountNumber(AccountNumber accountNumber) {
+        return repository.findByAccountNumber(accountNumber.getValue()).map((e) -> mapper.toDomain(e));
     }
 
     @Override
@@ -49,8 +48,25 @@ public class AccountRepositoryAdapter implements AccountRepository {
     }
 
     @Override
-    public boolean existsByAccountNumber(String accountNumber) {
-        return repository.existsByAccountNumber(accountNumber);
+    public List<Account> findByStatus(AccountStatus status) {
+        List <AccountJpaEntity> entities = repository.findByStatus(status);
+        return mapper.toDomainList(entities);
+    }
+
+    @Override
+    public List<Account> findByType(AccountType type) {
+        List <AccountJpaEntity> entities = repository.findByType(type);
+        return mapper.toDomainList(entities);
+    }
+
+    @Override
+    public boolean existsByAccountNumber(AccountNumber accountNumber) {
+        return repository.existsByAccountNumber(accountNumber.getValue());
+    }
+
+    @Override
+    public boolean existsByUserIdAndType(UUID userId, AccountType type) {
+        return repository.existsByUserIdAndType(userId, type);
     }
 
     @Override

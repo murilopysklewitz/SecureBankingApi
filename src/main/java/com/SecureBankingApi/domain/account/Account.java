@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class Account {
     private UUID id;
-    private String accountNumber;
+    private AccountNumber accountNumber;
     private String agency;
     private UUID userId;
     private Money balance;
@@ -16,7 +16,7 @@ public class Account {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    private Account(String accountNumber,
+    private Account(AccountNumber accountNumber,
                     String agency,
                     UUID userId,
                     Money balance,
@@ -33,11 +33,11 @@ public class Account {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public static Account create(String accountNumber,
+    public static Account create(AccountNumber accountNumber,
                                  String agency,
                                  UUID userId,
                                  AccountType type){
-        if(accountNumber == null || accountNumber.isBlank()){
+        if(accountNumber == null){
             throw new IllegalArgumentException("account number cannot be null");
         }
         if(agency == null || agency.isBlank()){
@@ -61,7 +61,7 @@ public class Account {
 
     public static Account restore(UUID id,
                                   UUID userId,
-                                  String accountNumber,
+                                  String accountNumberStr,
                                   String agency,
                                   Money balance,
                                   AccountStatus status,
@@ -70,7 +70,7 @@ public class Account {
                                   LocalDateTime updatedAt) {
 
         Account account = new Account(
-                accountNumber,
+                AccountNumber.restore(accountNumberStr),
                 agency,
                 userId,
                 balance,
@@ -192,7 +192,7 @@ public class Account {
         return agency;
     }
 
-    public String getAccountNumber() {
+    public AccountNumber getAccountNumber() {
         return accountNumber;
     }
 

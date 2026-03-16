@@ -1,6 +1,7 @@
 package com.SecureBankingApi.infrastructure.persistence.acccount;
 
 import com.SecureBankingApi.domain.account.Account;
+import com.SecureBankingApi.domain.account.AccountNumber;
 import com.SecureBankingApi.domain.account.AccountStatus;
 import com.SecureBankingApi.domain.account.AccountType;
 import com.SecureBankingApi.infrastructure.persistence.account.AccountJpaEntity;
@@ -30,7 +31,7 @@ public class AccountMapperTest {
 
         AccountJpaEntity entity = new AccountJpaEntity(
                 id,
-                "12345-6",
+                AccountNumber.generate().getValue(),
                 "001",
                 userId,
                 amount,
@@ -42,7 +43,7 @@ public class AccountMapperTest {
         Account domain = mapper.toDomain(entity);
 
         assertEquals(entity.getId(), domain.getId());
-        assertEquals(entity.getAccountNumber(), domain.getAccountNumber());
+        assertEquals(entity.getAccountNumber(), domain.getAccountNumber().getValue());
         assertEquals(entity.getAgency(), domain.getAgency());
         assertEquals(entity.getBalance(), domain.getBalance().getValue());
         assertEquals(entity.getType(), domain.getType());
@@ -55,7 +56,7 @@ public class AccountMapperTest {
     @Test
     void ShouldConvertDomainToEntity() {
         Account domain = Account.create(
-                "12345-6",
+                AccountNumber.generate(),
                 "001",
                 UUID.randomUUID(),
                 AccountType.CHECKING
@@ -64,7 +65,7 @@ public class AccountMapperTest {
         AccountJpaEntity entity = mapper.toEntity(domain);
 
         assertEquals(entity.getId(), domain.getId());
-        assertEquals(entity.getAccountNumber(), domain.getAccountNumber());
+        assertEquals(entity.getAccountNumber(), domain.getAccountNumber().getValue());
         assertEquals(entity.getAgency(), domain.getAgency());
         assertEquals(entity.getBalance(), domain.getBalance().getValue());
         assertEquals(entity.getType(), domain.getType());

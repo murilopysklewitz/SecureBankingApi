@@ -1,5 +1,6 @@
 package com.SecureBankingApi.domain.transaction;
 
+import com.SecureBankingApi.domain.account.AccountNumber;
 import com.SecureBankingApi.domain.account.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,13 +20,13 @@ public class TransactionTest {
         source = AccountDataTransaction.of(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                "12345-6",
+                AccountNumber.generate(),
                 "001"
         );
         destination = AccountDataTransaction.of(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
-                "65432-1",
+                AccountNumber.generate(),
                 "001"
         );
         amount = Money.of(BigDecimal.valueOf(100.00));

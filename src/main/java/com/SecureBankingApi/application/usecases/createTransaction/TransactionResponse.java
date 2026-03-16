@@ -60,10 +60,10 @@ public class TransactionResponse {
             return new TransactionResponse(
                     transaction.getId(),
                     source != null ? source.getUserId() : null,
-                    source != null ? source.getAccountNumber() : null,
+                    source != null ? source.getAccountNumber().getValue() : null,
                     source != null ? source.getAgency() : null,
                     receiver != null ? receiver.getUserId() : null,
-                    receiver != null ? receiver.getAccountNumber() : null,
+                    receiver != null ? receiver.getAccountNumber().getValue() : null,
                     receiver != null ? receiver.getAgency() : null,
                     transaction.getAmount().getValue(),
                     transaction.getType(),
