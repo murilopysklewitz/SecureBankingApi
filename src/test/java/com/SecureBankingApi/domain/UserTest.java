@@ -27,7 +27,7 @@ public class UserTest {
         User user = User.create(
                 "test@gmail.com",
                 "tests test",
-                new CPF("111111111111"),
+                new CPF("11111111111"),
                 "testPassword",
                 UserRole.USER
         );

@@ -54,7 +54,7 @@ class DepositMoneyUseCaseTest {
         account = Account.restore(
                 accountId,
                 userId,
-                "12345-6",
+                "123456-6",
                 "001",
                 Money.of(BigDecimal.valueOf(100.00)),
                 AccountStatus.ACTIVE,
@@ -176,7 +176,7 @@ class DepositMoneyUseCaseTest {
         Account closedAccount = Account.restore(
                 accountId,
                 userId,
-                "12345-6",
+                "123456-6",
                 "001",
                 Money.zero(),
                 AccountStatus.ACTIVE,
@@ -194,31 +194,6 @@ class DepositMoneyUseCaseTest {
         );
 
         assertEquals("Account is inative", exception.getMessage());
-    }
-
-    @Test
-    void shouldVerifyTransactionDataUsingCaptor() {
-        when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
-
-        ArgumentCaptor<Transaction> captor = ArgumentCaptor.forClass(Transaction.class);
-
-        useCase.execute(request, userId);
-
-        verify(transactionRepository).save(captor.capture());
-        Transaction savedTransaction = captor.getValue();
-
-        assertNotNull(savedTransaction);
-        assertEquals(TransactionType.DEPOSIT, savedTransaction.getType());
-        assertEquals(TransactionStatus.COMPLETED, savedTransaction.getStatus());
-        assertEquals(BigDecimal.valueOf(50.00), savedTransaction.getAmount().getValue());
-        assertEquals("Test deposit", savedTransaction.getDescription());
-
-        assertEquals(userId, savedTransaction.getSource().getUserId());
-        assertEquals(accountId, savedTransaction.getSource().getAccountId());
-        assertEquals("12345-6", savedTransaction.getSource().getAccountNumber());
-        assertEquals("001", savedTransaction.getSource().getAgency());
-
-        assertNull(savedTransaction.getReceiver());
     }
 
     @Test

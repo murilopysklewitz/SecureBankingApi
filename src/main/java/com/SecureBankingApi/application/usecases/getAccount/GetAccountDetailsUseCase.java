@@ -18,7 +18,7 @@ public class GetAccountDetailsUseCase {
     public AccountResponse execute(UUID accountId, UUID requestingUserId, boolean isAdmin) {
 
         Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Account not found"));
-        if (!isAdmin && account.getUserId() != requestingUserId) {
+        if (!isAdmin && account.getUserId().equals(requestingUserId)) {
             throw new RuntimeException(
                     "You don't have permission to view this account"
             );

@@ -7,6 +7,7 @@ import com.SecureBankingApi.domain.transaction.Transaction;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class TransactionMapper {
@@ -23,7 +24,7 @@ public class TransactionMapper {
                         entity.getSourceUserId(),
                         entity.getSourceAccountId(),
                         AccountNumber.restore(entity.getSourceAccountNumber()),
-                        entity.getDestinationAgency()),
+                        entity.getSourceAgency()),
 
                 entity.getStatus(),
                 entity.getType(),
@@ -37,6 +38,7 @@ public class TransactionMapper {
     }
 
     public TransactionJpaEntity toEntity(Transaction domain){
+        UUID sourceUserId = domain.getSource() != null ? domain.getSource().getUserId() : null;
          TransactionJpaEntity entity = new TransactionJpaEntity(
                  domain.getId(),
                  domain.getSource().getUserId(),

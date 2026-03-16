@@ -48,7 +48,7 @@ public class TransferMoneyUseCase {
 
         AccountDataTransaction destinationInfo = AccountDataTransaction.of(
                 destination.getUserId(),
-                source.getId(),
+                destination.getId(),
                 destination.getAccountNumber(),
                 destination.getAgency()
         );

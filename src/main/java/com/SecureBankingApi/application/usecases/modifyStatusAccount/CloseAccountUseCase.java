@@ -29,6 +29,7 @@ public class CloseAccountUseCase {
         }
 
         account.close();
+        accountRepository.save(account);
 
 
     }

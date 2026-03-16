@@ -32,7 +32,7 @@ public class Money {
 
 
     public boolean isZero(){
-        return this.value.equals(BigDecimal.ZERO);
+        return this.value.compareTo(BigDecimal.ZERO) == 0;
     }
 
     public BigDecimal getValue() {
@@ -42,5 +42,18 @@ public class Money {
     @Override
     public String toString() {
         return "R$ " + value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Money money = (Money) o;
+        return value.equals(money.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
     }
 }

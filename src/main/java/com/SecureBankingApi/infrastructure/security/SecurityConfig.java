@@ -62,11 +62,11 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PUT, "/api/accounts/{id}/unblock").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/api/accounts/{id}").hasRole("ADMIN")
 
-                                .requestMatchers(HttpMethod.POST, "/api/transactions/transfer").authenticated()
-                                .requestMatchers(HttpMethod.POST, "/api/transactions/deposit").authenticated()
-                                .requestMatchers(HttpMethod.POST, "/api/transactions/withdraw").authenticated()
-                                .requestMatchers(HttpMethod.POST, "/api/transactions/accounts/{accountId}").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.POST, "/api/transactions/reverse/{transactionId}").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/api/transaction/transfer").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/transaction/deposit").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/transaction/withdraw").authenticated()
+                                .requestMatchers(HttpMethod.POST, "/api/transaction/accounts/{accountId}").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/api/transaction/reverse/{transactionId}").hasRole("ADMIN")
                         .anyRequest().authenticated()
                         );
 

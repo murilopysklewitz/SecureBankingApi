@@ -18,7 +18,7 @@ public interface SpringDataTransactionRepository extends JpaRepository<Transacti
     List<TransactionJpaEntity> findByStatus(TransactionStatus status);
 
     @Query("SELECT t FROM TransactionJpaEntity t WHERE " +
-            "(t.sourceUserId = :accountId OR t.destinationUserId = :accountId) " +
+            "(t.sourceAccountId = :accountId OR t.destinationAccountId = :accountId) " +
             "AND t.createdAt BETWEEN :start AND :end")
     List<TransactionJpaEntity> findByPeriod(
             @Param("accountId") UUID accountId,

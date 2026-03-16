@@ -119,7 +119,7 @@ public class AccountController {
 
             @Valid @RequestBody CreateAccountWebRequest request,
                                                          @AuthenticationPrincipal UUID userId){
-        CreateAccountRequest useCaseRequest = new CreateAccountRequest(request.getUserId(), request.getType());
+        CreateAccountRequest useCaseRequest = new CreateAccountRequest(userId, request.getType());
 
         AccountResponse response = createAccountUseCase.execute(useCaseRequest);
 

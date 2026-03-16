@@ -26,7 +26,7 @@ public class ReverseTransactionUseCase {
         if(!transaction.isCompleted()){
             throw new InvalidTransactionException("cannot reverse a non completed transaction");
         }
-        if(!transaction.isReversed()){
+        if(transaction.isReversed()){
             throw new InvalidTransactionException("cannot reverse a reversed transaction");
         }
         if (transaction.getSource() == null) {
