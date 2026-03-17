@@ -1,6 +1,9 @@
 package com.SecureBankingApi.infrastructure.persistence.transaction;
 
+import com.SecureBankingApi.domain.PageRequest;
 import com.SecureBankingApi.domain.transaction.TransactionStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +17,10 @@ public interface SpringDataTransactionRepository extends JpaRepository<Transacti
     @Query("SELECT t FROM TransactionJpaEntity t WHERE " +
             "t.sourceUserId = :accountId OR t.destinationUserId = :accountId")
     List<TransactionJpaEntity> findByAccountId(UUID accountId);
+
+    @Query("SELECT t FROM TransactionJpaEntity t WHERE " +
+    "t.sourceAccountId = :accountId OR t.destinationAccountId = :accountId")
+    Page<TransactionJpaEntity> findByAccountId(UUID accountId, Pageable pageable);
 
     List<TransactionJpaEntity> findByStatus(TransactionStatus status);
 

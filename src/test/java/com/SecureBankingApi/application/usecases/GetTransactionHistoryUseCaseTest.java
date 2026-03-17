@@ -2,6 +2,8 @@ package com.SecureBankingApi.application.usecases;
 
 import com.SecureBankingApi.application.usecases.createTransaction.TransactionResponse;
 import com.SecureBankingApi.application.usecases.getTransactionHistory.GetTransactionHistoryUseCase;
+import com.SecureBankingApi.domain.PageRequest;
+import com.SecureBankingApi.domain.PageResult;
 import com.SecureBankingApi.domain.account.*;
 import com.SecureBankingApi.domain.account.exceptions.AccountNotFoundException;
 import com.SecureBankingApi.domain.transaction.*;
@@ -22,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName("GetTransactionHistoryUseCase Tests")
 class GetTransactionHistoryUseCaseTest {
 
     @Mock
@@ -79,53 +82,106 @@ class GetTransactionHistoryUseCaseTest {
     }
 
     @Test
+    @DisplayName("should get transaction history successfully with pagination")
     void shouldGetTransactionHistorySuccessfully() {
         Transaction t1 = createTransaction(TransactionType.DEPOSIT, BigDecimal.valueOf(100.00));
         Transaction t2 = createTransaction(TransactionType.WITHDRAWAL, BigDecimal.valueOf(50.00));
         Transaction t3 = createTransaction(TransactionType.TRANSFER, BigDecimal.valueOf(200.00));
 
-        when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
-        when(transactionRepository.findByAccountId(accountId)).thenReturn(List.of(t1, t2, t3));
+        PageRequest pageRequest = new PageRequest("createdAt", "DESC", 10, 0);
+        PageResult<Transaction> pageResult = new PageResult<>(
+                0,
+                10,
+                3L,
+                List.of(t1, t2, t3)
+        );
 
-        List<TransactionResponse> result = useCase.execute(accountId, userId, false);
+        when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
+        when(transactionRepository.findByAccountIdPage(accountId, pageRequest)).thenReturn(pageResult);
+
+        PageResult<TransactionResponse> result = useCase.execute(accountId, userId, false, pageRequest);
 
         assertNotNull(result);
-        assertEquals(3, result.size());
+        assertEquals(3, result.getContent().size());
+        assertEquals(0, result.getPage());
+        assertEquals(10, result.getSize());
+        assertEquals(3L, result.getTotalElements());
 
         verify(accountRepository, times(1)).findById(accountId);
-        verify(transactionRepository, times(1)).findByAccountId(accountId);
+        verify(transactionRepository, times(1)).findByAccountIdPage(accountId, pageRequest);
     }
 
     @Test
-    void shouldReturnEmptyListWhenNoTransactions() {
-        when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
-        when(transactionRepository.findByAccountId(accountId)).thenReturn(List.of());
+    @DisplayName("should return empty page when no transactions")
+    void shouldReturnEmptyPageWhenNoTransactions() {
+        PageRequest pageRequest = new PageRequest("createdAt", "DESC", 10, 0);
+        PageResult<Transaction> emptyPageResult = new PageResult<>(
+                0,
+                10,
+                0L,
+                List.of()
+        );
 
-        List<TransactionResponse> result = useCase.execute(accountId, userId, false);
+        when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
+        when(transactionRepository.findByAccountIdPage(accountId, pageRequest)).thenReturn(emptyPageResult);
+
+        PageResult<TransactionResponse> result = useCase.execute(accountId, userId, false, pageRequest);
 
         assertNotNull(result);
-        assertTrue(result.isEmpty());
+        assertTrue(result.getContent().isEmpty());
+        assertEquals(0L, result.getTotalElements());
     }
 
     @Test
+    @DisplayName("should handle pagination correctly with multiple pages")
+    void shouldHandlePaginationCorrectlyWithMultiplePages() {
+        Transaction t1 = createTransaction(TransactionType.DEPOSIT, BigDecimal.valueOf(100.00));
+        Transaction t2 = createTransaction(TransactionType.WITHDRAWAL, BigDecimal.valueOf(50.00));
+
+        PageRequest pageRequest = new PageRequest("createdAt", "DESC", 2, 1);
+        PageResult<Transaction> pageResult = new PageResult<>(
+                1,
+                2,
+                5L,
+                List.of(t1, t2)
+        );
+
+        when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
+        when(transactionRepository.findByAccountIdPage(accountId, pageRequest)).thenReturn(pageResult);
+
+        PageResult<TransactionResponse> result = useCase.execute(accountId, userId, false, pageRequest);
+
+        assertNotNull(result);
+        assertEquals(2, result.getContent().size());
+        assertEquals(1, result.getPage());
+        assertEquals(2, result.getSize());
+        assertEquals(5L, result.getTotalElements());
+    }
+
+    @Test
+    @DisplayName("should throw exception when account not found")
     void shouldThrowExceptionWhenAccountNotFound() {
+        PageRequest pageRequest = new PageRequest("createdAt", "DESC", 10, 0);
+
         when(accountRepository.findById(accountId)).thenReturn(Optional.empty());
 
         assertThrows(AccountNotFoundException.class,
-                () -> useCase.execute(accountId, userId, false));
+                () -> useCase.execute(accountId, userId, false, pageRequest));
 
-        verify(transactionRepository, never()).findByAccountId(any());
+        verify(transactionRepository, never()).findByAccountIdPage(any(), any());
     }
 
     @Test
+    @DisplayName("should throw exception when user is not account owner and not admin")
     void shouldThrowExceptionWhenUserIsNotAccountOwnerAndNotAdmin() {
         UUID otherUserId = UUID.randomUUID();
+        PageRequest pageRequest = new PageRequest("createdAt", "DESC", 10, 0);
 
         when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
 
         RuntimeException exception = assertThrows(
                 RuntimeException.class,
-                () -> useCase.execute(accountId, otherUserId, false)
+                () -> useCase.execute(accountId, otherUserId, false, pageRequest)
         );
 
         assertEquals("You don't have permission to view this account's transactions",
@@ -133,16 +189,48 @@ class GetTransactionHistoryUseCaseTest {
     }
 
     @Test
+    @DisplayName("should allow admin to access any account history")
     void shouldAllowAdminToAccessAnyAccountHistory() {
         UUID adminUserId = UUID.randomUUID();
+        PageRequest pageRequest = new PageRequest("createdAt", "DESC", 10, 0);
+
+        PageResult<Transaction> emptyPageResult = new PageResult<>(
+                0,
+                10,
+                0L,
+                List.of()
+        );
 
         when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
-        when(transactionRepository.findByAccountId(accountId)).thenReturn(List.of());
+        when(transactionRepository.findByAccountIdPage(accountId, pageRequest)).thenReturn(emptyPageResult);
 
-        List<TransactionResponse> result = useCase.execute(accountId, adminUserId, true);
+        PageResult<TransactionResponse> result = useCase.execute(accountId, adminUserId, true, pageRequest);
 
         assertNotNull(result);
-        verify(transactionRepository, times(1)).findByAccountId(accountId);
+        verify(transactionRepository, times(1)).findByAccountIdPage(accountId, pageRequest);
+    }
+
+    @Test
+    @DisplayName("should validate pagination parameters")
+    void shouldValidatePaginationParameters() {
+        PageRequest pageRequest = new PageRequest("createdAt", "DESC", 50, 0);
+        Transaction t1 = createTransaction(TransactionType.DEPOSIT, BigDecimal.valueOf(100.00));
+
+        PageResult<Transaction> pageResult = new PageResult<>(
+                0,
+                50,
+                1L,
+                List.of(t1)
+        );
+
+        when(accountRepository.findById(accountId)).thenReturn(Optional.of(account));
+        when(transactionRepository.findByAccountIdPage(accountId, pageRequest)).thenReturn(pageResult);
+
+        PageResult<TransactionResponse> result = useCase.execute(accountId, userId, false, pageRequest);
+
+        assertNotNull(result);
+        assertEquals(50, result.getSize());
+        assertEquals(0, result.getPage());
     }
 
     private Transaction createTransaction(TransactionType type, BigDecimal amount) {

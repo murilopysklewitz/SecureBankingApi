@@ -1,5 +1,8 @@
 package com.SecureBankingApi.domain.transaction;
 
+import com.SecureBankingApi.domain.PageRequest;
+import com.SecureBankingApi.domain.PageResult;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +13,7 @@ public interface TransactionRepository {
     Optional<Transaction> findById(UUID id);
     List<Transaction> findBySourceUserId(UUID userId);
     List<Transaction> findByAccountId(UUID accountId);
+    PageResult<Transaction> findByAccountIdPage(UUID accountId, PageRequest request);
 
     List<Transaction> findByStatus(TransactionStatus status);
 

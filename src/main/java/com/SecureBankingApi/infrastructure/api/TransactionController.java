@@ -11,6 +11,8 @@ import com.SecureBankingApi.application.usecases.reverseTransaction.ReverseTrans
 import com.SecureBankingApi.application.usecases.reverseTransaction.ReverseTransactionUseCase;
 import com.SecureBankingApi.application.usecases.withdrawMoney.WithdrawMoneyRequest;
 import com.SecureBankingApi.application.usecases.withdrawMoney.WithdrawMoneyUseCase;
+import com.SecureBankingApi.domain.PageRequest;
+import com.SecureBankingApi.domain.PageResult;
 import com.SecureBankingApi.infrastructure.api.webDtos.CreateTransactionWebRequest;
 import com.SecureBankingApi.infrastructure.api.webDtos.DepositMoneyWebRequest;
 import com.SecureBankingApi.infrastructure.api.webDtos.WithdrawMoneyWebRequest;
@@ -24,6 +26,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -250,22 +253,27 @@ public class TransactionController {
                     description = "Account not found"
             )
     })
-    public ResponseEntity<List<TransactionResponse>> getAccountHistory(
+    public ResponseEntity<PageResult<TransactionResponse>> getAccountHistory(
             @Parameter(description = "account Id", required = true)
             @PathVariable UUID accountId,
             @AuthenticationPrincipal UUID userId,
-            Authentication authentication) {
+            Authentication authentication,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10")        int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc")      String sortDirection) {
+
+        if (size > 50) size = 50;
 
         boolean isAdmin = authentication.getAuthorities()
                 .contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-        List<TransactionResponse> transactions = getTransactionHistoryUseCase.execute(
-                accountId,
-                userId,
-                isAdmin
-        );
+        PageRequest pageRequest = new PageRequest(sortBy, sortDirection, size, page);
 
-        return ResponseEntity.ok(transactions);
+        PageResult<TransactionResponse> response = getTransactionHistoryUseCase
+                .execute(accountId, userId, isAdmin, pageRequest);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{transactionId}")
