@@ -42,15 +42,10 @@ public class RegisterUserUseCase {
                 UserRole.USER
                 );
 
-        CreateAccountRequest accountRequest = new CreateAccountRequest(
-                user.getId(),
-                AccountType.CHECKING
-        );
-
 
         try {
-            repository.save(user);
-            createAccountUseCase.execute(accountRequest);
+            User savedUser = repository.save(user);
+            createAccountUseCase.execute(new CreateAccountRequest(savedUser.getId(), AccountType.CHECKING));
         } catch (Exception e) {
             throw new RuntimeException("Failed to save user", e);
         }

@@ -22,10 +22,11 @@ public class UserRepositoryAdapter  implements UserRepository {
     }
 
     @Override
-    public void save(User user) throws Exception {
+    public User save(User user) throws Exception {
         try{
             UserJpaEntity entity = mapper.toEntity(user);
-            userRepository.save(entity);
+            UserJpaEntity saved = userRepository.save(entity);
+            return mapper.toDomain(saved);
         }catch (Exception e){
             throw new RuntimeException("[USER REPOSITORY] Failed to save user", e);
         }

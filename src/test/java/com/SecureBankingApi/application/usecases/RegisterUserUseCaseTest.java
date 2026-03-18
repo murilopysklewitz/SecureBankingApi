@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.UUID;
 
@@ -63,12 +64,18 @@ public class RegisterUserUseCaseTest {
         when(hasher.hash(request.getPassword())).thenReturn(hashPassword);
         when(repository.existsByEmail(request.getEmail())).thenReturn(false);
         when(repository.existsByCpf(any(CPF.class))).thenReturn(false);
+        when(repository.save(any(User.class))).thenAnswer(invocation -> {
+            User u = invocation.getArgument(0);
+            ReflectionTestUtils.setField(u, "id", UUID.randomUUID());
+            return u;
+        });
 
         // When
         var response = registerUserUseCase.execute(request);
 
         // Then
         assertNotNull(response);
+        assertNotNull(response.getId());
         assertEquals(request.getFullName(), response.getFullName());
         assertEquals(request.getEmail(), response.getEmail());
         assertEquals(request.getCpf(), response.getCpf());
