@@ -15,6 +15,7 @@ import org.springframework.http.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,13 +32,18 @@ class AccountIntegrationTest extends IntegrationTestBase {
 
     @Test
     void shouldCreateAccountSuccessfully() {
+
         String token = registerAndLogin("joao@email.com", "12345678901", "senha12345");
 
+        CreateAccountWebRequest request = new CreateAccountWebRequest();
+        request.setType(AccountType.SAVINGS);
+
+
         webTestClient.post()
-                        .uri("/api/accounts")
+                        .uri("/api/accounts/create")
                                 .headers(h -> h.setBearerAuth(token))
                                         .contentType(MediaType.APPLICATION_JSON)
-                                                .bodyValue(new CreateAccountWebRequest())
+                                                .bodyValue(request)
                                                         .exchange()
                                                                 .expectStatus().isCreated()
                         .expectBody(AccountResponse.class)

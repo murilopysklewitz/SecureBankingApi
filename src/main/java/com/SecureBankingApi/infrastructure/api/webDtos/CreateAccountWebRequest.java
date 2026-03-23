@@ -2,20 +2,20 @@ package com.SecureBankingApi.infrastructure.api.webDtos;
 
 import com.SecureBankingApi.domain.account.AccountType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
 public class CreateAccountWebRequest {
-    @NotBlank
-    private UUID userId;
-    @NotBlank
+    @NotNull
     private AccountType type;
 
-    public CreateAccountWebRequest() {
+
+    public void setType(AccountType type) {
+        this.type = type;
     }
 
-    public UUID getUserId() {
-        return userId;
+    public CreateAccountWebRequest() {
     }
 
     public AccountType getType() {
