@@ -2,6 +2,11 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
 
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: admin
   jpa:
     hibernate:
       ddl-auto: create

@@ -2,11 +2,13 @@ package com.SecureBankingApi.application.usecases.createTransaction;
 
 import com.SecureBankingApi.domain.account.Account;
 import com.SecureBankingApi.domain.account.AccountRepository;
+import com.SecureBankingApi.domain.account.exceptions.AccountNotFoundException;
 import com.SecureBankingApi.domain.transaction.*;
 import com.SecureBankingApi.domain.transaction.exceptions.InvalidTransactionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -16,20 +18,23 @@ public class TransferMoneyUseCase {
     private static final Logger log = LoggerFactory.getLogger(TransferMoneyUseCase.class);
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
+    private final TransactionEventPublisher eventPublisher;
 
-    public TransferMoneyUseCase(TransactionRepository transactionRepository, AccountRepository accountRepository) {
+    public TransferMoneyUseCase(TransactionRepository transactionRepository, AccountRepository accountRepository, TransactionEventPublisher eventPublisher) {
         this.transactionRepository = transactionRepository;
         this.accountRepository = accountRepository;
+            this.eventPublisher = eventPublisher;
     }
 
+    @Transactional
     public TransactionResponse execute(TransactionRequest request, UUID userId){
-        Account source = accountRepository.findById(request.getSourceAccountId()).orElseThrow(() -> new RuntimeException("source account not found"));
+        Account source = accountRepository.findById(request.getSourceAccountId()).orElseThrow(() -> new AccountNotFoundException(request.getSourceAccountId()));
         if(!source.getUserId().equals(userId)){
             throw new IllegalCallerException("user Id mismatch");
         }
         source.ensureActive();
 
-        Account destination = accountRepository.findById(request.getDestinationAccountId()).orElseThrow(() -> new RuntimeException("destination account not found"));
+        Account destination = accountRepository.findById(request.getDestinationAccountId()).orElseThrow(() -> new AccountNotFoundException(request.getDestinationAccountId()));
         destination.ensureActive();
 
         if(destination.getUserId().equals(source.getUserId())){
@@ -69,8 +74,18 @@ public class TransferMoneyUseCase {
 
         transaction.completeTransaction();
 
+
         transactionRepository.save(transaction);
 
+        TransactionCompletedEvent event = new TransactionCompletedEvent(
+                transaction.getId(),
+                source.getId(),
+                destination.getId(),
+                transaction.getAmount().getValue(),
+                transaction.getType().toString(),
+                transaction.getCompletedAt()
+        );
+        eventPublisher.publishTransactionCompleted(event);
         return TransactionResponse.fromDomain(transaction);
 
     }

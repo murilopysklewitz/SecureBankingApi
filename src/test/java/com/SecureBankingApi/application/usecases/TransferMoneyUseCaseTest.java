@@ -4,10 +4,7 @@ import com.SecureBankingApi.application.usecases.createTransaction.TransactionRe
 import com.SecureBankingApi.application.usecases.createTransaction.TransactionResponse;
 import com.SecureBankingApi.application.usecases.createTransaction.TransferMoneyUseCase;
 import com.SecureBankingApi.domain.account.*;
-import com.SecureBankingApi.domain.transaction.AccountDataTransaction;
-import com.SecureBankingApi.domain.transaction.TransactionRepository;
-import com.SecureBankingApi.domain.transaction.TransactionStatus;
-import com.SecureBankingApi.domain.transaction.TransactionType;
+import com.SecureBankingApi.domain.transaction.*;
 import com.SecureBankingApi.domain.transaction.exceptions.InvalidAccountData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +26,9 @@ public class TransferMoneyUseCaseTest {
     @Mock
     private AccountRepository accountRepository;
 
+    @Mock
+    private TransactionEventPublisher publisher;
+
     private TransferMoneyUseCase useCase;
 
     private UUID sourceAccountId;
@@ -46,7 +46,8 @@ public class TransferMoneyUseCaseTest {
     void SetUp() {
         useCase = new TransferMoneyUseCase(
                 transactionRepository,
-                accountRepository
+                accountRepository,
+                publisher
         );
         sourceAccountId = UUID.randomUUID();
 

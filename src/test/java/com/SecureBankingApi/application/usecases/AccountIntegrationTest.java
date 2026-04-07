@@ -55,6 +55,11 @@ class AccountIntegrationTest extends IntegrationTestBase {
                                 });
     }
 
+    @Test
+    void shouldBlockAnAccount() {
+        String token = registerAndLogin("joao@email.com", "12345678901", "senha12345");
+    }
+
     private String registerAndLogin(String email, String cpf, String password) {
         RegisterWebRequest register = new RegisterWebRequest();
         register.setEmail(email);

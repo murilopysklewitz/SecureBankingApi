@@ -1,4 +1,11 @@
 spring:
+
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: admin
+
   flyway:
     enabled: true
     locations: classpath:db/migration
