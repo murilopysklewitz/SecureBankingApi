@@ -25,6 +25,8 @@ public class RabbitMQIntegrationTest extends IntegrationTestBase {
     void shouldPublishCompletedTransaction() {
 
         TransactionCompletedEvent event = new TransactionCompletedEvent(
+                "email@email.com",
+                "email2@email.com",
                 java.util.UUID.randomUUID(),
                 java.util.UUID.randomUUID(),
                 java.util.UUID.randomUUID(),

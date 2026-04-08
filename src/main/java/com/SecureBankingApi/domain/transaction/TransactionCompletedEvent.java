@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class TransactionCompletedEvent {
+    private final String sourceEmail;
+    private final String destinationEmail;
         private final UUID transactionId;
         private final UUID sourceUserId;
         private final UUID destinationUserId;
@@ -12,13 +14,25 @@ public class TransactionCompletedEvent {
         private final String type;
         private final LocalDateTime completedAt;
 
-        public TransactionCompletedEvent(
+    public String getSourceEmail() {
+        return sourceEmail;
+    }
+
+    public String getDestinationEmail() {
+        return destinationEmail;
+    }
+
+    public TransactionCompletedEvent(
+                String sourceEmail,
+                String destinationEmail,
                 UUID transactionId,
                 UUID sourceUserId,
                 UUID destinationUserId,
                 BigDecimal amount,
                 String type,
                 LocalDateTime completedAt) {
+            this.sourceEmail = sourceEmail;
+            this.destinationEmail = destinationEmail;
             this.transactionId = transactionId;
             this.sourceUserId = sourceUserId;
             this.destinationUserId = destinationUserId;
