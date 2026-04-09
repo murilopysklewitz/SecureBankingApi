@@ -28,15 +28,7 @@ services:
     networks:
       - secure_api_bank
       -
-  notification-service:
-    build: notification-service
-    container_name: notification_service
-    ports:
-      - "3001:8081"
-    depends_on:
-      - rabbitmq
-    networks:
-      - secure_api_bank
+
 
 
 networks:
