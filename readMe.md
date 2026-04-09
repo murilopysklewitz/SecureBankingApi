@@ -1,225 +1,197 @@
-# 🏦 SecureBankingApi
+# 🏦 Secure Banking API
 
-API RESTful de sistema bancário seguro, desenvolvida com **Java 21 + Spring Boot**, seguindo os princípios de **Clean Architecture** e **Domain-Driven Design (DDD)**. Implantada em container Docker na **AWS EC2** com banco de dados **PostgreSQL no AWS RDS**.
-e documentado com Swagger Open API
----
-
-## 🏗️ Arquitetura
-
-O projeto segue uma arquitetura em camadas bem definida:
-```
-src/
-├── domain/            # Entidades, Value Objects, Repositórios (interfaces), regras de negócio
-│   ├── account/
-│   ├── transaction/
-│   ├── user/
-│   └── refreshToken/
-├── application/       # Casos de uso, serviços de aplicação, exceções
-│   ├── usecases/
-│   └── services/
-└── infrastructure/    # Controllers, persistência JPA, segurança JWT
-    ├── api/
-    ├── persistence/
-    └── security/
-```
+A RESTful banking API built with **Spring Boot**, implementing clean architecture (DDD), JWT authentication, and asynchronous event publishing via RabbitMQ.
 
 ---
 
-## 🚀 Tecnologias
+## 📐 Architecture
 
-| Tecnologia | Versão | Uso |
-|---|--------|---|
-| Java | 21     | Linguagem principal |
-| Spring Boot | 3.x    | Framework web |
-| Spring Security | 3.x    | Autenticação e autorização |
-| JWT (jjwt) | —      | Tokens de acesso e refresh |
-| BCrypt | —      | Hash de senhas |
-| PostgreSQL | —      | Banco de dados (AWS RDS) |
-| Flyway | —      | Migrações de banco de dados |
-| Hibernate / JPA | —      | ORM |
-| Docker | —      | Containerização |
-| Swagger | 2.8.5  | Documentacao |
-| JUnit 5 + Mockito | —      | Testes unitários |
-| Maven | 3.9.6  | Build e dependências |
+```
+src/main/java/com/SecureBankingApi/
+├── application/
+│   ├── config/          # Use case bean configuration
+│   ├── exceptions/      # Business exceptions
+│   ├── services/        # JwtService, RefreshTokenService
+│   └── usecases/        # Application use cases (one per action)
+├── domain/
+│   ├── account/         # Account aggregate (Account, Money, AccountNumber)
+│   ├── refreshToken/    # RefreshToken aggregate
+│   ├── transaction/     # Transaction aggregate + event ports
+│   └── user/            # User aggregate + domain ports
+└── infrastructure/
+    ├── api/             # REST controllers, DTOs, exception handler
+    ├── config/          # OpenAPI/Swagger configuration
+    ├── messaging/       # RabbitMQ publisher implementation
+    ├── persistence/     # JPA entities, mappers, repository adapters
+    └── security/        # JWT filter, BCrypt hasher, SecurityConfig
+```
+
+The project follows **Domain-Driven Design** with a strict separation between domain, application, and infrastructure layers. Domain interfaces are implemented by infrastructure adapters (Ports & Adapters pattern).
 
 ---
 
-## ☁️ Infraestrutura (AWS)
-```
-┌─────────────────────────────────────┐
-│             AWS EC2                 │
-│                                     │
-│   ┌─────────────────────────────┐   │
-│   │      Docker Container       │   │
-│   │   secure_api (porta 3000)   │   │
-│   │   Spring Boot → 8080        │   │
-│   └──────────────┬──────────────┘   │
-└──────────────────│──────────────────┘
-                   │
-                   ▼
-┌──────────────────────────────────────┐
-│           AWS RDS                    │
-│        PostgreSQL                    │
-│   (acessado via DB_URL no .env)      │
-└──────────────────────────────────────┘
-```
+## 🚀 Features
 
-- A aplicação roda como container Docker na instância **EC2**
-- O banco de dados **PostgreSQL** está provisionado no **RDS**
-- A comunicação entre EC2 e RDS ocorre via VPC (rede privada)
-- A aplicação expõe a porta **3000** externamente, mapeada para **8080** internamente
+- **Authentication**: JWT access tokens + refresh token rotation
+- **User registration**: CPF validation, duplicate checks, auto account creation
+- **Account management**: Create (CHECKING / SAVINGS), block, unblock, close
+- **Transactions**: Transfer, deposit, withdrawal, reverse (admin only)
+- **Transaction history**: Paginated, sortable by field and direction
+- **Role-based access**: `USER`, `ADMIN`, `READ_ONLY` roles
+- **Event publishing**: Publishes `TransactionCompletedEvent` to RabbitMQ after each transfer
+- **Observability**: Spring Actuator (`/actuator/health`, `/actuator/info`, `/actuator/metrics`)
+- **API Docs**: Swagger UI at `/swagger-ui.html`
 
 ---
 
-## 🔐 Segurança
+## 🛠️ Tech Stack
 
-- Autenticação via **JWT** com Access Token (curta duração) + Refresh Token (longa duração)
-- Senhas protegidas com **BCrypt** (fator de custo 12)
-- Refresh Tokens armazenados em banco com suporte a revogação
-- Autorização por roles: `USER`, `ADMIN`, `READ_ONLY`
-- Filtro JWT customizado (`JwtAuthenticationFilter`) em todas as rotas protegidas
-- CORS configurado para as origens permitidas
-
----
-
-## 📋 Variáveis de Ambiente
-
-Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
-```env
-# Banco de Dados (AWS RDS)
-DB_URL=jdbc:postgresql://<rds-endpoint>:5432/<database-name>
-DB_USERNAME=seu_usuario
-DB_PASSWORD=sua_senha
-
-# JWT
-JWT_SECRET=sua_chave_secreta_minimo_256bits
-JWT_ACCESS_TOKEN_EXPIRATION=900000        # 15 minutos em ms
-JWT_REFRESH_TOKEN_EXPIRATION=604800000    # 7 dias em ms
-```
-
----
-
-## 🐳 Deploy com Docker
-
-### Pré-requisitos
-- Docker instalado na instância EC2
-- Instância RDS PostgreSQL acessível via Security Group da VPC
-- Arquivo `.env` configurado
-
-### Subindo a aplicação
-```bash
-# Clonar o repositório
-git clone 
-cd SecureBankingApi
-
-# Criar e preencher o arquivo .env
-cp .env.example .env
-
-# Build e start do container
-docker-compose up -d --build
-
-# Acompanhar logs
-docker-compose logs -f api
-
-# Parar o container
-docker-compose down
-```
-
-### Verificar se está rodando
-```bash
-docker ps
-# Deve exibir o container 'secure_api' rodando na porta 3000
-```
-
----
-
-## 🗄️ Migrations
-
-As migrations são gerenciadas pelo **Flyway** e executadas automaticamente na inicialização:
-
-| Versão | Descrição |
+| Layer | Technology |
 |---|---|
-| V1 | Criação da tabela `users` |
-| V2 | Criação da tabela `accounts` |
-| V3 | Criação da tabela `refresh_tokens` |
-| V4 | Criação da tabela `transactions` |
-
-> ⚠️ O perfil `docker` utiliza `ddl-auto: validate` — o schema deve existir previamente via Flyway.
-
----
-
-## 📡 Endpoints da API
-
-### Autenticação — `/api/auth`
-
-| Método | Rota | Descrição | Auth |
-|---|---|---|---|
-| POST | `/api/auth/register` | Registra novo usuário | ❌ |
-| POST | `/api/auth/login` | Login e geração de tokens | ❌ |
-| POST | `/api/auth/refresh` | Renova o access token | ❌ |
-| POST | `/api/auth/revoke` | Logout / revoga refresh token | ✅ |
-
-### Contas — `/api/accounts`
-
-| Método | Rota | Descrição | Auth |
-|---|---|---|---|
-| POST | `/api/accounts/create` | Cria nova conta bancária | ✅ USER |
-| GET | `/api/accounts` | Lista contas do usuário autenticado | ✅ USER |
-| GET | `/api/accounts/{id}` | Detalhes de uma conta | ✅ USER |
-| GET | `/api/accounts/{id}/balance` | Consulta saldo | ✅ USER |
-| PUT | `/api/accounts/{id}/block` | Bloqueia conta | ✅ ADMIN |
-| PUT | `/api/accounts/{id}/unblock` | Desbloqueia conta | ✅ ADMIN |
-| DELETE | `/api/accounts/{id}` | Encerra conta | ✅ USER/ADMIN |
-
-### Transações — `/api/transaction`
-
-| Método | Rota | Descrição | Auth |
-|---|---|---|---|
-| POST | `/api/transaction/transfer` | Transferência entre contas | ✅ USER |
-| POST | `/api/transaction/deposit` | Depósito em conta | ✅ USER |
-| POST | `/api/transaction/withdraw` | Saque de conta | ✅ USER |
-| GET | `/api/transaction/account/{accountId}` | Histórico de transações | ✅ USER |
-| GET | `/api/transaction/{transactionId}` | Detalhes de uma transação | ✅ USER |
-| POST | `/api/transaction/reverse/{transactionId}` | Estorna transação | ✅ ADMIN |
+| Language | Java 21 |
+| Framework | Spring Boot 3 |
+| Security | Spring Security + JJWT |
+| Persistence | Spring Data JPA + PostgreSQL |
+| Migrations | Flyway |
+| Messaging | RabbitMQ (Spring AMQP) |
+| Build | Maven |
+| Containerization | Docker / Docker Compose |
+| API Docs | SpringDoc OpenAPI (Swagger) |
 
 ---
 
-Para Documentacao Swagger acesse
+## ⚙️ Configuration
 
-http://3.141.250.199:3000/swagger-ui/index.html
+The application uses Spring profiles. Set `--spring.profiles.active=docker` to activate the production profile.
 
-## 🧪 Testes
+### Required environment variables (`.env`)
+
+```env
+DB_URL=jdbc:postgresql://host:5432/dbname
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
+
+RABBITMQ_USERNAME=admin
+RABBITMQ_PASSWORD=admin
+
+JWT_SECRET=your-256-bit-secret-key-at-least-32-characters
+JWT_ACCESS_TOKEN_EXPIRATION=900000       # 15 minutes in ms
+JWT_REFRESH_TOKEN_EXPIRATION=604800000   # 7 days in ms
+```
+
+Place the `.env` file at `SecureBankingApi/.env` (referenced in `docker-compose.yml`).
+
+---
+
+## 🐳 Running with Docker Compose
+
 ```bash
-# Executar todos os testes
+# From the root of the project
+docker-compose up --build
+```
+
+This starts:
+- **RabbitMQ** — ports `5672` (AMQP) and `15672` (Management UI)
+- **Secure Banking API** — port `3000` (mapped from internal `8080`)
+
+Access the API at `http://localhost:3000` and Swagger at `http://localhost:3000/swagger-ui.html`.
+
+---
+
+## 🗄️ Database Migrations (Flyway)
+
+Migrations run automatically on startup.
+
+| Version | Description |
+|---|---|
+| V1 | Create `users` table |
+| V2 | Create `accounts` table |
+| V3 | Create `refresh_tokens` table |
+| V4 | Create `transactions` table |
+| V5 | Add `source_account_id` / `destination_account_id` FK columns to transactions |
+| V6 | Make transaction party columns nullable (to support deposits and withdrawals) |
+
+---
+
+## 🔌 API Endpoints
+
+### Auth — `/api/auth`
+| Method | Path | Description | Auth |
+|---|---|---|---|
+| `POST` | `/register` | Register a new user | Public |
+| `POST` | `/login` | Login and receive tokens | Public |
+| `POST` | `/refresh` | Refresh access token | Public |
+| `POST` | `/revoke` | Revoke refresh token (logout) | Public |
+
+### Accounts — `/api/accounts`
+| Method | Path | Description | Auth |
+|---|---|---|---|
+| `POST` | `/create` | Create a new account | USER |
+| `GET` | `/` | List authenticated user's accounts | USER |
+| `GET` | `/{id}` | Get account details | USER / ADMIN |
+| `GET` | `/{id}/balance` | Get account balance | USER / ADMIN |
+| `PUT` | `/{id}/block` | Block an account | ADMIN |
+| `PUT` | `/{id}/unblock` | Unblock an account | ADMIN |
+| `DELETE` | `/{id}` | Close an account | USER / ADMIN |
+
+### Transactions — `/api/transaction`
+| Method | Path | Description | Auth |
+|---|---|---|---|
+| `POST` | `/transfer` | Transfer between accounts | USER |
+| `POST` | `/deposit` | Deposit into account | USER |
+| `POST` | `/withdraw` | Withdraw from account | USER |
+| `POST` | `/reverse/{transactionId}` | Reverse a completed transaction | ADMIN |
+| `GET` | `/account/{accountId}` | Paginated transaction history | USER / ADMIN |
+| `GET` | `/{transactionId}` | Get transaction details | USER / ADMIN |
+
+---
+
+## 🔐 Authentication Flow
+
+```
+POST /api/auth/register  →  user created + CHECKING account opened
+POST /api/auth/login     →  { accessToken, refreshToken, expiresIn }
+                           ↓
+                  Attach: Authorization: Bearer <accessToken>
+                           ↓
+POST /api/auth/refresh   →  { newAccessToken, expiresIn }
+POST /api/auth/revoke    →  204 No Content (token invalidated)
+```
+
+---
+
+## 📨 RabbitMQ Events
+
+After a successful transfer, a `TransactionCompletedEvent` is published to:
+
+- **Exchange**: `transaction.exchange` (Topic)
+- **Routing key**: `transaction.completed`
+- **Queue**: `transaction.queue`
+
+The event payload contains source/destination emails, transaction ID, amount, type, and completion timestamp. This event is consumed by the **Notification Service**.
+
+---
+
+## 🧪 Tests
+
+```bash
 mvn test
-
-# Executar com relatório
-mvn verify
 ```
 
-Cobertura inclui:
+The test suite includes:
 
-- **Domain**: `Account`, `Money`, `Transaction`, `AccountDataTransaction`, `RefreshToken`, `User`
-- **Application**: `TransferMoneyUseCase`
-- **Infrastructure**: `AccountMapper`, `AccountRepositoryAdapter`, `TransactionMapper`, `UserMapper`, `UserRepositoryAdapter`
+- **Unit tests**: Domain entities (Account, Money, Transaction, User, RefreshToken), mappers, repository adapters, use cases, JWT and BCrypt services, JWT filter
+- **Integration tests**: Full HTTP flow using `WebTestClient` + Testcontainers (PostgreSQL + RabbitMQ)
+- **Messaging test**: RabbitMQ event publish/consume round-trip
 
 ---
 
-## 📦 Build Manual (sem Docker)
-```bash
-mvn clean package -DskipTests
-java -jar target/*.jar --spring.profiles.active=docker
-```
+## 📏 Business Rules
 
----
-
-## 📁 Domínio — Entidades e Regras
-
-**Entidades:** `User`, `Account`, `Transaction`, `RefreshToken`
-
-**Regras de negócio:**
-- Contas bloqueadas ou fechadas não aceitam débito/crédito
-- Transferências entre contas do mesmo usuário são proibidas
-- Saldo insuficiente impede saques e transferências
-- Contas com saldo não podem ser encerradas
-- Apenas transações `COMPLETED` podem ser estornadas
+- A user can only have one account per type (CHECKING or SAVINGS)
+- Transfers between accounts of the same user are not allowed
+- Deposits and withdrawals are restricted to the account owner
+- An account with a non-zero balance cannot be closed
+- A blocked account cannot receive or send transactions
+- Only `ADMIN` users can block/unblock accounts and reverse transactions
+- CPF must be exactly 11 digits; email must be a valid format
