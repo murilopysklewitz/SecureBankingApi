@@ -61,64 +61,10 @@ public class AccountController {
     }
 
     @PostMapping("/create")
-
-    @Operation(
-            summary = "Create new account",
-            description = "Create account to an auth user"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "account created successfully",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = AccountResponse.class),
-                            examples = @ExampleObject(
-                                    value = """
-                                            {
-                                              "id": "550e8400-e29b-41d4-a716-446655440000",
-                                              "accountNumber": "12345-6",
-                                              "agency": "0001",
-                                              "accountType": "CHECKING",
-                                              "balance": 0.00,
-                                              "status": "ACTIVE",
-                                              "createdAt": "2024-03-02T10:30:00"
-                                            }
-                                            """
-                            )
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Invalid data"
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Unauthorized"
-            )
-    })
-
-
     public ResponseEntity<AccountResponse> createAccount(
-
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "create account data",
-                    required = true,
-                    content = @Content(
-                            schema = @Schema(implementation = CreateAccountRequest.class),
-                            examples = @ExampleObject(
-                                    value = """
-                                            {
-                                              "accountType": "CHECKING",
-                                              "agency": "0001"
-                                            }
-                                            """
-                            )
-                    )
-            )
-
             @Valid @RequestBody CreateAccountWebRequest request,
-                                                         @AuthenticationPrincipal UUID userId){
+            @AuthenticationPrincipal UUID userId){
+
         CreateAccountRequest useCaseRequest = new CreateAccountRequest(userId, request.getType());
 
         AccountResponse response = createAccountUseCase.execute(useCaseRequest);
