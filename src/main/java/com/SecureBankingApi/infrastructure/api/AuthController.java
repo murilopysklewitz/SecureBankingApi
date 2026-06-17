@@ -54,55 +54,7 @@ public class AuthController {
             summary = "Register new User",
             description = "Create a new User with CPF, email and password"
     )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "201",
-                            description = "User created successfully",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = String.class),
-                                    examples = @ExampleObject(
-                                            value = "\"User registered successfully\""
-                                    )
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "Invalid data(CPF already exists), invalid email",
-                            content = @Content(
-                                    mediaType = "application/json",
-                                    examples = @ExampleObject(
-                                            value = "{\"error\": \"CPF already exists\"}"
-                                    )
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "500",
-                            description = "Internal error "
-                    )
-            }
-    )
-    public ResponseEntity<RegisterUserResponse> register(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-
-            description = "user data to register",
-            required = true,
-            content = @Content(
-                    schema = @Schema(implementation = RegisterWebRequest.class),
-                    examples = @ExampleObject(
-                            value = """
-                                            {
-                                              "cpf": "12345678901",
-                                              "email": "usuario@example.com",
-                                              "password": "securePassword123!",
-                                              "name": "Joao Pedrao"
-                                            }
-                                            """
-                    )
-            )
-
-    )@Valid @RequestBody RegisterWebRequest request){
+    public ResponseEntity<RegisterUserResponse> register(@Valid @RequestBody RegisterWebRequest request){
         RegisterUserRequest userRequest = new RegisterUserRequest(
                 request.getFullName(),
                 request.getCpf(),
@@ -118,52 +70,8 @@ public class AuthController {
     @Operation(
             summary = "Login",
             description = "Auth users and return JWT token"
-    ) @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Login successfully",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = LoginUserResponse.class),
-                            examples = @ExampleObject(
-                                    value = """
-                                            {
-                                              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-                                              "type": "Bearer",
-                                              "expiresIn": 3600
-                                            }
-                                            """
-                            )
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "invalid credentials",
-                    content = @Content(
-                            mediaType = "application/json",
-                            examples = @ExampleObject(
-                                    value = "{\"error\": \"Invalid credentials\"}"
-                            )
-                    )
-            )
-    })
+    )
     public ResponseEntity<LoginUserResponse> login(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "CPF and Password",
-                    required = true,
-                    content = @Content(
-                            schema = @Schema(implementation = LoginUserRequest.class),
-                            examples = @ExampleObject(
-                                    value = """
-                                            {
-                                              "cpf": "12345678901",
-                                              "password": "SecurePassword123!"
-                                            }
-                                            """
-                            )
-                    )
-            )
-
             @Valid @RequestBody LoginWebRequest request){
 
         LoginUserRequest useCaseRequest = new LoginUserRequest(request.getEmail(), request.getPassword());

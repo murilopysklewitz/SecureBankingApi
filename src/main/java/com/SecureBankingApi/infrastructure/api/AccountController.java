@@ -86,24 +86,6 @@ public class AccountController {
             summary = "Find account details",
             description = "Return account details"
     )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Account founded",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = AccountResponse.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "cannot access this account"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Account not found"
-            )
-    })
     public ResponseEntity<AccountResponse> getAccountDetails(
             @PathVariable UUID id,
             @AuthenticationPrincipal UUID userId,
