@@ -19,9 +19,7 @@ CREATE TABLE transactions(
 
     completed_at TIMESTAMP ,
     CONSTRAINT chk_type CHECK (type IN ('TRANSFER', 'DEPOSIT', 'WITHDRAWAL')),
-    CONSTRAINT chk_status CHECK (status IN ('PENDING', 'COMPLETED', 'FAILED', 'REVERSED')),
-    CONSTRAINT fk_source_user_id FOREIGN KEY (source_user_id) REFERENCES users(id),
-    CONSTRAINT  fk_destination_user_id FOREIGN KEY (destination_user_id) references users(id)
+    CONSTRAINT chk_status CHECK (status IN ('PENDING', 'COMPLETED', 'FAILED', 'REVERSED'))
 
 );
 CREATE INDEX idx_transactions_source_user_id ON transactions(source_user_id);

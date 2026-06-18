@@ -14,7 +14,19 @@ services:
     networks:
       - secure_api_bank
 
-
+  postgres:
+    container_name: postgres
+    image: postgres:17
+    environment:
+      POSTGRES_DB: db_name
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+    ports:
+      - "5432:5432"
+    networks:
+      - secure_api_bank
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   api:
     build: ./
@@ -27,7 +39,9 @@ services:
       - SecureBankingApi/.env
     networks:
       - secure_api_bank
-      -
+    depends_on:
+        - rabbitmq
+        - postgres
 
 
 

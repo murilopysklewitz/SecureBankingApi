@@ -5,7 +5,6 @@ CREATE TABLE refresh_tokens(
     token VARCHAR NOT NULL,
     expires_at TIMESTAMP NOT NULL,
     created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL,
-    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id)
+    updated_at TIMESTAMP NOT NULL
 );
 CREATE INDEX idx_user_id ON refresh_tokens(user_id);

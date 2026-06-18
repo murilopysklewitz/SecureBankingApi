@@ -7,8 +7,7 @@ CREATE TABLE accounts(
     account_type VARCHAR(20) NOT NULL,
     account_status VARCHAR(20) NOT NULL,
     created_at TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP NOT NULL,
-    CONSTRAINT fk_accounts_user FOREIGN KEY (user_id) REFERENCES users(id)
+    updated_at TIMESTAMP NOT NULL
 );
 
 CREATE INDEX idx_account_number ON accounts(account_number);
