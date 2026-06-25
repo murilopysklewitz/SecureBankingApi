@@ -1,5 +1,8 @@
 package com.SecureBankingApi.domain.account;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.math.BigDecimal;
 
 public class Money {
@@ -16,6 +19,7 @@ public class Money {
         return new Money(BigDecimal.ZERO);
     }
 
+    @JsonCreator
     public static Money of(BigDecimal value){
         return new Money(value);
     }
@@ -35,6 +39,7 @@ public class Money {
         return this.value.compareTo(BigDecimal.ZERO) == 0;
     }
 
+    @JsonValue
     public BigDecimal getValue() {
         return value;
     }

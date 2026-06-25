@@ -50,7 +50,7 @@ class AccountIntegrationTest extends IntegrationTestBase {
                                 .value(body -> {
                                     assertNotNull(body);
                                     assertNull(body.getId());
-                                    assertEquals(AccountType.CHECKING, body.getType());
+                                    assertEquals(AccountType.SAVINGS, body.getType());
                                     assertEquals(BigDecimal.ZERO, body.getBalance().getValue());
                                 });
     }

@@ -2,12 +2,13 @@ package com.SecureBankingApi.application.usecases;
 
 import com.SecureBankingApi.IntegrationTestBase;
 import com.SecureBankingApi.domain.transaction.TransactionCompletedEvent;
-import com.SecureBankingApi.domain.transaction.TransactionEventPublisher;
 import com.SecureBankingApi.infrastructure.messaging.RabbitMQConfiguration;
+import com.SecureBankingApi.infrastructure.messaging.RabbitMQTransactionEventPublisher;
 import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class RabbitMQIntegrationTest extends IntegrationTestBase {
 
     @Autowired
-    private TransactionEventPublisher eventPublisher;
+    private RabbitMQTransactionEventPublisher eventPublisher;
     @Autowired
     private RabbitTemplate rabbitTemplate;
 

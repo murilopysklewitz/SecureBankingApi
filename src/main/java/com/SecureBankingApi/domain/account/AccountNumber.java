@@ -1,5 +1,8 @@
 package com.SecureBankingApi.domain.account;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Objects;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -20,6 +23,7 @@ public class AccountNumber {
         return new AccountNumber(generated);
     }
 
+    @JsonCreator
     public static AccountNumber restore(String accountNumber) {
         if (accountNumber == null || !ACCOUNT_NUMBER_PATTERN.matcher(accountNumber).matches()) {
             throw new IllegalArgumentException("Invalid account number format: " + accountNumber);
@@ -27,6 +31,7 @@ public class AccountNumber {
         return new AccountNumber(accountNumber);
     }
 
+    @JsonValue
     public String getValue() {
         return accountNumber;
     }
