@@ -5,6 +5,7 @@ import com.SecureBankingApi.domain.user.enums.UserRole;
 import com.SecureBankingApi.domain.user.valueObjects.CPF;
 import io.jsonwebtoken.JwtException;
 import org.junit.jupiter.api.*;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("JwtService Tests")
+@ActiveProfiles("test")
 public class JwtServiceTest {
 
     private JwtService jwtService;

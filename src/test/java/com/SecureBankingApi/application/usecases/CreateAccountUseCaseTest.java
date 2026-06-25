@@ -1,31 +1,16 @@
 package com.SecureBankingApi.application.usecases;
 
-import com.SecureBankingApi.IntegrationTestBase;
-import com.SecureBankingApi.SecureBankingApiApplication;
 import com.SecureBankingApi.application.exceptions.BusinessException;
-import com.SecureBankingApi.application.usecases.createAccount.AccountResponse;
 import com.SecureBankingApi.application.usecases.createAccount.CreateAccountRequest;
 import com.SecureBankingApi.application.usecases.createAccount.CreateAccountUseCase;
-import com.SecureBankingApi.application.usecases.loginUser.LoginUserResponse;
-import com.SecureBankingApi.application.usecases.registerUser.RegisterUserResponse;
 import com.SecureBankingApi.domain.account.*;
-import com.SecureBankingApi.infrastructure.api.webDtos.CreateAccountWebRequest;
-import com.SecureBankingApi.infrastructure.api.webDtos.LoginWebRequest;
-import com.SecureBankingApi.infrastructure.api.webDtos.RegisterWebRequest;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.*;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.testcontainers.shaded.org.checkerframework.checker.units.qual.C;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;

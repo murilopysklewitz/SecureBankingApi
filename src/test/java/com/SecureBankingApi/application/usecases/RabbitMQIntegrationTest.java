@@ -1,6 +1,5 @@
 package com.SecureBankingApi.application.usecases;
 
-import com.SecureBankingApi.IntegrationTestBase;
 import com.SecureBankingApi.domain.transaction.TransactionCompletedEvent;
 import com.SecureBankingApi.infrastructure.messaging.RabbitMQConfiguration;
 import com.SecureBankingApi.infrastructure.messaging.RabbitMQTransactionEventPublisher;
@@ -8,15 +7,26 @@ import org.junit.jupiter.api.Test;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.RabbitMQContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class RabbitMQIntegrationTest extends IntegrationTestBase {
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Testcontainers
+@ActiveProfiles("test")
+public class RabbitMQIntegrationTest  {
+
+    @Container
+    @ServiceConnection
+    static RabbitMQContainer rabbitMQContainer = new RabbitMQContainer("rabbitmq:3-management-alpine");
     @Autowired
     private RabbitMQTransactionEventPublisher eventPublisher;
     @Autowired
