@@ -27,3 +27,4 @@ jwt:
   secret: test-secret-key-with-at-least-32-charactersdzbhxtjyygcyjcyfsrnyn6sri6bdjysrbjskdytdgfkn8fysrnjyrs
   access-token-expiration: 900000
   refresh-token-expiration: 604800000
+  refresh-expiration: 604800000
