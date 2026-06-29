@@ -7,4 +7,3 @@ CREATE TABLE refresh_tokens(
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL
 );
-CREATE INDEX idx_user_id ON refresh_tokens(user_id);
