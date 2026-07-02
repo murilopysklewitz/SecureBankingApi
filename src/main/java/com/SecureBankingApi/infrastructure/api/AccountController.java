@@ -11,6 +11,7 @@ import com.SecureBankingApi.application.usecases.modifyStatusAccount.BlockAccoun
 import com.SecureBankingApi.application.usecases.modifyStatusAccount.CloseAccountUseCase;
 import com.SecureBankingApi.application.usecases.modifyStatusAccount.UnblockAccountUseCase;
 import com.SecureBankingApi.infrastructure.api.webDtos.CreateAccountWebRequest;
+import com.SecureBankingApi.infrastructure.security.AuthenticatedUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -63,9 +64,9 @@ public class AccountController {
     @PostMapping("/create")
     public ResponseEntity<AccountResponse> createAccount(
             @Valid @RequestBody CreateAccountWebRequest request,
-            @AuthenticationPrincipal UUID userId){
+            @AuthenticationPrincipal AuthenticatedUser user) {
 
-        CreateAccountRequest useCaseRequest = new CreateAccountRequest(userId, request.getType());
+        CreateAccountRequest useCaseRequest = new CreateAccountRequest(user.userId(), request.getType());
 
         AccountResponse response = createAccountUseCase.execute(useCaseRequest);
 
@@ -74,9 +75,9 @@ public class AccountController {
 
     @GetMapping
     public ResponseEntity<List<AccountResponse>> listMyAccounts(
-            @AuthenticationPrincipal UUID userId) {
+            @AuthenticationPrincipal AuthenticatedUser user) {
 
-        List<AccountResponse> accounts = listMyAccountsUseCase.execute(userId);
+        List<AccountResponse> accounts = listMyAccountsUseCase.execute(user.userId());
 
         return ResponseEntity.ok(accounts);
     }
@@ -88,13 +89,13 @@ public class AccountController {
     )
     public ResponseEntity<AccountResponse> getAccountDetails(
             @PathVariable UUID id,
-            @AuthenticationPrincipal UUID userId,
+            @AuthenticationPrincipal AuthenticatedUser user,
             Authentication authentication) {
 
         boolean isAdmin = authentication.getAuthorities()
                 .contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-        AccountResponse response = getAccountDetailsUseCase.execute(id, userId, isAdmin);
+        AccountResponse response = getAccountDetailsUseCase.execute(id, user.userId(), isAdmin);
 
         return ResponseEntity.ok(response);
     }
@@ -102,13 +103,13 @@ public class AccountController {
     @GetMapping("/{id}/balance")
     public ResponseEntity<AccountBalanceResponse> getAccountBalance(
             @PathVariable UUID id,
-            @AuthenticationPrincipal UUID userId,
+            @AuthenticationPrincipal AuthenticatedUser user,
             Authentication authentication) {
 
         boolean isAdmin = authentication.getAuthorities()
                 .contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-        AccountBalanceResponse response = getAccountBalanceUseCase.execute(id, userId, isAdmin);
+        AccountBalanceResponse response = getAccountBalanceUseCase.execute(id, user.userId(), isAdmin);
 
         return ResponseEntity.ok(response);
     }
@@ -135,13 +136,13 @@ public class AccountController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> closeAccount(
             @PathVariable UUID id,
-            @AuthenticationPrincipal UUID userId,
+            @AuthenticationPrincipal AuthenticatedUser user,
             Authentication authentication) {
 
         boolean isAdmin = authentication.getAuthorities()
                 .contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-        closeAccountUseCase.execute(id, userId, isAdmin);
+        closeAccountUseCase.execute(id, user.userId(), isAdmin);
 
         return ResponseEntity.noContent().build();
     }
