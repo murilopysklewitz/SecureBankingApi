@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public interface SpringDataAccountRepository extends JpaRepository<AccountJpaEntity, UUID> {
     Page<AccountJpaEntity> findAll(Pageable pageable);
+    Optional<AccountJpaEntity> findByEmail(String email);
     Optional<AccountJpaEntity> findByAccountNumber(String accountNumber);
     List<AccountJpaEntity> findByUserId(UUID userId);
     List<AccountJpaEntity> findByStatus(AccountStatus status);

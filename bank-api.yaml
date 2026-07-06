@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bank-api
+  labels:
+    name: api
+spec:
+  containers:
+  - name: bank-api
+    image: bank-api:3.0
+    resources:
+    ports:
+      - containerPort: 8081
+    env:
+      - name: DB_URL
+        value: jdbc:postgresql://bank-db:5432/bank_db
+      - name: DB_USERNAME
+        value: postgres
+      - name: DB_PASSWORD
+        value: postgres
+
+      - name: RABBITMQ_HOST
+        value: rabbitmq
+      - name: RABBITMQ_PORT
+        value: "5672"
+      - name: RABBITMQ_USERNAME
+        value: admin
+      - name: RABBITMQ_PASSWORD
+        value: admin
+
+      - name: JWT_ACCESS_TOKEN_EXPIRATION
+        value: "9000"
+
+      - name: JWT_SECRET  
+        value: HUDghelsbojnxUIÇFWnvvnkvbizklnÇBIvçiahiyagbvhudsoIUHVBOOAOHVkgvualojvnknshblvayoaukelivboayluvoavbhjaulvlupanbihbuçhp94uphUHIÇFçnibozj90238uy7pUVhpwep9ihçbzpiNUÇHBOephifnçovin3iijph3y8oqjvnmcnbvahlbvhlaiçoijhp8yuir
+      - name: JWT_REFRESH_TOKEN_EXPIRATION
+        value: "604800000"

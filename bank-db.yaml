@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bank-db
+  labels:
+    app: bank-db
+spec:
+  containers:
+    - name: bank-db
+      image: postgres:15
+      ports:
+        - containerPort: 5432
+      env:
+        - name: POSTGRES_DB
+          value: bank_db
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: postgres

@@ -14,7 +14,9 @@ import java.util.UUID;
 @Table(name = "accounts", indexes = {
         @Index(name = "idx_account_number", columnList = "account_number"),
         @Index(name = "idx_user_id", columnList = "user_id"),
-        @Index(name = "idx_user_id_account_type", columnList = "user_id,account_type")
+        @Index(name = "idx_user_id_account_type", columnList = "user_id,account_type"),
+        @Index(name = "idx_user_id_account_status", columnList = "user_id,account_status")
+        @Index(name = "idx_email", columnList = "email")
 })
 public class AccountJpaEntity {
     @Id
@@ -29,6 +31,9 @@ public class AccountJpaEntity {
 
     @Column(name = "user_id", nullable = false, length = 20)
     private UUID userId;
+
+    @Column(name = "email", nullable = false, length = 100)
+    private String email;
 
     @Column(name = "balance", nullable = false, precision = 19, scale = 2)
     private BigDecimal balance;
@@ -58,6 +63,7 @@ public class AccountJpaEntity {
                             String accountNumber,
                             String agency,
                             UUID userId,
+                            String email,
                             BigDecimal balance,
                             AccountType type,
                             AccountStatus status,
@@ -67,6 +73,7 @@ public class AccountJpaEntity {
         this.accountNumber = accountNumber;
         this.agency = agency;
         this.userId = userId;
+        this.email = email;
         this.balance = balance;
         this.type = type;
         this.status = status;
@@ -80,6 +87,14 @@ public class AccountJpaEntity {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAccountNumber() {

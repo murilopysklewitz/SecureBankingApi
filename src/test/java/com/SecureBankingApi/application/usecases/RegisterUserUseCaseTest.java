@@ -7,8 +7,6 @@ import com.SecureBankingApi.application.usecases.createAccount.CreateAccountUseC
 import com.SecureBankingApi.application.usecases.registerUser.RegisterUserRequest;
 import com.SecureBankingApi.application.usecases.registerUser.RegisterUserUseCase;
 import com.SecureBankingApi.domain.user.ports.PasswordHasher;
-import com.SecureBankingApi.domain.user.ports.UserRepository;
-import com.SecureBankingApi.domain.user.User;
 import com.SecureBankingApi.domain.user.enums.UserRole;
 import com.SecureBankingApi.domain.user.enums.UserStatus;
 import com.SecureBankingApi.domain.user.valueObjects.CPF;

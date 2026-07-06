@@ -1,16 +1,13 @@
 package com.SecureBankingApi.application.services;
 
-import com.SecureBankingApi.domain.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import javax.xml.crypto.Data;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.time.Instant;
@@ -30,28 +27,6 @@ public class JwtService {
     }
 
 
-
-    public String generateAccessToken(User user){
-
-        Instant now = Instant.now();
-        Instant expiration = now.plusMillis(accessTokenExpiration);
-
-        return Jwts.builder()
-                //  1. user id
-                .subject(user.getId().toString())
-
-                //  2. custom claims
-                .claim("email", user.getEmail())
-                .claim("role", user.getRole())
-                .claim("name", user.getFullName())
-                //  3. Timestamps
-                .issuedAt(Date.from(now))
-                .expiration(Date.from(expiration))
-                //  secret key signature
-                .signWith(secretKey)
-                //'generate string
-                .compact();
-    }
 
     public boolean isValidToken(String token){
         try{

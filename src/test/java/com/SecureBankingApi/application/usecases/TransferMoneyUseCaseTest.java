@@ -5,8 +5,6 @@ import com.SecureBankingApi.application.usecases.createTransaction.TransactionRe
 import com.SecureBankingApi.application.usecases.createTransaction.TransferMoneyUseCase;
 import com.SecureBankingApi.domain.account.*;
 import com.SecureBankingApi.domain.transaction.*;
-import com.SecureBankingApi.domain.transaction.exceptions.InvalidAccountData;
-import com.SecureBankingApi.domain.user.ports.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -7,6 +7,7 @@ import java.util.UUID;
 public interface AccountRepository {
     void save(Account account);
     List<Account> findAll();
+    Optional<Account> findByEmail(String email);
     Optional<Account> findById(UUID id);
     Optional<Account> findByAccountNumber(AccountNumber accountNumber);
     List<Account> findByUserId(UUID userId);

@@ -13,6 +13,7 @@ public class AccountMapper {
     public Account toDomain(AccountJpaEntity entity){
         return Account.restore(entity.getId(),
                 entity.getUserId(),
+                entity.getEmail(),
                 AccountNumber.restore(entity.getAccountNumber()).getValue(),
                 entity.getAgency(),
                 Money.of(entity.getBalance()),
@@ -27,6 +28,7 @@ public class AccountMapper {
                 account.getAccountNumber().getValue(),
                 account.getAgency(),
                 account.getUserId(),
+                account.getEmail(),
                 account.getBalance().getValue(),
                 account.getType(),
                 account.getStatus(),

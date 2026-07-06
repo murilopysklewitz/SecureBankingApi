@@ -10,6 +10,7 @@ public class Account {
     private AccountNumber accountNumber;
     private String agency;
     private UUID userId;
+    private String email;
     private Money balance;
     private AccountType type;
     private AccountStatus status;
@@ -19,6 +20,7 @@ public class Account {
     private Account(AccountNumber accountNumber,
                     String agency,
                     UUID userId,
+                    String email,
                     Money balance,
                     AccountType type,
                     AccountStatus status) {
@@ -26,6 +28,7 @@ public class Account {
         this.accountNumber = accountNumber;
         this.agency = agency;
         this.userId = userId;
+        this.email = email;
         this.balance = balance;
         this.type = type;
         this.status = status;
@@ -36,6 +39,7 @@ public class Account {
     public static Account create(AccountNumber accountNumber,
                                  String agency,
                                  UUID userId,
+                                 String email,
                                  AccountType type){
         if(accountNumber == null){
             throw new IllegalArgumentException("account number cannot be null");
@@ -46,6 +50,9 @@ public class Account {
         if(userId == null){
             throw new IllegalArgumentException("user id cannot be null");
         }
+        if(email == null){
+            throw new IllegalArgumentException("email cannot be null");
+        }
         if(type == null){
             throw new IllegalArgumentException("account type cannot be null");
         }
@@ -54,13 +61,16 @@ public class Account {
         return new Account(
                 accountNumber,
                 agency,
-                userId, balance,
+                userId,
+                email,
+                balance,
                 type,
                 AccountStatus.ACTIVE);
     }
 
     public static Account restore(UUID id,
                                   UUID userId,
+                                  String email,
                                   String accountNumberStr,
                                   String agency,
                                   Money balance,
@@ -73,6 +83,7 @@ public class Account {
                 AccountNumber.restore(accountNumberStr),
                 agency,
                 userId,
+                email,
                 balance,
                 type,
                 status);
@@ -170,6 +181,10 @@ public class Account {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public LocalDateTime getUpdatedAt() {
