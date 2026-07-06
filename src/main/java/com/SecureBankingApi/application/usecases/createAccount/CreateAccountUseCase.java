@@ -31,7 +31,9 @@ public class CreateAccountUseCase {
         }
         String accountNumber = UUID.randomUUID().toString();
         Account account = Account.create(AccountNumber.generate(),
-                "001", request.getUserId(),
+                "001",
+                request.getUserId(),
+                request.getEmail(),
                 request.getType());
 
 

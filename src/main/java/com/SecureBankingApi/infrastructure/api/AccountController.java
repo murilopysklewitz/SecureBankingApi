@@ -66,7 +66,7 @@ public class AccountController {
             @Valid @RequestBody CreateAccountWebRequest request,
             @AuthenticationPrincipal AuthenticatedUser user) {
 
-        CreateAccountRequest useCaseRequest = new CreateAccountRequest(user.userId(), request.getType());
+        CreateAccountRequest useCaseRequest = new CreateAccountRequest(user.userId(), user.email(), request.getType());
 
         AccountResponse response = createAccountUseCase.execute(useCaseRequest);
 
