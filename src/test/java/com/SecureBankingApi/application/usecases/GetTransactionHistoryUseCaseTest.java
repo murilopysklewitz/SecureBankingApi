@@ -37,6 +37,7 @@ class GetTransactionHistoryUseCaseTest {
 
     private UUID accountId;
     private UUID userId;
+    private String email;
     private Account account;
     private AccountNumber accountNumber;
 
@@ -57,6 +58,7 @@ class GetTransactionHistoryUseCaseTest {
         account = Account.restore(
                 accountId,
                 userId,
+                email,
                 accountNumber.getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(1000.00)),
@@ -71,6 +73,7 @@ class GetTransactionHistoryUseCaseTest {
         account2 = Account.restore(
                 accountId2,
                 userId2,
+                email,
                 accountNumber2.getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(50)),

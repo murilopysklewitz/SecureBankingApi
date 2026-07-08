@@ -40,6 +40,7 @@ class WithdrawMoneyUseCaseTest {
 
     private UUID accountId;
     private UUID userId;
+    private String email;
     private Account account;
     private WithdrawMoneyRequest request;
 
@@ -49,10 +50,12 @@ class WithdrawMoneyUseCaseTest {
 
         accountId = UUID.randomUUID();
         userId = UUID.randomUUID();
+    email = "test@gmail.com";
 
         account = Account.restore(
                 accountId,
                 userId,
+                email,
                 AccountNumber.generate().getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(500.00)),
@@ -205,6 +208,7 @@ class WithdrawMoneyUseCaseTest {
         Account lowBalanceAccount = Account.restore(
                 accountId,
                 userId,
+                email,
                 AccountNumber.generate().getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(50.00)),

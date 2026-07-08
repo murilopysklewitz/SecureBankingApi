@@ -54,8 +54,9 @@ class DepositMoneyUseCaseTest {
         account = Account.restore(
                 accountId,
                 userId,
-                "123456-6",
+                "test@gmail.com",
                 "001",
+                "123456-7",
                 Money.of(BigDecimal.valueOf(100.00)),
                 AccountStatus.ACTIVE,
                 AccountType.CHECKING,
@@ -178,6 +179,7 @@ class DepositMoneyUseCaseTest {
                 userId,
                 "123456-6",
                 "001",
+                "12345-7",
                 Money.zero(),
                 AccountStatus.ACTIVE,
                 AccountType.CHECKING,

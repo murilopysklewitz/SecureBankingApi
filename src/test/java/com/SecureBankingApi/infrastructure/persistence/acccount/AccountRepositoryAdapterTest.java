@@ -33,6 +33,7 @@ public class AccountRepositoryAdapterTest {
     private UUID accountId;
     private AccountNumber accountNumber;
     private UUID userId;
+    private String email;
     private Account domainAccount;
     private AccountJpaEntity entityAccount;
 
@@ -41,9 +42,11 @@ public class AccountRepositoryAdapterTest {
         accountId = UUID.randomUUID();
         accountNumber = AccountNumber.generate();
         userId = UUID.randomUUID();
+        email = "test@gmail.com";
         domainAccount = Account.restore(
                 accountId,
                 userId,
+                email,
                 accountNumber.getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(10)),
@@ -58,6 +61,7 @@ public class AccountRepositoryAdapterTest {
                 accountNumber.getValue(),
                 "001",
                 userId,
+                email,
                 BigDecimal.valueOf(10),
                 AccountType.CHECKING,
                 AccountStatus.ACTIVE,
@@ -138,6 +142,7 @@ public class AccountRepositoryAdapterTest {
                 AccountNumber.generate().getValue(),
                 "001",
                 userId,
+                email,
                 BigDecimal.valueOf(500.00),
                 AccountType.SAVINGS,
                 AccountStatus.ACTIVE,
@@ -148,6 +153,7 @@ public class AccountRepositoryAdapterTest {
         Account domainAccount2 = Account.restore(
                 entity2.getId(),
                 userId,
+                email,
                 AccountNumber.generate().getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(500.00)),
@@ -200,6 +206,7 @@ public class AccountRepositoryAdapterTest {
                 "65432-1",
                 "001",
                 UUID.randomUUID(),
+                email,
                 BigDecimal.valueOf(500.00),
                 AccountType.SAVINGS,
                 AccountStatus.ACTIVE,
@@ -290,6 +297,7 @@ public class AccountRepositoryAdapterTest {
                 accountNumber.getValue(),
                 "001",
                 userId,
+                email,
                 BigDecimal.valueOf(2000.00),
                 AccountType.CHECKING,
                 AccountStatus.ACTIVE,
@@ -347,6 +355,7 @@ public class AccountRepositoryAdapterTest {
                 AccountNumber.generate().getValue(),
                 "001",
                 userId,
+                email,
                 BigDecimal.valueOf(1000.00),
                 AccountType.CHECKING,
                 AccountStatus.ACTIVE,
@@ -359,6 +368,7 @@ public class AccountRepositoryAdapterTest {
                 AccountNumber.generate().getValue(),
                 "001",
                 userId,
+                email,
                 BigDecimal.valueOf(5000.00),
                 AccountType.SAVINGS,
                 AccountStatus.ACTIVE,
@@ -376,6 +386,7 @@ public class AccountRepositoryAdapterTest {
                     return Account.restore(
                             entity.getId(),
                             entity.getUserId(),
+                            entity.getEmail(),
                             entity.getAccountNumber(),
                             entity.getAgency(),
                             Money.of(entity.getBalance()),

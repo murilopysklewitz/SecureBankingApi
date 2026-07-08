@@ -26,18 +26,20 @@ public class CreateAccountUseCaseTest {
     private CreateAccountUseCase createAccountUseCase;
 
     private UUID userId;
+    private String email;
     private AccountType accountType;
 
     @BeforeEach
     void setUp() {
         userId = UUID.randomUUID();
+        email = "asndaoln@gmail.com";
         accountType = AccountType.CHECKING;
     }
 
     @Test
     public void shouldCreateAccountSuccessfully() {
         // Given
-        CreateAccountRequest request = new CreateAccountRequest(userId, accountType);
+        CreateAccountRequest request = new CreateAccountRequest(userId, email, accountType);
         when(accountRepository.existsByUserIdAndType(userId, accountType)).thenReturn(false);
 
         // When
@@ -61,7 +63,7 @@ public class CreateAccountUseCaseTest {
     @Test
     public void shouldThrowBusinessExceptionWhenAccountOfSameTypeAlreadyExists() {
         // Given
-        CreateAccountRequest request = new CreateAccountRequest(userId, accountType);
+        CreateAccountRequest request = new CreateAccountRequest(userId, email, accountType);
         when(accountRepository.existsByUserIdAndType(userId, accountType)).thenReturn(true);
 
         // When & Then
@@ -75,8 +77,8 @@ public class CreateAccountUseCaseTest {
     @Test
     public void shouldGenerateUniqueAccountNumber() {
         // Given
-        CreateAccountRequest request1 = new CreateAccountRequest(userId, accountType);
-        CreateAccountRequest request2 = new CreateAccountRequest(UUID.randomUUID(), accountType);
+        CreateAccountRequest request1 = new CreateAccountRequest(userId, email, accountType);
+        CreateAccountRequest request2 = new CreateAccountRequest(UUID.randomUUID(), "test@gmail.com", accountType);
         when(accountRepository.existsByUserIdAndType(any(UUID.class), eq(accountType))).thenReturn(false);
 
         // When

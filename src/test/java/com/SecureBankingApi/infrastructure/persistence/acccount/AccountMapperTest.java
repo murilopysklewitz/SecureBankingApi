@@ -17,10 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AccountMapperTest {
     private AccountMapper mapper;
+    private String email;
 
     @BeforeEach
     void SetUp() {
         mapper = new AccountMapper();
+        email = "test@email.com";
     }
 
     @Test
@@ -34,6 +36,7 @@ public class AccountMapperTest {
                 AccountNumber.generate().getValue(),
                 "001",
                 userId,
+                email,
                 amount,
                 AccountType.CHECKING,
                 AccountStatus.ACTIVE,
@@ -59,6 +62,7 @@ public class AccountMapperTest {
                 AccountNumber.generate(),
                 "001",
                 UUID.randomUUID(),
+                email,
                 AccountType.CHECKING
         );
 

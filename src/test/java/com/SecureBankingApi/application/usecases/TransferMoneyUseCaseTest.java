@@ -24,9 +24,6 @@ public class TransferMoneyUseCaseTest {
     private TransactionRepository transactionRepository;
     @Mock
     private AccountRepository accountRepository;
-    @Mock
-    private UserRepository userRepository;
-
 
     @Mock
     private TransactionEventPublisher publisher;
@@ -37,6 +34,7 @@ public class TransferMoneyUseCaseTest {
     private UUID destinationAccountId;
 
     private UUID userId;
+    private String email;
 
     private Account sourceAccount;
     private Account destinationAccount;
@@ -49,7 +47,6 @@ public class TransferMoneyUseCaseTest {
         useCase = new TransferMoneyUseCase(
                 transactionRepository,
                 accountRepository,
-                userRepository,
                 publisher
         );
         sourceAccountId = UUID.randomUUID();
@@ -57,6 +54,7 @@ public class TransferMoneyUseCaseTest {
         destinationAccountId = UUID.randomUUID();
 
         userId = UUID.randomUUID();
+        email = "test@gmail.com";
 
         accountNumber = AccountNumber.generate();
         accountNumber2 = AccountNumber.generate();
@@ -64,6 +62,7 @@ public class TransferMoneyUseCaseTest {
         sourceAccount = Account.restore(
                 sourceAccountId,
                 userId,
+                email,
                 accountNumber.getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(100)),
@@ -75,6 +74,7 @@ public class TransferMoneyUseCaseTest {
         destinationAccount = Account.restore(
                 destinationAccountId,
                 UUID.randomUUID(),
+                "tast@gmail.com",
                 accountNumber2.getValue(),
                 "001",
                 Money.of(BigDecimal.valueOf(50.0)),

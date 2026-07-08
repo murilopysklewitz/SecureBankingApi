@@ -12,10 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AccountTest {
 
     AccountNumber accountNumber;
-
+    private String email;
     @BeforeEach
     void SetUp() {
         accountNumber = AccountNumber.generate();
+        email = "test@gmail.com";
     }
 
     @Test
@@ -29,6 +30,7 @@ public class AccountTest {
                 accountNumber,
                 agency,
                 userId,
+                email,
                 type
         );
 
@@ -51,6 +53,7 @@ public class AccountTest {
                 accountNumber,
                 "001",
                 UUID.randomUUID(),
+                email,
                 AccountType.CHECKING
         );
         assertEquals(AccountType.CHECKING, account.getType());
@@ -62,6 +65,7 @@ public class AccountTest {
                 accountNumber,
                 "001",
                 UUID.randomUUID(),
+                email,
                 AccountType.SAVINGS
         );
 
@@ -74,6 +78,7 @@ public class AccountTest {
                 accountNumber,
                 "001",
                 UUID.randomUUID(),
+                email,
                 AccountType.CHECKING
         );
 
@@ -88,6 +93,7 @@ public class AccountTest {
                 accountNumber,
                 "001",
                 UUID.randomUUID(),
+                email,
                 AccountType.CHECKING
         );
         account.block();
@@ -102,6 +108,7 @@ public class AccountTest {
                 accountNumber,
                 "001",
                 UUID.randomUUID(),
+                email,
                 AccountType.CHECKING
         );
         account.close();
@@ -114,6 +121,7 @@ public class AccountTest {
                 accountNumber,
                 "001",
                 UUID.randomUUID(),
+                email,
                 AccountType.CHECKING
         );
         Money money = Money.of(BigDecimal.valueOf(10));
@@ -128,6 +136,7 @@ public class AccountTest {
                 accountNumber,
                 "001",
                 UUID.randomUUID(),
+                email,
                 AccountType.CHECKING
         );
         Money add = Money.of(BigDecimal.valueOf(10));
