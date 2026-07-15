@@ -15,7 +15,7 @@ import java.util.UUID;
         @Index(name = "idx_account_number", columnList = "account_number"),
         @Index(name = "idx_user_id", columnList = "user_id"),
         @Index(name = "idx_user_id_account_type", columnList = "user_id,account_type"),
-        @Index(name = "idx_user_id_account_status", columnList = "user_id,account_status")
+        @Index(name = "idx_user_id_account_status", columnList = "user_id,account_status"),
         @Index(name = "idx_email", columnList = "email")
 })
 public class AccountJpaEntity {

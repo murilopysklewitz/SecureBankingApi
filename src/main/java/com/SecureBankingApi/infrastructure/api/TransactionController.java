@@ -25,6 +25,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -72,7 +73,8 @@ public class TransactionController {
 
     public ResponseEntity<TransactionResponse> createTransaction(
             @Valid @RequestBody CreateTransactionWebRequest request,
-                                                                 @AuthenticationPrincipal UUID userId){
+            @AuthenticationPrincipal UUID userId,
+            HttpServletRequest servletRequest){
         TransactionRequest transactionRequest = new TransactionRequest(
                 request.getSourceAccountId(),
                 request.getDestinationAccountId(),
@@ -80,9 +82,19 @@ public class TransactionController {
                 request.getAmount()
         );
 
-        TransactionResponse response = transferMoneyUseCase.execute(transactionRequest, userId);
+        String ipAddress = getIp(servletRequest);
+
+        TransactionResponse response = transferMoneyUseCase.execute(transactionRequest, userId, ipAddress);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    private String getIp(HttpServletRequest request){
+        String ipAddress = request.getHeader("X-Forwarded-For");
+        if(ipAddress != null && !ipAddress.isBlank()) {
+            return ipAddress.split(",")[0];
+        }
+        return request.getRemoteAddr();
     }
 
     @PostMapping("/deposit")

@@ -27,7 +27,7 @@ public class TransferMoneyUseCase {
     }
 
     @Transactional
-    public TransactionResponse execute(TransactionRequest request, UUID userId){
+    public TransactionResponse execute(TransactionRequest request, UUID userId, String ipAddress){
         Account source = accountRepository.findById(request.getSourceAccountId()).orElseThrow(() -> new AccountNotFoundException(request.getSourceAccountId()));
         if(!source.getUserId().equals(userId)){
             throw new IllegalCallerException("user Id mismatch");

@@ -41,6 +41,7 @@ class DepositMoneyUseCaseTest {
 
     private UUID accountId;
     private UUID userId;
+    private String email;
     private Account account;
     private DepositMoneyRequest request;
 
@@ -50,13 +51,14 @@ class DepositMoneyUseCaseTest {
 
         accountId = UUID.randomUUID();
         userId = UUID.randomUUID();
+        email = "test@gmail.com";
 
         account = Account.restore(
                 accountId,
                 userId,
                 "test@gmail.com",
+                AccountNumber.generate().getValue(),
                 "001",
-                "123456-7",
                 Money.of(BigDecimal.valueOf(100.00)),
                 AccountStatus.ACTIVE,
                 AccountType.CHECKING,
@@ -177,9 +179,9 @@ class DepositMoneyUseCaseTest {
         Account closedAccount = Account.restore(
                 accountId,
                 userId,
-                "123456-6",
+                "test@gmail.com",
+                AccountNumber.generate().getValue(),
                 "001",
-                "12345-7",
                 Money.zero(),
                 AccountStatus.ACTIVE,
                 AccountType.CHECKING,

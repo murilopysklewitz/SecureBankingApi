@@ -12,8 +12,7 @@ public class TransferMoneyUseCaseConfig {
 
     @Bean
     public TransferMoneyUseCase transferMoneyUseCase(AccountRepository accountRepository,
-                                                     UserRepository userRepository,
                                                      TransactionRepository transactionRepository, TransactionEventPublisher eventPublisher){
-        return new TransferMoneyUseCase(transactionRepository, accountRepository, userRepository, eventPublisher);
+        return new TransferMoneyUseCase(transactionRepository, accountRepository, eventPublisher);
     }
 }

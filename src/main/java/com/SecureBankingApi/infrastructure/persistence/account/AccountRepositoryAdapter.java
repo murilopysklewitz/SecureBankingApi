@@ -33,6 +33,7 @@ public class AccountRepositoryAdapter implements AccountRepository {
     @Override
     public Optional<Account> findByEmail(String email) {
         Optional<Account> account = repository.findByEmail(email).map((e) -> mapper.toDomain(e));
+        return account;
     }
 
     @Override

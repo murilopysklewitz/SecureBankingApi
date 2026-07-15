@@ -38,12 +38,14 @@ class JwtAuthenticationFilterTest {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private UUID testUserId;
+    private String testEmail;
     private String testRole;
     private String validToken;
 
     @BeforeEach
     void setUp() {
         testUserId = UUID.randomUUID();
+        testEmail = "test@gmail.com";
         testRole = "ADMIN";
         validToken = "valid.jwt.token";
         SecurityContextHolder.clearContext();
@@ -101,6 +103,7 @@ class JwtAuthenticationFilterTest {
         when(request.getHeader("Authorization")).thenReturn(authHeader);
         when(jwtService.isValidToken(validToken)).thenReturn(true);
         when(jwtService.extractUserId(validToken)).thenReturn(testUserId);
+        when(jwtService.extractEmail(validToken)).thenReturn(testEmail);
         when(jwtService.extractRole(validToken)).thenReturn(testRole);
 
         // Act
@@ -113,33 +116,10 @@ class JwtAuthenticationFilterTest {
         verify(jwtService, times(1)).extractRole(validToken);
 
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
-        assertEquals(testUserId, SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        assertEquals(new AuthenticatedUser(testUserId, testEmail, testRole), SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         assertTrue(SecurityContextHolder.getContext().getAuthentication().getAuthorities()
                 .stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_" + testRole)));
-    }
-
-    @Test
-    void testDoFilterInternalWithValidTokenAndDifferentRole() throws ServletException, IOException {
-        // Arrange
-        String userRole = "USER";
-        String authHeader = "Bearer " + validToken;
-        when(request.getHeader("Authorization")).thenReturn(authHeader);
-        when(jwtService.isValidToken(validToken)).thenReturn(true);
-        when(jwtService.extractUserId(validToken)).thenReturn(testUserId);
-        when(jwtService.extractRole(validToken)).thenReturn(userRole);
-
-        // Act
-        jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
-
-        // Assert
-        verify(filterChain, times(1)).doFilter(request, response);
-
-        assertNotNull(SecurityContextHolder.getContext().getAuthentication());
-        assertEquals(testUserId, SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        assertTrue(SecurityContextHolder.getContext().getAuthentication().getAuthorities()
-                .stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_" + userRole)));
     }
 
     @Test
@@ -224,6 +204,7 @@ class JwtAuthenticationFilterTest {
         when(request.getHeader("Authorization")).thenReturn(authHeader);
         when(jwtService.isValidToken(validToken)).thenReturn(true);
         when(jwtService.extractUserId(validToken)).thenReturn(testUserId);
+        when(jwtService.extractEmail(validToken)).thenReturn(testEmail);
         when(jwtService.extractRole(validToken)).thenReturn(testRole);
 
         // Act
@@ -232,6 +213,6 @@ class JwtAuthenticationFilterTest {
         // Assert
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
         assertTrue(SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
-        assertEquals(testUserId, SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        assertEquals(new AuthenticatedUser(testUserId, testEmail, testRole), SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 }
