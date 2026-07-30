@@ -2,6 +2,7 @@ package com.SecureBankingApi.infrastructure.messaging;
 
 import com.SecureBankingApi.domain.transaction.TransactionCompletedEvent;
 import com.SecureBankingApi.domain.transaction.TransactionEventPublisher;
+import com.SecureBankingApi.domain.transaction.TransactionFlaggedEvent;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,15 @@ public class RabbitMQTransactionEventPublisher implements TransactionEventPublis
         rabbitTemplate.convertAndSend(
                 RabbitMQConfiguration.TRANSACTION_EXCHANGE,
                 RabbitMQConfiguration.TRANSACTION_COMPLETED_ROUTING_KEY,
+                event
+        );
+    }
+
+    @Override
+    public void publicTransactionFlagged(TransactionFlaggedEvent event) {
+        rabbitTemplate.convertAndSend(
+                RabbitMQConfiguration.TRANSACTION_EXCHANGE,
+                RabbitMQConfiguration.TRANSACTION_FLAGGED_ROUTING_KEY,
                 event
         );
     }

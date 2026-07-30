@@ -25,7 +25,7 @@ public class Transaction {
                        TransactionType type,
                        Money amount,
                        String description) {
-        this.id = null;
+        this.id = UUID.randomUUID();
         this.completedAt = null;
 
         this.receiver = receiver;

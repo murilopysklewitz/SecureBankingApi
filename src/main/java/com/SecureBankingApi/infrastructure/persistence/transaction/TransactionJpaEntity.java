@@ -22,7 +22,6 @@ import java.util.UUID;
 public class TransactionJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", unique = true, updatable = false)
     private UUID id;
 

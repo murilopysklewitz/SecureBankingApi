@@ -2,4 +2,5 @@ package com.SecureBankingApi.domain.transaction;
 
 public interface TransactionEventPublisher {
     void publishTransactionCompleted(TransactionCompletedEvent event);
+    void publicTransactionFlagged(TransactionFlaggedEvent event);
 }

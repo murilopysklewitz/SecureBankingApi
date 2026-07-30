@@ -7,7 +7,7 @@ services:
     container_name: rabbitmq
     ports:
       - "5672:5672"
-      - "15672:15672"
+      - "1567:1567"
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
@@ -37,6 +37,10 @@ services:
       DB_HOST: postgres
       RABBITMQ_HOST: rabbitmq
       DB_URL: ${DB_URL}
+      API_KEY: ${API_KEY}
+      JWT_ACCESS_TOKEN_EXPIRATION: ${JWT_ACCESS_TOKEN_EXPIRATION}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_TOKEN_EXPIRATION: ${JWT_REFRESH_TOKEN_EXPIRATION}
       SPRING_PROFILES_ACTIVE: docker
     env_file:
       - SecureBankingApi/.env

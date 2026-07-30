@@ -1,5 +1,5 @@
 spring:
-
+  api_key: ${API_KEY}
   rabbitmq:
     host: ${RABBITMQ_HOST:rabbitmq}
     port: ${RABBITMQ_PORT:5672}

@@ -13,12 +13,24 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfiguration {
     public static final String TRANSACTION_EXCHANGE = "transaction.exchange";
+
     public static final String TRANSACTION_QUEUE = "transaction.queue";
     public static final String TRANSACTION_COMPLETED_ROUTING_KEY = "transaction.completed";
+
+    public static final String RISK_ENGINE_QUEUE = "risk_engine.queue";
+    public static final String TRANSACTION_FLAGGED_ROUTING_KEY = "transaction_flagged";
 
     @Bean
     public TopicExchange transactionExchange() {
         return new TopicExchange(TRANSACTION_EXCHANGE);
+    }
+
+    @Bean
+    public Queue riskEngineQueue() {
+        return new Queue(RISK_ENGINE_QUEUE);
+    }
+    @Bean Binding riskEngineBinding(Queue riskEngineQueue, TopicExchange transactionExchange){
+        return BindingBuilder.bind(riskEngineQueue).to(transactionExchange).with(TRANSACTION_FLAGGED_ROUTING_KEY);
     }
 
     @Bean
